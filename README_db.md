@@ -1,14 +1,18 @@
 ## Info k databázi a k práci s databázou
 
+### Deployment databázy
 1. Vytvorenie tabuliek databázy
   - `php artisan migrate` 
-  - alebo `php artisan migrate:fresh` (toto urobí drop all tables a spustí migrácie)
+  - alebo `php artisan migrate:fresh` - toto urobí drop all tables a spustí migrácie (ak dostanete table already exists SQL error, tak tiež použite tento príkaz)
 
-2. Vytvorenie SQL súboru z migrácií
+2. **TODO** Zaplnenie databázy základnými dátami
+  - `php artisan db:seed` 
+  - alebo konkrétny seed na konkrétnu tabuľku `php artisan db:seed --class=tableNameSeeder`
+
+3. Vytvorenie SQL súboru z migrácií
   - `php artisan scheme:dump`
   - SQL súbor bude v IS_app/databse/schema/mysql-schema.sql
   - tento `mysql-schema.sql` súbor sa potom dá na infinityfree hosting !!!
-
 
 
 ### Migrácie (database/migrations/)
@@ -33,4 +37,6 @@
 - Application Logic: Models are used for encapsulating application logic related to the data, such as validation rules, data manipulation, and business logic.
 - Files: Models are typically stored in the app directory of your Laravel project, and each model corresponds to a database table.
 
+### Seeders (database/seeders/)
+- slúžia na vyplnenie tabuliek databázy prvotnými alebo esenciálnymi dátami
 
