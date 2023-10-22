@@ -7,24 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Udrzba extends Model
 {
     // Set table name
-    protected $table = 'Údržba';
+    protected $table = 'udrzba';
 
     // Define primary key
-    protected $primaryKey = 'id_údržba';
-    public $timestamps = false;
+    protected $primaryKey = 'id_udrzba';
 
     // Define fillable columns
     protected $fillable = [
-        'začiatok_údržby',
+        'zaciatok_udrzby',
         'id_vozidlo',
-        'id_uživateľ_správca',
+        'id_uzivatel_spravca',
     ];
 
     // Define validation rules
     public static $rules = [
-        'začiatok_údržby' => 'nullable|date',
+        'zaciatok_udrzby' => 'nullable|date',
         'id_vozidlo' => 'required|integer',
-        'id_uživateľ_správca' => 'required|integer',
+        'id_uzivatel_spravca' => 'required|integer',
     ];
 
     // Define relationships
@@ -35,6 +34,6 @@ class Udrzba extends Model
 
     public function spravca()
     {
-        return $this->belongsTo(Uzivatel::class, 'id_uživateľ_správca', 'id_uživateľ');
+        return $this->belongsTo(Uzivatel::class, 'id_uzivatel_spravca', 'id_uzivatel');
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trasa extends Model
 {
-    protected $table = 'Trasa'; // Set the table name
+    protected $table = 'trasa'; // Set the table name
     protected $primaryKey = 'id_trasa'; // Set the primary key column
 
     // Define the fillable columns
@@ -16,9 +16,6 @@ class Trasa extends Model
         'info_trasy',
         'id_linka',
     ];
-
-    // Disable timestamps
-    public $timestamps = false;
 
     // Define validation rules
     public static $rules = [

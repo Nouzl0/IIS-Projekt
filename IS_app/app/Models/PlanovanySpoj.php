@@ -7,28 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 class PlanovanySpoj extends Model
 {
     // Set table name
-    protected $table = 'Plánovaný spoj';
+    protected $table = 'planovany_spoj';
 
     // Define primary key
-    protected $primaryKey = 'id_plán_trasy';
-    public $timestamps = false;
+    protected $primaryKey = 'id_plan_trasy';
 
     // Define fillable columns
     protected $fillable = [
-        'začiatok_trasy',
+        'zaciatok_trasy',
         'id_trasa',
         'id_vozidlo',
-        'id_uživateľ_dispečer',
-        'id_uživateľ_šofér',
+        'id_uzivatel_dispecer',
+        'id_uzivatel_sofer',
     ];
 
     // Define validation rules
     public static $rules = [
-        'začiatok_trasy' => 'nullable|date',
+        'zaciatok_trasy' => 'nullable|date',
         'id_trasa' => 'required|integer',
         'id_vozidlo' => 'required|integer',
-        'id_uživateľ_dispečer' => 'required|integer',
-        'id_uživateľ_šofér' => 'required|integer',
+        'id_uzivatel_dispecer' => 'required|integer',
+        'id_uzivatel_sofer' => 'required|integer',
     ];
 
     // Define relationships
@@ -44,11 +43,11 @@ class PlanovanySpoj extends Model
 
     public function dispecer()
     {
-        return $this->belongsTo(Uzivatel::class, 'id_uživateľ_dispečer', 'id_uživateľ');
+        return $this->belongsTo(Uzivatel::class, 'id_uzivatel_dispecer', 'id_uzivatel');
     }
 
     public function sofer()
     {
-        return $this->belongsTo(Uzivatel::class, 'id_uživateľ_šofér', 'id_uživateľ');
+        return $this->belongsTo(Uzivatel::class, 'id_uzivatel_sofer', 'id_uzivatel');
     }
 }

@@ -6,21 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Zastavka extends Model
 {
-    protected $table = 'Zastávka'; // Set the table name
-    protected $primaryKey = 'id_zastávka'; // Set the primary key column
+    protected $table = 'zastavka'; // Set the table name
+    protected $primaryKey = 'id_zastavka'; // Set the primary key column
 
     // Define the fillable columns
     protected $fillable = [
-        'meno_zastávky',
-        'adresa_zastávky',
+        'meno_zastavky',
+        'adresa_zastavky',
     ];
 
     // Define validation rules
     public static $rules = [
-        'meno_zastávky' => 'nullable|string',
-        'adresa_zastávky' => 'nullable|string'
+        'meno_zastavky' => 'nullable|string',
+        'adresa_zastavky' => 'nullable|string'
     ];
 
-    // Disable timestamps if not needed
-    public $timestamps = false;
 }

@@ -7,29 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class ZaznamUdrzby extends Model
 {
     // Set table name
-    protected $table = 'Záznam údržby';
+    protected $table = 'zaznam_udrzby';
 
     // Define primary keys
-    protected $primaryKey = ['id_údržba', 'id_uživateľ_technik'];
+    protected $primaryKey = ['id_udrzba', 'id_uzivatel_technik'];
 
     // Disable auto-incrementing for the primary key
     public $incrementing = false;
 
-    public $timestamps = false;
-
+    // Define validation rules
     public static $rules = [
-        'id_údržba' => 'required|integer',
-        'id_uživateľ_technik' => 'required|integer',
+        'id_udrzba' => 'required|integer',
+        'id_uzivatel_technik' => 'required|integer',
     ];
 
     // Define relationships
     public function udrzba()
     {
-        return $this->belongsTo(Udrzba::class, 'id_údržba', 'id_údržba');
+        return $this->belongsTo(Udrzba::class, 'id_udrzba', 'id_udrzba');
     }
 
     public function technik()
     {
-        return $this->belongsTo(Uzivatel::class, 'id_uživateľ_technik', 'id_uživateľ');
+        return $this->belongsTo(Uzivatel::class, 'id_uzivatel_technik', 'id_uzivatel');
     }
 }

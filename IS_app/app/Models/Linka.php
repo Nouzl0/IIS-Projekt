@@ -7,23 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Linka extends Model
 {
      // Set the table name
-    protected $table = 'Linka';
+    protected $table = 'linka';
 
     // Set the primary key column
     protected $primaryKey = 'id_linka';
 
     // Define the fillable columns
     protected $fillable = [
-        'číslo_linky',
+        'cislo_linky',
         'meno_linky',
     ];
 
-    // Disable timestamps (created_at, updated_at)
-    public $timestamps = false;
-
     // Define validation rules
     public static $rules = [
-        'číslo_linky' => 'required|integer|unique:Linka',
+        'cislo_linky' => 'required|integer|unique:linka',
         'meno_linky' => 'required|string',
     ];
 }
