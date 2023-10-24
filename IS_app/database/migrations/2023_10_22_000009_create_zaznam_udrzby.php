@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('zaznam_udrzby', function (Blueprint $table) {
             $table->unsignedBigInteger('id_udrzba');
             $table->unsignedBigInteger('id_uzivatel_technik');
+            $table->timestamps();
 
             $table->primary(['id_udrzba', 'id_uzivatel_technik']);
             $table->index('id_udrzba');

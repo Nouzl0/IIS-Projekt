@@ -15,12 +15,12 @@ class Linka extends Model
     // Define the fillable columns
     protected $fillable = [
         'cislo_linky',
-        'meno_linky',
+        'vozidla_linky',
     ];
 
     // Define validation rules
     public static $rules = [
         'cislo_linky' => 'required|integer|unique:linka',
-        'meno_linky' => 'required|string',
+        'vozidla_linky' => 'required|string',
     ];
 }

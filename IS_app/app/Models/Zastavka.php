@@ -17,7 +17,7 @@ class Zastavka extends Model
 
     // Define validation rules
     public static $rules = [
-        'meno_zastavky' => 'nullable|string',
+        'meno_zastavky' => 'required|string|unique:zastavka',
         'adresa_zastavky' => 'nullable|string'
     ];
 

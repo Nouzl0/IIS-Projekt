@@ -19,10 +19,8 @@ class Usek extends Model
         'poradie_useku',
         'id_zastavka_zaciatok',
         'id_zastavka_koniec',
-        'meno_useku',
-        'dlzka_useku',
-        'cas_useku',
-        'usekcol',
+        'dlzka_useku_km',
+        'cas_useku_minuty',
         'id_trasa',
     ];
 
@@ -31,10 +29,8 @@ class Usek extends Model
         'poradie_useku' => 'required|integer',
         'id_zastavka_zaciatok' => 'required|integer',
         'id_zastavka_koniec' => 'required|integer',
-        'meno_useku' => 'required|string',
-        'dlzka_useku'=> 'nullable|string',
-        'cas_useku'=> 'required|date_format:H:i:s',
-        'usekcol'=> 'nullable|string',
+        'dlzka_useku_km'=> 'nullable|integer',
+        'cas_useku_minuty'=> 'required|integer',
         'id_trasa'=> 'required|integer'
     ];
 

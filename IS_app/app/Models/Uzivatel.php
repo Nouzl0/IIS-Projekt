@@ -17,6 +17,8 @@ class Uzivatel extends Model
         'meno_uzivatela',
         'priezvisko_uzivatela',
         'tel_cislo_uzivatela',
+        'email_uzivatela',
+        'uzivatelske_meno',
         'heslo_uzivatela',
         'rola_uzivatela',
     ];
@@ -26,6 +28,8 @@ class Uzivatel extends Model
         'meno_uzivatela' => 'nullable|string',
         'priezvisko_uzivatela' => 'nullable|string',
         'tel_cislo_uzivatela' => 'nullable|string',
+        'email_uzivatela' => 'nullable|string',
+        'uzivatelske_meno' => 'nullable|string',
         'heslo_uzivatela' => 'nullable|string',
         'rola_uzivatela' => 'nullable|string',
     ];

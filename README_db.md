@@ -1,18 +1,21 @@
 ## Info k databázi a k práci s databázou
 
 ### Deployment databázy
-1. Vytvorenie tabuliek databázy
+1. Vytvorenie tabuliek databázy + naplnenie tabuliek prvotnými dátami
   - `php artisan migrate` 
   - alebo `php artisan migrate:fresh` - toto urobí drop all tables a spustí migrácie (ak dostanete table already exists SQL error, tak tiež použite tento príkaz)
 
-2. **TODO** Zaplnenie databázy základnými dátami
-  - `php artisan db:seed` 
+2. Zaplnenie databázy základnými dátami
+  - `php artisan db:seed` - spustí všetky seedy
   - alebo konkrétny seed na konkrétnu tabuľku `php artisan db:seed --class=tableNameSeeder`
 
-3. Vytvorenie SQL súboru z migrácií
-  - `php artisan scheme:dump`
-  - SQL súbor bude v IS_app/databse/schema/mysql-schema.sql
-  - tento `mysql-schema.sql` súbor sa potom dá na infinityfree hosting !!!
+3. Vytvorenie celého SQL súboru z migrácii
+  - `mysqldump -u <username> -p <database_name> > <output_file_name>.sql` (konkrétne `mysqldump -u root -p if0_35185317_db > dump.sql`)
+  - SQL súbor bude vytvorený v priečinku v ktorom sa momentálne nachádzate
+  - vytvorený SQL súbor bude obsahovať vytvorenie tabuliek a inserty do tabuliek
+  - **tento vygenerovaný súbor sa importne do databázy na infinityfree !!!**
+
+Potom ešte ako sa bude robiť deployment aplikácie, tak v `.env` súbore sa musia **korektne upraviť** polia týkajúce sa databázy !!!
 
 
 ### Migrácie (database/migrations/)

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('linka', function (Blueprint $table) {
             $table->id('id_linka');
             $table->unsignedInteger('cislo_linky')->unique();
-            $table->string('meno_linky', 240);
+            $table->string('vozidla_linky', 240);
             $table->timestamps();
         });
     }

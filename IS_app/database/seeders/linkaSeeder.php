@@ -7,10 +7,12 @@ use Illuminate\Database\Seeder;
 
 class linkaSeeder extends Seeder
 {
-
-    private $linky_data = [
-        ['cislo_linky' => 1, 'meno_linky' => 'Řečkovice_Ečerova'],
-        ['cislo_linky'=> 12, 'meno_linky'=> 'Komárov_Technologický_park'],
+    private $rows = [
+        ['cislo_linky' => 1, 'vozidla_linky' => 'Električka'],
+        ['cislo_linky'=> 2, 'vozidla_linky'=> 'Električka'],
+        ['cislo_linky'=> 47, 'vozidla_linky'=> 'Autobus'],
+        ['cislo_linky'=> 62, 'vozidla_linky'=> 'Autobus'],
+        ['cislo_linky'=> 32, 'vozidla_linky'=> 'Trolejbus'],
     ];
     
     /**
@@ -18,8 +20,8 @@ class linkaSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach ($this->linky_data as $data) {
-            Linka::create($data);
+        foreach ($this->rows as $row) {
+            Linka::create($row);
         }
     }
 }

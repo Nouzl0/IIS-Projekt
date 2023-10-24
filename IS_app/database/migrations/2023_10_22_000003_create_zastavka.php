@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('zastavka', function (Blueprint $table) {
             $table->id('id_zastavka');
-            $table->string('meno_zastavky', 45)->nullable();
+            $table->string('meno_zastavky', 45)->unique();
             $table->string('adresa_zastavky', 45)->nullable();
+            $table->timestamps();
 
         });
     }

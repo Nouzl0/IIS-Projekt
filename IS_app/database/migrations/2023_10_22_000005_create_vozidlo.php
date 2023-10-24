@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nazov', 45)->nullable();
             $table->string('druh_vozidla', 45)->nullable();
             $table->string('znacka_vozidla', 45)->nullable();
-
+            $table->timestamps();
         });
     }
 
