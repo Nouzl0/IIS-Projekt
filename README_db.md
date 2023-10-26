@@ -43,3 +43,9 @@ Potom ešte ako sa bude robiť deployment aplikácie, tak v `.env` súbore sa mu
 ### Seeders (database/seeders/)
 - slúžia na vyplnenie tabuliek databázy prvotnými alebo esenciálnymi dátami
 
+### App deployment to infinityfree
+1. Copy the local `IS_app/public` folder to the `htdocs/` folder on infinityfree
+2. Copy all files and folders from local `IS_app` folder **without the public folder** to the `htdocs/IS_app` folder on infinityfree
+3. On infinityfree in the `htdocs/index.php` file change the '..' to 'IS_app' folder path in the functions of the script 
+4. Delete config.php in htdocs/IS_app/bootsrap/cache/config.php (if it exists)
+5. Change the database settings in .env file according to the infinityfree database
