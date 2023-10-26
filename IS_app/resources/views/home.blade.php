@@ -1,23 +1,39 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Title -->
+        <title>HomePage</title>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+        <!-- Meta Tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        <!-- Component Styles -->
+        <link rel="stylesheet" href="{{ asset('css/component/search-menu.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/login-nav.css') }}">   
 
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
+        <!-- WebPage Styles -->
+        <!--
+        <link rel="stylesheet" href="{{ asset('css/home.css') }}">  
+        -->
+
+        @livewireStyles
+    </head>
+
+    <body>
+
+        @livewire('login-nav')
+        <h1>Mestská doprava Brno</h1>
+        @livewire('search-menu')
+
+        <div id="poriadky">
+            <h3>Cestovné poriadky</h3>
+            <p>1. Řečkovice - Hlavní nádraží - Ečerová <br></p>
+            <p>2. Stará osada - Celní - Modřice <br></p>
+            <p>3. Tomkovo námestí - Námestí Míru <br></p>
         </div>
-    </div>
-</div>
-@endsection
+
+
+        @livewireScripts
+    </body>
+</html>

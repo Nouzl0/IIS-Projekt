@@ -1,0 +1,40 @@
+.my-livewire-component {
+    max-width: 400px;
+    margin:10px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+.input-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.button_search {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    width: auto;   
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+.button_seach:hover {
+    background-color: #347536;
+}
