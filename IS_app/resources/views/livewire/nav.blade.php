@@ -1,0 +1,21 @@
+<div>
+    @switch($role)
+        @case("admin")
+            @livewire('nav-admin')
+            @break
+        @case("manager")
+            @livewire('nav-manager')
+            @break
+        @case("dispatcher")
+            @livewire('nav-dispatcher')
+            @break
+        @case("technician")
+            @livewire('nav-technician')
+            @break
+        @case("driver")
+            @livewire('nav-driver')
+            @break
+        @default
+            @livewire('nav-login')
+    @endswitch
+</div>

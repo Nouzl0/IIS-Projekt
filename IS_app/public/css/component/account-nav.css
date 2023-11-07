@@ -1,0 +1,161 @@
+/*
+    Navigation header
+*/
+.navigation-header {
+    /* Container style */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Set your desired background color */
+    padding: 0px 10px 0px 10px;
+    border-bottom: 1px solid #E6E6E6;
+    
+    /* Text style */
+    color: #000000; /* Set your desired text color */
+    font-family: Roboto, sans-serif; /* Change to Roboto font */
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
+
+
+/*
+    Account information
+*/
+.acount-information {
+    /* Layout */
+    display: flex;
+    align-items: center;
+}
+.account-name {
+    /* Container style */
+    background-color: #E6E6E6;
+    border: none;
+    padding: 15px 15px;
+    border-radius: 10px;
+    margin-left: 10px; 
+
+    /* Text */
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000000;
+}
+.account-role {
+    /* Container style */
+    margin-left: 10px;
+
+    /* Text */
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000000;    
+}
+
+/*
+    Login button
+*/
+.login-button {
+    /* Button */
+    background-color: #E6E6E6; /* Set your desired button background color */
+    border: none;
+    padding: 10px 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    margin-left: 15px;
+
+    /* Text */
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000000;
+}
+.login-button:hover {
+    background-color: #D0D0D0;
+}
+.login-button img {
+    width: 30px; /* Set your desired image size */
+    height: 30px;
+    margin-right: 10px;
+}
+
+
+
+/*
+    Navigation buttons
+*/
+.nav-button {
+    /* Button */
+    background-color: #ffffff; /* Set your desired button background color */
+    border: none;
+    padding: 30px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 0px;
+    transition: all 0.2s ease-in-out;
+    float: left;
+    margin-right: 4px;
+
+    /* Text */
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+}
+.nav-button:hover {
+    background-color: #D0D0D0;
+}
+
+
+/*
+    Icon button
+*/
+.icon-button {
+    /* Button */
+    background-color: #ffffff; /* Set your desired button background color */
+    border: none;
+    padding: 25px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 0px;
+    transition: all 0.2s ease-in-out;
+    float: left;
+    margin-right: 0px;
+}
+.icon-button:hover {
+    background-color: #D0D0D0;
+}
+.icon-button img {
+    width: 25px; /* Set your desired image size */
+    height: 27px;
+}
+
+
+/*
+    Dropdown menu
+*/
+.more-navigation {
+    /* Layout */
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0px 10px 0px 10px;
+    border-radius: 0px;
+    align-items: center;
+
+    /* Container style */
+    background-color: #ffffff;
+    transition: transform 0.5s ease-in-out;
+}
+.more-navigation .nav-button {
+    /* Button */
+    padding: 10px 30px;
+    
+    /* Text */
+    font-size: 12px;
+}
+

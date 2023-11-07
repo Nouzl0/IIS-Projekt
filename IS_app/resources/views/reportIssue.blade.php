@@ -2,7 +2,7 @@
 <html>
     <head>
         <!-- Title -->
-        <title>HomePage</title>
+        <title>ReportVehicleIssue</title>
 
         <!-- Meta Tags -->
         <meta charset="utf-8">
@@ -12,30 +12,17 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Component Styles -->
-        <link rel="stylesheet" href="{{ asset('css/component/search-menu.css') }}"> 
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
 
         <!-- WebPage Styles -->
-        <!--
-        <link rel="stylesheet" href="{{ asset('css/home.css') }}">  
-        -->
+        <!-- replace with css link -->
 
         @livewireStyles
     </head>
 
     <body>
-
         @livewire('nav')
-        <h1>Mestská doprava Brno</h1>
-        @livewire('search-menu')
-
-        <div id="poriadky">
-            <h3>Cestovné poriadky</h3>
-            <p>1. Řečkovice - Hlavní nádraží - Ečerová <br></p>
-            <p>2. Stará osada - Celní - Modřice <br></p>
-            <p>3. Tomkovo námestí - Námestí Míru <br></p>
-        </div>
-
+        <h1>ReportVehicleIssue</h1>
 
         @livewireScripts
     </body>

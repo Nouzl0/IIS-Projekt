@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*  Main routes  */
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -25,9 +26,31 @@ Route::get('/search', function () {
     return view('search');
 })->name('search');
 
+/* User specific routes */
+Route::get('/assignedPlan', function () {
+    return view('assignedPlan');
+})->name('assignedPlan');
 
-/* Fix later
-Auth::routes();
+Route::get('/assignVehicles', function () {
+    return view('assignVehicles');
+})->name('assignVehicles');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-*/
+Route::get('/manageLinks', function () {
+    return view('manageLinks');
+})->name('manageLinks');
+
+Route::get('/manageUsers', function () {
+    return view('manageUsers');
+})->name('manageUsers');
+
+Route::get('/manageVehicles', function () {
+    return view('manageVehicles');
+})->name('manageVehicles');
+
+Route::get('/recordMaintenance', function () {
+    return view('recordMaintenance');
+})->name('recordMaintenance');
+
+Route::get('/reportIssue', function () {
+    return view('reportIssue');
+})->name('reportIssue');

@@ -8,8 +8,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
         <!-- Component Styles -->
-        <link rel="stylesheet" href="{{ asset('css/component/login-nav.css') }}"> 
+        <link rel="stylesheet" href="{{ asset('css/component/login-nav.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}"> 
 
         <!-- WebPage Styles --> 
         <link rel="stylesheet" href="{{ asset('css/search.css') }}">
@@ -18,7 +22,7 @@
     </head>
     <body>
 
-        @livewire('login-nav')
+        @livewire('nav')
 
         <h1>Bus Search Results</h1>
 
