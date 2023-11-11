@@ -29,12 +29,7 @@
         <h1>Mestská doprava Brno</h1>
         @livewire('search-menu')
 
-        <div id="poriadky">
-            <h3>Cestovné poriadky</h3>
-            <p>1. Řečkovice - Hlavní nádraží - Ečerová <br></p>
-            <p>2. Stará osada - Celní - Modřice <br></p>
-            <p>3. Tomkovo námestí - Námestí Míru <br></p>
-        </div>
+        @livewire('timetables')
 
 
         @livewireScripts
