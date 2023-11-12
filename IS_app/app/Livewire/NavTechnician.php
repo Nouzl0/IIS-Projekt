@@ -11,17 +11,11 @@ class NavTechnician extends Component
 
 
     /* Back-end functions */
-    // gets the current user's name from the session
-    // todo - work on functionality
-    public function get_login()
-    {
-        return "admin_acount";
-    }
 
     // redirects to the home page and logs the user out
-    // todo - work on functionality
     public function logout()
     {
+        session(['userRole' => 'guest']);     // Set the userRole as guest in the session, Nav component watches the 'userRole' in the session and renders itself accordingly
         return redirect()->route('home');
     }
 

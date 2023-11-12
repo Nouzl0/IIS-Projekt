@@ -8,10 +8,10 @@
                 <img src="{{ asset('images/icon-home.svg') }}" alt="home button">
             </button>
             <section class='account-name'>
-                <span>account_admin</span>    <!-- should take name from database -->
+                <span>{{ session('userName', 'guest') }}</span>    <!-- should take name from database -->
             </section>
             <section class='account-role'>
-                <span>(Administrátor)</span>    <!-- should take role from database -->
+                <span>({{ session('userRole', 'guest') }})</span>    <!-- should take role from database -->
             </section>
         </div>
 
