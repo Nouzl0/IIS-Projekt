@@ -13,6 +13,9 @@
 
         <!-- Component Styles -->
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/add_vehicle.css') }}">
+        
+
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -23,6 +26,16 @@
     <body>
         @livewire('nav')
         <h1>ReportVehicleIssue</h1>
+        <div class="add_component">
+            <form action="" >
+                <label for="vehicle">Poškodené vozidlo</label>
+                <input type="text" name="vehicle"> <br>
+                <label for="issue">Závada</label>
+                <input type="text" name="issue"> <br>
+                <input type="submit" value="Nahlásiť" class="button_add"> 
+            </form>
+        </div>
+        
 
         @livewireScripts
     </body>

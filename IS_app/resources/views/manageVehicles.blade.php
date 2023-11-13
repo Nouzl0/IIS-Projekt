@@ -13,6 +13,8 @@
 
         <!-- Component Styles -->  
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/add_vehicle.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/list-of-vehicles.css') }}">
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -22,8 +24,16 @@
 
     <body>
         @livewire('nav')
-        <h1>ManageVehicles</h1>
+        {{-- spz názov druh značka stav --}}
+        <h1>Správa vozidiel</h1>
+        @livewire('add-vehicles')
+        
+        <h2>Aktuálne vozidlá</h2>
+        @livewire('list-of-vehicles')
+
+
+
 
         @livewireScripts
     </body>
-</html>
+</html> 
