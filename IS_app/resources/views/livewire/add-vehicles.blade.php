@@ -1,19 +1,20 @@
-<div class="add_vehicle_component">
+<div>
     {{-- The best athlete wants his opponent at his best. --}}
-    <form action="" method="POST" class="add_component">
-        <label for="spz">ŠPZ</label>
-        <input type="text" name="spz" class="input_form"> <br>
-        <label for="vehicle_name">Názov vozidla</label>
-        <input type="text" name="vehicle_name" class="input_form"> <br>
-        <label for="vehicle_type">Typ vozidla</label>
-        <input type="text" name="vehicle_type" class="input_form"> <br>
-        <label for="vehicle_brand">Výrobca vozidla</label>
-        <input type="text" name="vehicle_brand" class="input_form"> <br>
-        <label for="driver">Šofér</label>
-        <input type="text" name="driver" class="input_form"><br>
-        <label for="vehicle_condition">Stav vozidla</label>
-        <input type="text" name="vehicle_condition" class="input_form"> <br>
-        <input type="submit" value="Pridať vozidlo" class="button_add">
+    {{-- TODO --}}
+    {{--    vyriesit chybne zadany input --}}
+    {{-- --------------------------------- --}}
+
+    <form wire:submit.prevent="submit" class="add_box">
+        <label class="add-label" for="id_vozidlo">ŠPZ</label>
+        <input class="add-input" type="text" name="id_vozidlo" wire:model="id_vozidlo"> <br>
+        <label class="add-label" for="nazov">Názov vozidla</label>
+        <input class="add-input" type="text" name="nazov" wire:model="nazov"> <br>
+        <label class="add-label" for="druh_vozidla">Druh vozidla</label>
+        <input class="add-input" type="text" name="druh_vozidla" wire:model='druh_vozidla'> <br>
+        <label class="add-label" for="znacka_vozidla">Značka vozidla</label>
+        <input class="add-input" type="text" name="znacka_vozidla" wire:model="znacka_vozidla"> <br>
+        <button type="submit" value="Pridať vozidlo" class="add_button">Uloz</button>
     </form>
 
 </div>
+@livewireScripts

@@ -1,48 +1,36 @@
-.add_component {
+    
+.add-box {
     max-width: 400px;
-    margin:10px;
+    margin: 20px auto;
     padding: 20px;
-    background-color: #f4f4f4;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-label {
+.add-label {
     display: block;
-    font-weight: bold;
+    margin-bottom: 8px;
 }
 
-.input_form {
+.add-input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.button_add {
-    background-color: #4CAF50; /* Green */
+.add-button {
+    background-color: #747474;
+    color: #fff;
+    padding: 10px 15px;
     border: none;
-    color: white;
-    padding: 15px 32px;
-    width: auto;   
-    text-align: center;
-    text-decoration: none;
-    font-size: 12px;
-    border-radius: 2px;
-  }
-
-.button_add:hover {
-    background-color: #347536;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-#td_button {
-    text-align: middle;
-    width: 80px;
-}
-
-.input_edit_form {
-    margin:10px;
-    padding: 10px;
-    font-size: 14px;
+.add-button:hover {
+    background-color: #2f2f2f;
 }

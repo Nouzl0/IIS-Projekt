@@ -1,44 +1,74 @@
-table {
+
+
+
+.list-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-th, td {
+.list-up-body, .list-low-body {
+    background-color: #767676;
+    color: #fff;
+}
+
+.list-up-row, .list-low-row {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
-td {
-    height:60px;
+
+.list-up-box {
+
+    /* Text style */
+    color: #ffffff; /* Set your desired text color */
+    font-family: Roboto, sans-serif; /* Change to Roboto font */
+    font-size: 11px;
+    font-weight: 800;
 }
-th {
+
+.list-low-box {
+
+    /* Text style */
+    color: #000000; /* Set your desired text color */
+    font-family: Roboto, sans-serif; /* Change to Roboto font */
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.list-up-box, .list-low-box {
+    padding: 8px;
+}
+
+.list-low-row {
     background-color: #f2f2f2;
 }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-} 
+.list-low-row:hover {
+    background-color: #ddd;
+}
 
-.button_edit, .button_delete {
-    background-color: #4CAF50; /* Green */
+.list-button_edit, .list-button_delete {
     border: none;
-    color: white;
     margin-top: 10px;
     padding: 15px 32px;
     width: auto;   
-    text-align: center;
+    text-align: right;
     text-decoration: none;
     font-size: 12px;
     border-radius: 8px;
   }
-  .button_delete{
+  .list-button-delete{
     background-color: rgb(218, 79, 79);
   }
 
-.button_edit:hover {
+  .list-button_edit{
+    background-color: green;
+  }
+
+.list-button-edit:hover {
     background-color: #347536;
 }
-.button_delete:hover {
+.list-button-delete:hover {
     background-color: #8e0000;
 }

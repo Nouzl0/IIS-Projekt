@@ -28,7 +28,7 @@
         <h1>Správa vozidiel</h1>
         @livewire('add-vehicles')
         
-        <h2>Aktuálne vozidlá</h2>
+        
         @livewire('list-of-vehicles')
 
 

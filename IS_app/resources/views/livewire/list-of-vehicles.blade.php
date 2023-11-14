@@ -1,43 +1,61 @@
 <div>
     {{-- Nothing in the world is as soft and yielding as water. --}}
-    <table>
-        <thead>
-            <tr>
-                <th>ŠPZ</th>
-                <th>Názov</th>
-                <th>Typ</th>
-                <th>Výrobca</th>
-                <th>Šofér</th>
-                <th>Stav</th>
-                <th></th>
+
+    <h2>Aktuálne vozidlá</h2>
+
+    <table class="list-table">
+        <thead class="list-up-body">
+            <tr class="list-up-row">
+                <th class="list-up-box">ŠPZ</th>
+                <th class="list-up-box">Názov</th>
+                <th class="list-up-box">Druh</th>
+                <th class="list-up-box">Značka</th>
+                <th class="list-up-box"></th>
             </tr>
         </thead>
 
-        <tbody>
-            
-            <tr>
-                @if($isEdit)
-                <td>4A23000</td>
-                <td>Škodat 13T</td>
-                <td>Električka</td>
-                <td>Škoda</td>
-                <td>Janko</td>
-                <td>Pojazdné</td>
-                <td id="td_button"> <button wire:click="ToggleContentSwitch" class="button_edit" >Upraviť</button> </td>
+        <tbody class="list_low_body">
+            @forelse ($vehicles as $vehicle)
+                @if ($isEdit && $editValue === $vehicle['id_vozidlo'])
+                    <tr class="list-low-row">
+                        <td class=list-low-box><input type="text" name="id_vozidlo"
+                                value="{{ $vehicle['id_vozidlo'] }}" wire:model="id_vozidlo" class="input_edit_form">
+                        </td>
 
+                        <td class=list-low-box> <input type="text" name="nazov" value={{ $vehicle['nazov'] }}
+                                wire:model="nazov" class="input_edit_form"></td>
+                        <td class=list-low-box> <input type="text" name="druh_vozidla"
+                                value={{ $vehicle['druh_vozidla'] }} wire:model="druh_vozidla" class="input_edit_form">
+                        </td>
+                        <td class=list-low-box> <input type="text" name="znacka_vozidla"
+                                value={{ $vehicle['znacka_vozidla'] }} wire:model="znacka_vozidla"
+                                class="input_edit_form"></td>
+                        <td class=list-low-box>
+                            <button wire:click="toggleEdit({{ $vehicle['id_vozidlo'] }})" 
+                                class="list-button-edit">Upraviť</button>
+                            <button wire:click="deleteVehicle({{ $vehicle['id_vozidlo'] }})"
+                                class="list-button-delete">Vymazať</button>
+
+                        </td>
+
+                    </tr>
                 @else
-                    <td> <input type="text" name="spz" value="4A23000"  class="input_edit_form"> </td>
-                    <td> <input type="text" name="vehicle_name" value="Škodat 13T" class="input_edit_form"></td>
-                    <td> <input type="text" name="vehicle_type" value="Elektricka" class="input_edit_form"></td>
-                    <td><input type="text" name="vehicle_brand" value="Škoda" class="input_edit_form"></td>
-                    <td><input type="text" name="driver" value="Janko" class="input_edit_form"></td>
-                    <td><input type="text" name="vehicle_condition" value="Pojazdné" class="input_edit_form"></td>
-                    <td> 
-                        <button wire:click="ToggleContentSwitch" class="button_edit" >Ulož</button> 
-                        <button class="button_delete">Vymaž</button>
-                    </td>
+                    <tr class="list-low-row">
+                        <td class=list-low-box> {{ $vehicle['id_vozidlo'] }} </td>
+                        <td class=list-low-box> {{ $vehicle['nazov'] }} </td>
+                        <td class=list-low-box> {{ $vehicle['druh_vozidla'] }} </td>
+                        <td class=list-low-box> {{ $vehicle['znacka_vozidla'] }} </td>
+                        <td class=list-low-box>
+                            <button wire:click="toggleEdit({{ $vehicle['id_vozidlo'] }})" 
+                                class="list-button-edit">Upraviť</button>
+                            <button wire:click="deleteVehicle({{ $vehicle['id_vozidlo'] }})"
+                                class="list-button-delete">Vymazať</button>
+                        </td>
+                    </tr>
                 @endif
-            </tr>
+            @empty
+            @endforelse
         </tbody>
     </table>
 </div>
+@livewireScripts
