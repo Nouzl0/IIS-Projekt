@@ -13,7 +13,9 @@
 
         <!-- Component Styles -->  
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
-
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">
+        
         <!-- WebPage Styles -->
         <!-- replace with css link -->
 
@@ -22,7 +24,12 @@
 
     <body>
         @livewire('nav')
-        <h1>ManageUsers</h1>
+
+        <h1>Pridaj nového uživatela</h1>
+        @livewire('manage-users-add')
+        
+        <h1>List uživatelov</h1>
+        @livewire('manage-users-list')
 
         @livewireScripts
     </body>

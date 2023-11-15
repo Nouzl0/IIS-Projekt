@@ -23,6 +23,10 @@ class Uzivatel extends Model
         'rola_uzivatela',
     ];
 
+    protected $hidden = [
+        'heslo_uzivatela',
+    ];
+
     // Define validation rules
     public static $rules = [
         'meno_uzivatela' => 'nullable|string',
