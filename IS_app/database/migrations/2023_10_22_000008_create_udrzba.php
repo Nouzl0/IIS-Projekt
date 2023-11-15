@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id('id_udrzba');
             $table->dateTime('zaciatok_udrzby')->nullable();
             $table->unsignedBigInteger('id_vozidlo');
-            $table->unsignedBigInteger('id_uzivatel_spravca');
+            $table->string('spz');
+            //$table->unsignedBigInteger('id_uzivatel_spravca');
+            $table->string('stav');
+            $table->text('popis')->nullable();
             $table->timestamps();
 
             $table->foreign('id_vozidlo')
@@ -26,11 +29,11 @@ return new class extends Migration
                 ->onUpdate('NO ACTION')
                 ->onDelete('NO ACTION');
 
-            $table->foreign('id_uzivatel_spravca')
+            /* $table->foreign('id_uzivatel_spravca')
                 ->references('id_uzivatel')
                 ->on('uzivatel')
                 ->onUpdate('NO ACTION')
-                ->onDelete('NO ACTION');
+                ->onDelete('NO ACTION'); */
         });
     }
 

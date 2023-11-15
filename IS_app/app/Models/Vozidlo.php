@@ -15,6 +15,7 @@ class Vozidlo extends Model
     // Define fillabel columns
     protected $fillable = [
         'nazov',
+        'spz',
         'druh_vozidla',
         'znacka_vozidla',
     ];
@@ -22,6 +23,7 @@ class Vozidlo extends Model
     // Define validation rules
     public static $rules = [
         'nazov' => 'nullable|string',
+        'spz' => 'required|string',
         'druh_vozidla' => 'nullable|string',
         'znacka_vozidla' => 'nullable|string',
     ];

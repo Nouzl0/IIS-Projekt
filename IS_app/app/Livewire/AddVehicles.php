@@ -7,8 +7,8 @@ use App\Models\Vozidlo;
 
 class AddVehicles extends Component
 {
-    public $id_vozidlo;
-    public $nazov;
+    public $spz;
+    public $nazov_vozidla;
     public $druh_vozidla;
     public $znacka_vozidla;
 
@@ -19,29 +19,15 @@ class AddVehicles extends Component
   
 
     public function submit() {
-        $this->validate([
-            'id_vozidlo' => 'required',
-            'nazov' => 'required',
-            'druh_vozidla' => 'required',
-            'znacka_vozidla' => 'required'
-        ]);
-        // dd($this->nazov);
-        // TO DO
-        // id uz je obsadene
-        $vehicle = new Vozidlo;
-        $vehicle->id_vozidlo = $this->id_vozidlo;
-        $vehicle->nazov = $this->nazov;
-        $vehicle->druh_vozidla = $this->druh_vozidla;
-        $vehicle->znacka_vozidla = $this->znacka_vozidla;
-        $vehicle->save();
-        $this->resetFilters();
+        $vehicle_exists = Vozidlo::where('spz', $this->spz)->first();   // check if the vehicle with the inputted SPZ already exists
+        if ($vehicle_exists) {
+            session()->now('message','Vozidlo so zadanou ŠPZ už existuje.'); // if it already exists in the DB, show the user a message
+            return;
+        }
+
+        Vozidlo::create(['nazov' => $this->nazov_vozidla, 'spz' => $this->spz, 'druh_vozidla' => $this->druh_vozidla, 'znacka_vozidla' => $this->znacka_vozidla]); // insert into Vozidlo table
+        session()->now('message','Vozidlo bolo úspešne pridané');   // show successful message to user
          
-    
-        return redirect()->to('/manageVehicles');
+        return redirect()->to('/manageVehicles');   // refresh the page
     }
-
-    public function resetFilters() {
-        $this->reset(['nazov', 'druh_vozidla','znacka_vozidla']);
-    }
-
 }

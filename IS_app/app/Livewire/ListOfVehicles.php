@@ -3,16 +3,14 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Psy\CodeCleaner\FunctionReturnInWriteContextPass;
 use App\Models\Vozidlo;
-use Livewire\Attributes\On;
 
 class ListOfVehicles extends Component
 {
     public $isEdit = false;
     public $vehicles;
     public $editValue='';
-    public $id_vozidlo, $nazov, $druh_vozidla, $znacka_vozidla;
+    public $id_vozidlo, $nazov, $spz, $druh_vozidla, $znacka_vozidla;
 
     public function mount() {
         $this->vehicles = Vozidlo::all();
@@ -20,26 +18,39 @@ class ListOfVehicles extends Component
 
 
     public function updateVehicle() {
-        Vozidlo::where('id_vozidlo', $this->id_vozidlo)->update([
-            'id_vozidlo' => $this->id_vozidlo,
-            'nazov' => $this->nazov,
-            'druh_vozidla' => $this->druh_vozidla,
-            'znacka_vozidla' => $this->znacka_vozidla
-        ]);
+        // Check if the vehicle with the inputted SPZ already exists
+        $spz_already_exists = Vozidlo::where('spz', $this->spz)->first();
+
+        if ( $spz_already_exists ) {
+            // Update the attributes of the vehicle(Vozidlo) without the spz attribute because we cannot have two of the same spz
+            Vozidlo::where('id_vozidlo', $this->id_vozidlo)->update([
+                'nazov' => $this->nazov,
+                'druh_vozidla' => $this->druh_vozidla,
+                'znacka_vozidla' => $this->znacka_vozidla
+            ]);
+            //session()->flash('message','Vozidlo so zadanou ŠPZ už existuje, ŠPZ sa teda neaktualizovala.'); // if it already exists in the DB, show the user a message
+        } else {
+            // Update the attributes of the vehicle(Vozidlo)
+            Vozidlo::where('id_vozidlo', $this->id_vozidlo)->update([
+                'spz' => $this->spz,
+                'nazov' => $this->nazov,
+                'druh_vozidla' => $this->druh_vozidla,
+                'znacka_vozidla' => $this->znacka_vozidla
+            ]);
+        }
         $this->resetFilters();
         return redirect()->to('/manageVehicles');
-        
-
     }
     
     public function editVehicle($id_vozidlo) {
         $vehicle = Vozidlo::find($id_vozidlo);
         if ($vehicle) {
             $this->id_vozidlo = $vehicle->id_vozidlo;
+            $this->spz = $vehicle->spz;
             $this->nazov = $vehicle->nazov;
             $this->druh_vozidla = $vehicle->druh_vozidla;
             
-            $this->znacka_vozidla = $vehicle->znacka_vozidla;
+            $this->znacka_vozidla = is_null($vehicle->znacka_vozidla) ? '' : $vehicle->znacka_vozidla;
             
         }
     }
