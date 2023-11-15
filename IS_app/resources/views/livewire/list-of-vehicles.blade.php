@@ -47,12 +47,12 @@
                     </tr>
                 @else
                     <tr class="list-low-row">
-                        <td class=list-low-box> {{ $vehicle['id_vozidlo'] }} </td>
-                        <td class=list-low-box> {{ $vehicle['spz'] }} </td>
-                        <td class=list-low-box> {{ $vehicle['nazov'] }} </td>
-                        <td class=list-low-box> {{ $vehicle['druh_vozidla'] }} </td>
-                        <td class=list-low-box> {{ $vehicle['znacka_vozidla'] }} </td>
-                        <td class=list-low-box>
+                        <td class="list-low-box"> {{ $vehicle['id_vozidlo'] }} </td>
+                        <td class="list-low-box"> {{ $vehicle['spz'] }} </td>
+                        <td class="list-low-box"> {{ $vehicle['nazov'] }} </td>
+                        <td class="list-low-box"> {{ $vehicle['druh_vozidla'] }} </td>
+                        <td class="list-low-box"> {{ $vehicle['znacka_vozidla'] }} </td>
+                        <td class="list-low-box">
                             <button wire:click="toggleEdit({{ $vehicle['id_vozidlo'] }})" 
                                 class="list-button-edit">Upraviť</button>
                             <button wire:click="deleteVehicle({{ $vehicle['id_vozidlo'] }})"

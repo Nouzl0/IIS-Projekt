@@ -11,9 +11,15 @@ class ReportVehicleIssue extends Component
     public $spz;
     public $popis;
 
+    public $vehicles;
+
     public function render()
     {
         return view('livewire.report-vehicle-issue');
+    }
+
+    public function mount() {
+        $this->vehicles = Vozidlo::all();
     }
 
     public function addVehicleIssueReport()
