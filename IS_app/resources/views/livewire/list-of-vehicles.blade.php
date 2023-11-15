@@ -27,7 +27,12 @@
                             <input type="text" name="nazov" value={{ $vehicle['nazov'] }} wire:model="nazov" class="input_edit_form">
                         </td>
                         <td class=list-low-box> 
-                            <input type="text" name="druh_vozidla" value={{ $vehicle['druh_vozidla'] }} wire:model="druh_vozidla" class="input_edit_form">
+                            <select name="druh_vozidla" wire:model='druh_vozidla' class="input_edit_form">
+                                <option value=""></option>
+                                <option value="Autobus">Autobus</option>
+                                <option value="Trolejbus">Trolejbus</option>
+                                <option value="Električka">Električka</option>
+                            </select>
                         </td>
                         <td class=list-low-box> 
                             <input type="text" name="znacka_vozidla" value={{ isset($vehicle['znacka_vozidla']) }} wire:model="znacka_vozidla" class="input_edit_form">
