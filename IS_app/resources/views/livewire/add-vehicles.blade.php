@@ -1,8 +1,4 @@
 <div>
-    {{-- TODO --}}
-    {{--    vyriesit chybne zadany input --}}
-    {{-- --------------------------------- --}}
-
     <form wire:submit.prevent="submit" class="add_box">
         <label class="add-label" for="id_vozidlo">ŠPZ*</label>
         <input class="add-input" type="text" name="spz" wire:model="spz" required> <br>
