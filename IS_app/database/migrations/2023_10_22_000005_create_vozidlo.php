@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('vozidlo', function (Blueprint $table) {
             $table->id('id_vozidlo');
+            $table->string('spz', 8)->unique()->nullable(false);
             $table->string('nazov', 45)->nullable();
             $table->string('druh_vozidla', 45)->nullable();
             $table->string('znacka_vozidla', 45)->nullable();
