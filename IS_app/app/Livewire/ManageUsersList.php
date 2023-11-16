@@ -139,7 +139,7 @@ class ManageUsersList extends Component
     /* userDelete()
     DESCRIPTION:    - Deletes a user from the database
                     - Dispatches an event to component 'ManageUsersList' to refresh the user's list
-
+    TODO            - !!!!!!!cant delete last admim DOESNT WORK!!!!!!!!
     */
     public function userDelete($userEmail) {
         

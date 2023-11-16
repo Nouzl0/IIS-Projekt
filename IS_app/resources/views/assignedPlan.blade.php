@@ -13,6 +13,7 @@
 
         <!-- Component Styles --> 
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -23,6 +24,7 @@
     <body>
         @livewire('nav')
         <h1>AssignedPlan</h1>
+        @livewire('assigned-plan-list')
 
         @livewireScripts
     </body>
