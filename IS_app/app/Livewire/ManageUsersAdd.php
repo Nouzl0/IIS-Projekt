@@ -31,7 +31,10 @@ class ManageUsersAdd extends Component
     */
     public function userAdd()
     {
-        try {
+        try { 
+            // pre-populate select statemants
+            $this->role = "administrátor";
+
             // Validate input fields with custom error messages
             $validatedData = $this->validate([
                 'firstName' => 'required|string',
@@ -40,42 +43,44 @@ class ManageUsersAdd extends Component
                 'password' => 'required|string|min:6',
                 'role' => 'required|in:administrátor,správca,vodič,dispečer,technik',
             ], [
-                'firstName.required' => 'The first name is required.',
-                'lastName.required' => 'The last name is required.',
-                'email.required' => 'The email address is required.',
-                'email.email' => 'The email address must be a valid email.',
-                'email.unique' => 'The email address is already in use.',
-                'password.required' => 'The password is required.',
-                'password.min' => 'The password must be at least :min characters.',
-                'role.required' => 'The role is required.',
-                'role.in' => 'Invalid role selected.',
+                'firstName.required' => 'Meno je povinné',
+                'lastName.required' => 'Priezvisko je povinné',
+                'email.required' => 'E-mail adresa je povinná',
+                'email.email' => 'E-mail adresa, musí mať validný formát',
+                'email.unique' => 'E-mail adresa je už v databáze',
+                'password.required' => 'Heslo je povinné',
+                'password.min' => 'Heslo musí mať aspoň :min znakov.',
+                'role.required' => 'Rola je povinná',
+                'role.in' => 'Bola vybratá neplatná rola',
             ]);
-    
-            // After successful validation, create a new user with the validated data
-            Uzivatel::create([
-                'meno_uzivatela' => $validatedData['firstName'],
-                'priezvisko_uzivatela' => $validatedData['lastName'],
-                'email_uzivatela' => $validatedData['email'],
-                'heslo_uzivatela' => bcrypt($validatedData['password']),
-                'rola_uzivatela' => $validatedData['role'],
-            ]);
-    
-            // Reset input field properties, display success message and dispatch an event to refresh the users list
-            $this->reset(['firstName', 'lastName', 'email', 'password', 'role']);
-            session()->flash('add-success', 'User added successfully.');
-            $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
-        
+
         // If validation fails, exception is caught and then is displayed error messages
         } catch (\Illuminate\Validation\ValidationException $e) {
             $messages = $e->validator->getMessageBag()->all();
             foreach ($messages as $message) {
-                session()->flash('add-error', $message);
+                $this->dispatch('alert-error', message: $message);
             }
-        
+            return;
+
         // If there is any other exception, display basic error message
         } catch (\Exception $e) {
-            session()->flash('add-error', 'User could not be added.');
+            $this->dispatch('alert-error', message: "ERROR - Validation failed");
+            return;
         }
+            
+        // After successful validation, create a new user with the validated data
+        Uzivatel::create([
+            'meno_uzivatela' => $validatedData['firstName'],
+            'priezvisko_uzivatela' => $validatedData['lastName'],
+            'email_uzivatela' => $validatedData['email'],
+            'heslo_uzivatela' => bcrypt($validatedData['password']),
+            'rola_uzivatela' => $validatedData['role'],
+        ]);
+
+        // Reset input field properties, display success message and dispatch an event to refresh the users list
+        $this->reset(['firstName', 'lastName', 'email', 'password', 'role']);
+        $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
+        $this->dispatch('alert-success', message: "Užívateľ bol pridaný do databázy");
     }
 
     /* LIVEWIRE */

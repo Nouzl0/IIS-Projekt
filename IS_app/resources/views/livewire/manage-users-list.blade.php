@@ -1,19 +1,4 @@
 <div>
-    <!-- Success message -->
-    @if (session('list-success'))
-        <div class="list-success">
-            {{ session('list-success') }}
-        </div>
-    @else  
-        <!-- Error message -->
-        @if (session('list-error'))
-            <div class="list-error">
-                {{ session('list-error') }}
-            </div>
-        @else
-        @endif
-    @endif
-
     <!-- Table -->
     <table class="list-table">
         <thead class="list-up-body"> <!-- Table Header -->
@@ -22,7 +7,8 @@
                 <th class="list-up-box">Priezvisko</th>
                 <th class="list-up-box">E-mail</th>
                 <th class="list-up-box">Heslo</th>
-                <th class="list-up-box">Roľa</th>
+                <th class="list-up-box">Rola</th>
+                <th class="list-up-box"></th>
                 <th class="list-up-box"></th>
             </tr>
         </thead>
@@ -54,6 +40,7 @@
                         <td class="list-low-box"> <!-- Button [Save] -->
                             <button wire:click="userSave('{{ $user['email'] }}')" class="list-low-button">Uložiť</button>
                         </td>
+                        <td class="list-low-box"></th>
                     </tr>
                 @else
                     <tr class="list-low-row">   <!-- Show User -->
@@ -64,7 +51,9 @@
                         <td class="list-low-box">{{ $user['role'] }}</td> <!-- Text [Role] -->
                         <td class="list-low-box"> <!-- Button [Edit] & Button [Delete] -->
                             <button wire:click="userEdit('{{ $user['email'] }}')" class="list-low-button">Upraviť</button>
-                            <button wire:click="userDelete('{{ $user['email'] }}')" class="list-low-button">Vymaž</button>
+                        </td>
+                        <td class="list-low-box">
+                            <button wire:click="userDelete('{{ $user['email'] }}')" class="list-low-button">Vymazať</button>
                         </td>
                     </tr>
                 @endif

@@ -19,7 +19,7 @@
         <div class="navigation-header-nav">
 
             <!-- Link buttons -->
-            <button wire:click="re_manageUsers" class="nav-button">Spravovať uživatelov</button>
+            <button wire:click="re_manageUsers" class="nav-button">Spravovať užívateľov</button>
             <button wire:click="toggleContent" class="nav-button">Ostatné možnosti</button>
 
             <!-- Logout button -->

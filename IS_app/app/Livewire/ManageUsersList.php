@@ -1,11 +1,4 @@
 <?php
-/*  
-    NOTES:          - This function is completed and should be used as template for creating other similiar components
-                    - After finishing the project [notes, todo] should be removed
-    
-    TODO:           - Test the component in the browser
-*/
-
 namespace App\Livewire;
 
 use App\Models\Uzivatel;
@@ -75,15 +68,15 @@ class ManageUsersList extends Component
                 'password' => 'required|string|min:6',
                 'role' => 'required|in:administrátor,správca,vodič,dispečer,technik',
             ], [
-                'firstName.required' => 'The first name is required.',
-                'lastName.required' => 'The last name is required.',
-                'email.required' => 'The email address is required.',
-                'email.email' => 'The email address must be a valid email.',
-                'email.unique' => 'The email address is already in use.',
-                'password.required' => 'The password is required.',
-                'password.min' => 'The password must be at least :min characters.',
-                'role.required' => 'The role is required.',
-                'role.in' => 'Invalid role selected.',
+                'firstName.required' => 'Meno je povinné',
+                'lastName.required' => 'Priezvisko je povinné',
+                'email.required' => 'E-mail adresa je povinná',
+                'email.email' => 'E-mail adresa, musí mať validný formát',
+                'email.unique' => 'E-mail adresa je už v databáze',
+                'password.required' => 'Heslo je povinné',
+                'password.min' => 'Heslo musí mať aspoň :min znakov.',
+                'role.required' => 'Rola je povinná',
+                'role.in' => 'Bola vybratá neplatná rola',
             ]);
 
             // After successful validation, find the user with the given email and update it's data
@@ -98,16 +91,17 @@ class ManageUsersList extends Component
             // toggleoff edit, dispatch event amd display success message
             $this->editButton = false;
             $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
-            session()->flash('list-success', 'User was succesfuly updated.');
+            $this->dispatch('alert-success', message: "Užívateľ bol úspešne aktualizovaný");
+            return;
         
         // Displaying error messages
         } catch (\Illuminate\Validation\ValidationException $e) {
             $messages = $e->validator->getMessageBag()->all();
             foreach ($messages as $message) {
-                session()->flash('list-error', $message);
+                $this->dispatch('alert-error', message: $message);
             }
         } catch (\Exception $e) {
-            session()->flash('list-error', 'User could not be added.');
+            $this->dispatch('alert-error', message: "ERROR - Validation error");
         }
     }
 
@@ -139,7 +133,7 @@ class ManageUsersList extends Component
     /* userDelete()
     DESCRIPTION:    - Deletes a user from the database
                     - Dispatches an event to component 'ManageUsersList' to refresh the user's list
-    TODO            - !!!!!!!cant delete last admim DOESNT WORK!!!!!!!!
+    TODO            - !!!!!!!deletes last admim DOESNT WORK!!!!!!!!
     */
     public function userDelete($userEmail) {
         
@@ -150,13 +144,13 @@ class ManageUsersList extends Component
         $adminCount = DB::table('uzivatel')->where('rola_uzivatela', '=', 'admin')->count();
         $userRole = DB::table('uzivatel')->where('email_uzivatela', '=', $userEmail)->value('rola_uzivatela');
         if ($adminCount == 1 && $userRole == 'admin') {
-            session()->flash('list-error', 'User could not be deleted. There must be at least one administrator.');
+            $this->dispatch('alert-error', message: "Užívatel nemôže byť odstránený, v databáze musí byť aspoň jeden administrátor");
             return;
         }
 
-        // flash message & refresh list
+        // send a message & refresh list
         $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
-        session()->flash('list-success', 'User was succesfuly deleted.');
+        $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
     }
 
 
