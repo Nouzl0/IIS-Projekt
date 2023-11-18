@@ -12,9 +12,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Component Styles -->
-        <link rel="stylesheet" href="{{ asset('css/component/search-menu.css') }}"> 
-        <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
-
+        <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--'nav'-->
+        <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--'alert'-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--'home-add-search'-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--'home-list-timetables'-->
+        
         <!-- WebPage Styles -->
         <!--
         <link rel="stylesheet" href="{{ asset('css/home.css') }}">  
@@ -24,14 +26,12 @@
     </head>
 
     <body>
-
         @livewire('nav')
+        @livewire('alert')
+
         <h1>Mestská doprava Brno</h1>
-        @livewire('search-menu')
-
-        @livewire('timetables')
-
-
+            @livewire('home-add-search')
+            @livewire('home-list-timetables')
         @livewireScripts
     </body>
 </html>

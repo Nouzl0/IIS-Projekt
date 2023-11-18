@@ -2,16 +2,45 @@
 
 namespace App\Livewire;
 
+use Livewire\Component;
 use App\Models\Usek;
 use Illuminate\Support\Facades\DB;
-use Livewire\Component;
 
-class Timetables extends Component
+class HomeListTimetables extends Component
 {
+    /* ATRIBUTES */
+
     // The property that contains all timetables of the public transportation
     public $timetables = [];
 
-    // Component constructor which build the public transport timetable from the database
+
+    /* FUNCTIONS */
+    
+    /* formatTimetables()
+    DESCRIPTION:    - Helper function to format timetables data
+                    - Returns an array of formatted timetables
+    */
+    // Helper function to format timetables data
+    private function formatTimetables($timetables)
+    {
+        $formattedTimetables = [];
+
+        foreach ($timetables as $lineNumber => $stops) {
+            $formattedTimetables[$lineNumber] = implode(', ', $stops);
+        }
+
+        return $formattedTimetables;
+    }
+
+    
+    /* LIVEWIRE */
+
+    /* mount()
+    DESCRIPTION:    - Component constructor which build the public transport timetable from the database
+                    - Constructor of the component
+
+    TODO:           - Check if error handling is needed add it or remove my code snippet
+    */
     public function mount()
     {
         // Retrieve all stops(zastavky) from the DB
@@ -42,25 +71,17 @@ class Timetables extends Component
                 $this->timetables[$result['cislo_linky']][] = $stops[$result['id_zastavka_zaciatok']];                  // append the name of the zastavka(stop) to the array of the appropriate cislo_linky(line_number)
             }
         }
+
+        // TODO - Error handling
+        //'$this->dispatch('alert-error', message: $errorMessage);'
     }
 
-    // Helper function to format timetables data
-    private function formatTimetables($timetables)
-    {
-        $formattedTimetables = [];
-
-        foreach ($timetables as $lineNumber => $stops) {
-            $formattedTimetables[$lineNumber] = implode(', ', $stops);
-        }
-
-        return $formattedTimetables;
-    }
-
+    /* - Used for rendering the component in the browser */
     public function render()
     {
         // Format the timetables data before passing it to the view
         $formattedTimetables = $this->formatTimetables($this->timetables);
 
-        return view('livewire.timetables', ['formattedTimetables' => $formattedTimetables]);
+        return view('livewire.home-list-timetables', ['formattedTimetables' => $formattedTimetables]);
     }
 }
