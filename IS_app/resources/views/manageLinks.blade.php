@@ -13,6 +13,8 @@
 
         <!-- Component Styles --> 
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -22,7 +24,13 @@
 
     <body>
         @livewire('nav')
+        @livewire('alert')
         <h1>ManageLinksConnections</h1>
+        <h2>Pridať zastávku</h2>
+        @livewire('manage-links-add-stop')
+        @livewire('manage-links-list-of-stops')
+        <h2>Pridať trasu</h2>
+        @livewire('manage-links-add-routes')
 
         @livewireScripts
     </body>
