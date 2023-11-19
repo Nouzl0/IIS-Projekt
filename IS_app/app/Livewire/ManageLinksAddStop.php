@@ -65,10 +65,11 @@ class ManageLinksAddStop extends Component
             'meno_zastavky' => $validatedData['stop_name'],
             'adresa_zastavky' => $validatedData['stop_address'],
         ]);
+        return redirect()->to('/manageLinks');   // refresh the page
 
         // Reset input field properties, display success message and dispatch an event to refresh the users list
         $this->reset(['stop_name', 'stop_address']);
-        $this->dispatch('refresh-stop-list')->to(ManageUsersList::class);
+        $this->dispatch('refresh-stop-list')->to(ManageLinksAddStop::class);
         $this->dispatch('alert-success', message: "Zastávka bol pridaná do databázy");
         // return redirect()->to('/manageLinks');   // refresh the page
 

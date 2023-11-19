@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Zastavka;
+use Illuminate\Support\Facades\DB;
+
 
 class ManageLinksListOfStops extends Component
 {
@@ -48,7 +50,8 @@ class ManageLinksListOfStops extends Component
                     - Uses 'Input field' for getting input data
                     - Is dispatching an event to component 'ManageLinksListOfStops' to refresh the user's list
     */
-    public function userSave($userEmail) {
+    public function stopSave($meno) {
+        // dd($meno);
         try {
             // Validate input fields with custom error messages
             $validatedData = $this->validate([
@@ -61,15 +64,16 @@ class ManageLinksListOfStops extends Component
             ]);
 
             // After successful validation, find the user with the given email and update it's data
-            Zastavka::where('email_uzivatela', $userEmail)->update([
+            Zastavka::where('meno_zastavky', $meno)->update([
                 'meno_zastavky' => $validatedData['stop_name'],
                 'adresa_zastavky' => $validatedData['stop_address'],
             ]);
+            $this->mount();
     
             // toggleoff edit, dispatch event amd display success message
             $this->editButton = false;
             $this->dispatch('refresh-users-list')->to(ManageLinksListOfStops::class);
-            $this->dispatch('alert-success', message: "Užívateľ bol úspešne aktualizovaný");
+            $this->dispatch('alert-success', message: "Zástavka bola úspešne aktualizovaná");
             return;
         
         // Displaying error messages
@@ -87,8 +91,9 @@ class ManageLinksListOfStops extends Component
     DESCRIPTION:    - Function which toggles the edit option for a user (UI)
                     - Uses 'Edit button' properties for displaying the UI and 'Input field' for filling the input fields
     */
-    public function userEdit($stop_name)
+    public function stopEdit($stop_name)
     {
+
         if ($this->editButton && $this->editValue === $stop_name) {
             // If the button is already in edit mode for the current user, turn it off
             $this->editButton = false;
@@ -99,8 +104,8 @@ class ManageLinksListOfStops extends Component
             $this->editValue = $stop_name;
             
             // Fill the input fields with the current user data
-            $spoj = DB::table('DB')->where('meno_zastavky', '=', $stop_name)->first();
-            $this->stop_name = $spoj->nazov_zastavky;
+            $spoj = DB::table('zastavka')->where('meno_zastavky', '=', $stop_name)->first();
+            $this->stop_name = $spoj->meno_zastavky;
             $this->stop_address = $spoj->adresa_zastavky;
 
         }
@@ -108,17 +113,22 @@ class ManageLinksListOfStops extends Component
 
     /* userDelete()
     DESCRIPTION:    - Deletes a user from the database
-                    - Dispatches an event to component 'ManageLinksListOfStops' to refresh the user's list
+                    - Dispatches an event to component 'M   anageLinksListOfStops' to refresh the user's list
     TODO            - !!!!!!!deletes last admim DOESNT WORK!!!!!!!!
     */
     public function stopDelete($stop_name) {
-        
         // delete user from DB
-        DB::table('zastavka')->where('nazov_zastavky', '=', $stop_name)->delete();
+        try {
+            DB::table('zastavka')->where('meno_zastavky', '=', $stop_name)->delete();
+            // send a message & refresh list
+            $this->dispatch('refresh-users-list')->to(ManageLinksListOfStops::class);
+            $this->dispatch('alert-success', message: "Zastávka bola odstránená z databázy");
+        } catch(\Exception $e) {
+            $this->dispatch('alert-error', message: "Zastávka je už v úseku, najprv vymaž úsek");
+        } 
+        
+        $this->mount();
 
-        // send a message & refresh list
-        $this->dispatch('refresh-users-list')->to(ManageLinksListOfStops::class);
-        $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
     }
 
 

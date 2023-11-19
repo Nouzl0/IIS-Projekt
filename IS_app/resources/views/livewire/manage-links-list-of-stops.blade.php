@@ -11,7 +11,7 @@
         </thead>
         <tbody class="list-low-body"> <!-- Table Body -->
             @forelse ($stops as $stop)
-                @if ($editButton && $editValue === $stop['id_zastavka'])
+                @if ($editButton && $editValue === $stop['meno_zastavky'])
                     <tr class="list-low-row">
                         <td class=list-low-box>
                             <input type="text" name="id_vozidlo" value="{{ $stop['meno_zastavky'] }}"
@@ -23,9 +23,9 @@
                         </td>
 
                         <td class=list-low-box>
-                            <button wire:click="toggleEdit({{ $stop['id_zastavka'] }})"
+                            <button wire:click="stopSave('{{ $stop['meno_zastavky'] }}')"
                                 class="list-button-edit">Upraviť</button>
-                            <button wire:click="deleteStop({{ $stop['id_zastavka'] }})"
+                            <button wire:click="stopDelete('{{ $stop['meno_zastavky'] }}')"
                                 class="list-button-delete">Vymazať</button>
                         </td>
 
@@ -35,9 +35,9 @@
                         <td class="list-low-box">{{ $stop['meno_zastavky'] }}</td> <!-- Text [meno_zastavky] -->
                         <td class="list-low-box">{{ $stop['adresa_zastavky'] }}</td> <!-- Text [adresa_zastavky] -->
                         <td class=list-low-box>
-                            <button wire:click="toggleEdit({{ $stop['id_zastavka'] }})"
+                            <button wire:click="stopEdit('{{ $stop['meno_zastavky'] }}')"
                                 class="list-button-edit">Upraviť</button>
-                            <button wire:click="deleteStop({{ $stop['id_zastavka'] }})"
+                            <button wire:click="stopDelete('{{ $stop['meno_zastavky'] }}')"
                                 class="list-button-delete">Vymazať</button>
                         </td>
 
