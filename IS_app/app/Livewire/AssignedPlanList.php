@@ -10,15 +10,10 @@ use App\Models\Trasa;
 
 class AssignedPlanList extends Component
 {
-
      /* ATRIBUTES */
 
-     
-
     /* All users property */
-    public $plans;
-
-  
+    public $plans; 
 
 
     /* FUNCTIONS */
@@ -26,14 +21,14 @@ class AssignedPlanList extends Component
     /* userGetAll()
     DESCRIPTION:    - Function which gets all the users from the database and formats them
                     - Returns an array of users
-    TODO            - use SESSION to get user id
+                    
+    TODO            - use/fix SESSION to get user id
+                    - finish for the final version
     */
     private function userGetAll()
     {
         // Retrieve all users from the DB
         $dbSpoje = PlanovanySpoj::all();
-
-        
 
         // Initialize an empty array to store users
         $spoje = [];
@@ -55,7 +50,6 @@ class AssignedPlanList extends Component
     }
 
 
-
     /* LIVEWIRE */
 
     /* - Used for mounting the component, with listener to refresh the the list */
@@ -64,9 +58,8 @@ class AssignedPlanList extends Component
         // Set the $users property with the formatted users array
         $this->plans = $this->userGetAll();
     }
-    
 
-
+    /* - Used for rendering the component in the browser */
     public function render()
     {
         return view('livewire.assigned-plan-list');
