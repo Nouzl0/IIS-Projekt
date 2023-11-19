@@ -12,8 +12,10 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <!-- Component Styles -->
-        <link rel="stylesheet" href="{{ asset('css/component/login-nav.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}"> 
+        <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--'nav'-->
+        <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--'alert'-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--'search-add-search'-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--'search-list-departures'-->
 
         <!-- WebPage Styles --> 
         <link rel="stylesheet" href="{{ asset('css/search.css') }}">
@@ -23,38 +25,15 @@
     <body>
 
         @livewire('nav')
+        @livewire('alert')
 
-        <h1>Bus Search Results</h1>
+        <h1>Vyhladať</h1>
+        @livewire('search-add-search')
 
-        <!-- Search Input Form -->
-        <form action="search.php" method="post">
-            <input type="text" name="search" placeholder="Search for a bus station...">
-            <button type="submit">Search</button>
-        </form>
 
-        <!-- Results Table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Starting Bus Station</th>
-                    <th>Route Number</th>
-                    <th>Arrival Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Bus Station 1</td>
-                    <td>Route 123</td>
-                    <td>08:00 AM</td>
-                </tr>
-                <tr>
-                    <td>Bus Station 2</td>
-                    <td>Route 456</td>
-                    <td>08:30 AM</td>
-                </tr>
-                <!-- Add more rows as needed for search results -->
-            </tbody>
-        </table>
+        <!-- TODO: Name of "Meno zástavky" should be dynamically changed based on the search input. -->
+        <h1>Odchody - Semillaso</h1>
+        @livewire('search-list-departures')
 
         @livewireScripts
     </body>

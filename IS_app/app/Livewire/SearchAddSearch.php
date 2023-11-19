@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-class HomeAddSearch extends Component
+class SearchAddSearch extends Component
 {
     /* ATRIBUTES */
 
@@ -18,10 +18,10 @@ class HomeAddSearch extends Component
 
     /* searchAdd()
     DESCRIPTION:    - Function which searches for routes with given input data and then
-                      redirects to the search page with the results
+                      displays the results on the search page
                     - Uses 'Input field' for getting input data
 
-    TODO:           - Finish the function, (searching routes) & (redirecting to the search page with the results)
+    TODO:           - Finish the function, (searching routes) & (sending the searched results to search-list-departures component)
     */
     public function searchAdd()
     {
@@ -60,10 +60,11 @@ class HomeAddSearch extends Component
             2 => ['line' => '52', 'route' => 'Královo Pole, nádraží', 'time' => '17:53', 'date' => '18.11.2023'],
         ];
 
-        // Rederict's to the search page with the searched results        
+        // Send the searched results to session and refresh the list with success message    
         $this->reset(['busStop', 'date', 'time']);
         session(['departuresResults' => $departures]);
-        return redirect()->route('search');
+        $this->dispatch('refresh-departures')->to(SearchListDepartures::class);
+        $this->dispatch('alert-success', message: "Vyhľadávanie prebehlo úspešne");
     }
 
 
@@ -72,6 +73,6 @@ class HomeAddSearch extends Component
     /* - Used for rendering the component in the browser */
     public function render()
     {
-        return view('livewire.home-add-search');
+        return view('livewire.search-add-search');
     }
 }
