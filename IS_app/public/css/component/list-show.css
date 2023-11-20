@@ -46,23 +46,37 @@
     font-weight: 400;
 }
 
+.list-low-box-buttons {
+    /* Container style */
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+    height: 30px;
+}
+
 /* Input, select, and button style */
 .list-low-input,
-.add-select {
+.list-low-select {
     width: 100%;
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #D0D0D0;
     border-radius: 4px;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    margin-bottom: 5px;
+    box-sizing: border-box;
+
+    /* Text style */
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+
 }
 
 .list-low-button {
-    background-color: #c6c6c6;
-    padding: 5px;
+    background-color: #b8b8b8;
+    padding: 6px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
+    transition: all 0.1s ease-in-out;
 
     /* Text style */
     font-family: 'Roboto', sans-serif;
@@ -72,23 +86,5 @@
 }
 
 .list-low-button:hover {
-    background-color: #a9a9a9;
-}
-
-/* Success message */
-.list-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-/* Error message */
-.list-error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    padding: 10px;
-    margin-bottom: 10px;
+    background-color: #8f8f8f;
 }
