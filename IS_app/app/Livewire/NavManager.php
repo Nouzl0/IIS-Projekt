@@ -26,8 +26,7 @@ class NavManager extends Component
 
 
     /* rederictions */
-    public function re_home()
-    {
+    public function re_home() {
         return redirect()->route('home');
     }
 
@@ -35,9 +34,18 @@ class NavManager extends Component
         return redirect()->route('manageLinks');
     }
 
+    public function re_scheduleRoutes() {
+        return redirect()->route('scheduleRoutes');
+    }
+
     public function re_manageVehicles() {
         return redirect()->route('manageVehicles');
     }
+
+    public function re_organizeMaintenance() {
+        return redirect()->route('organizeMaintenance');
+    }
+
 
     /* render */
     public function render()

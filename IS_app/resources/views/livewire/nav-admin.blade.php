@@ -32,12 +32,14 @@
     <!-- more-navigation -->
     @if($showMoreNav)
         <div class="more-navigation">
-            <button wire:click="re_assignedPlan" class="nav-button">Priradený plán</button>
-            <button wire:click="re_assignVehicles" class="nav-button">Priradiť vozidlá</button>
-            <button wire:click="re_manageLinks" class="nav-button">Spravovať spoje</button>
-            <button wire:click="re_manageVehicles" class="nav-button">Spravovať vozidlá</button>
-            <button wire:click="re_reportIssue" class="nav-button">Nahlásiť závadu</button>
-            <button wire:click='re_recordMaintenance' class="nav-button">Vytvoriť záznam o údržbe</button>
+            <button wire:click="re_assignedPlan" class="nav-button">Priradený plán (vodič)</button>
+            <button wire:click="re_reportIssue" class="nav-button">Nahlásiť závadu (vodič)</button>
+            <button wire:click="re_assignVehicles" class="nav-button">Priradiť vozidlá (dispečer)</button>
+            <button wire:click='re_recordMaintenance' class="nav-button">Vytvoriť záznam o údržbe (technik)</button>
+            <button wire:click="re_manageLinks" class="nav-button">Spravovať spoje (správca)</button>
+            <button wire:click="re_scheduleRoutes" class="nav-button">Vytvoriť plánovaný spoj (správca)</button>
+            <button wire:click="re_manageVehicles" class="nav-button">Spravovať vozidlá (správca)</button>
+            <button wire:click='re_organizeMaintenance' class="nav-button">Organizovať údržbu (správca)</button>
         </div>
     @endif 
 </div>

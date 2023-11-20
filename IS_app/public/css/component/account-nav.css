@@ -13,7 +13,7 @@
     /* Text style */
     color: #000000; /* Set your desired text color */
     font-family: Roboto, sans-serif; /* Change to Roboto font */
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 400;
     text-align: center;
 }
@@ -37,7 +37,7 @@
 
     /* Text */
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
     color: #000000;
 }
@@ -47,7 +47,7 @@
 
     /* Text */
     font-family: 'Roboto', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 400;
     color: #000000;    
 }
@@ -77,8 +77,8 @@
     background-color: #D0D0D0;
 }
 .login-button img {
-    width: 30px; /* Set your desired image size */
-    height: 30px;
+    width: 20px; /* Set your desired image size */
+    height: 20px;
     margin-right: 10px;
 }
 
@@ -91,7 +91,7 @@
     /* Button */
     background-color: #ffffff; /* Set your desired button background color */
     border: none;
-    padding: 30px 20px;
+    padding: 28px 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -102,7 +102,7 @@
 
     /* Text */
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     color: #000000;
 }
@@ -131,8 +131,8 @@
     background-color: #D0D0D0;
 }
 .icon-button img {
-    width: 23px; /* Set your desired image size */
-    height: 23px;
+    width: 20px; /* Set your desired image size */
+    height: 20px;
 }
 
 
@@ -156,6 +156,6 @@
     padding: 10px 30px;
     
     /* Text */
-    font-size: 12px;
+    font-size: 10px;
 }
 

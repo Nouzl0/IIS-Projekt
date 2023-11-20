@@ -2,7 +2,7 @@
 <html>
     <head>
         <!-- Title -->
-        <title>RecordVehicleMaintanence</title>
+        <title>OrganizeMaintanence</title>
 
         <!-- Meta Tags -->
         <meta charset="utf-8">
@@ -14,6 +14,8 @@
         <!-- Component Styles -->  
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
+        <link rel="stylesheet" href="{{ asset('css/component/list.add.css') }}">        <!--organizeMaintenance-add-->
+        <link rel="stylesheet" href="{{ asset('css/component/list.show.css') }}">       <!--organizeMaintenance-list-->
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -22,12 +24,16 @@
     </head>
 
     <body>
-        @livewire('nav')        
+        @livewire('nav')
         @livewire('alert')
-        <h1>Vytvoriť záznam o údržbe</h1>
+
+        <h1>Organizovať údržbu</h1>
+        @livewire('add-maintenance')
+        @livewire('list-of-maintenance')
 
         
-        @livewire('timeout')
+
+
         @livewireScripts
     </body>
 </html>

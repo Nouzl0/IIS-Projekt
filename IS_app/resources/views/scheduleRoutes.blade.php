@@ -2,7 +2,7 @@
 <html>
     <head>
         <!-- Title -->
-        <title>RecordVehicleMaintanence</title>
+        <title>ScheduleRoutes</title>
 
         <!-- Meta Tags -->
         <meta charset="utf-8">
@@ -22,12 +22,10 @@
     </head>
 
     <body>
-        @livewire('nav')        
+        @livewire('nav')
         @livewire('alert')
-        <h1>Vytvoriť záznam o údržbe</h1>
+        <h1>Vytvoriť plánovaný spoj</h1>
 
-        
-        @livewire('timeout')
         @livewireScripts
     </body>
 </html>
