@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
 
 use App\Models\Vozidlo;
 use App\Models\Uzivatel;
@@ -89,7 +88,7 @@ class OrganizeMaintenanceAdd extends Component
         ]);
 
         // show success message and reset fields
-        $this->dispatch('refresh-maintenances-list')->to(OrganizeMaintenancesList::class);
+        $this->dispatch('refresh-maintenances-list')->to(OrganizeMaintenanceList::class);
         $this->reset(['maintenanceName', 'spz', 'maintenanceDescription', 'maintenanceTime', 'maintenanceDate', 'maintenanceTechnician']);
         $this->dispatch('alert-success', message: "Plán údržby bol úspešne vytvorený.");
     }

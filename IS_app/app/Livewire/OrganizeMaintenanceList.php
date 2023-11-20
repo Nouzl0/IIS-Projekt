@@ -18,10 +18,16 @@ class OrganizeMaintenanceList extends Component
 
     /* All data property */
     public $maintenances;
+    public $technicians;
+    public $vehicles;
 
     /* Edit button properties */
     public $editButton = false;
     public $editValue='';
+
+    /* Show button properties */
+    public $showButton = false;
+    public $showValue='';
 
     /* Input field properties */
     public $spz; 
@@ -64,8 +70,8 @@ class OrganizeMaintenanceList extends Component
                 'maintenanceId' => $dbMaintenance->id_udrzba,
                 'spz' => $dbMaintenance->spz,
                 'maintenanceName' => "N/A", //$dbMaintenance->nazov,
-                'maintenanceTime' => $datetime[1],
                 'maintenanceDate' => $datetime[0],
+                'maintenanceTime' => $datetime[1],
                 'maintenanceTechnician' => $technician->meno_uzivatela . ' ' . $technician->priezvisko_uzivatela . ' - (' . $technician->email_uzivatela . ')',
                 'maintenanceDescription' => $dbMaintenance->popis,
             ];
@@ -79,25 +85,24 @@ class OrganizeMaintenanceList extends Component
                     - Uses 'Input field' for getting input data
                     - Is dispatching an event to component 'ManageMaintenancesList' to refresh the user's list
     */
-    public function maintenanceSave($maintenancesId) {
+    public function maintenanceSave($maintenancesId) 
+    {
         try { 
             // Validate input fields with custom error messages
             $validatedData = $this->validate([
                 'maintenanceName' => 'required|string',
                 'spz' => 'required|string|exists:vozidlo,spz',
                 'maintenanceDescription' => 'required|string',
-                'maintenanceTime' => 'required|string|time',
-                'maintenanceDate' => 'required|string|date',
-                'maintenanceTechnician' => 'required|string|exists:uzivatel,login',
+                'maintenanceTime' => 'required|string',
+                'maintenanceDate' => 'required|string',
+                'maintenanceTechnician' => 'required|exists:uzivatel,id_uzivatel',
             ], [
                 'maintenanceName.required' => 'Meno údržby nie je vyplnené',
                 'spz.required' => 'ŠPZ nie je vyplnená',
                 'spz.exists' => 'Vozidlo so zadanou ŠPZ neexistuje',
                 'maintenanceDescription.required' => 'Popis údržby nie je vyplnený',
                 'maintenanceTime.required' => 'Čas údržby nie je vyplnený',
-                'maintenanceTime.time' => 'Čas údržby nie je v zlom formáte',
                 'maintenanceDate.required' => 'Dátum údržby nie je vyplnený',
-                'maintenanceDate.date' => 'Dátum údržby nie je v zlom formáte',
                 'maintenanceTechnician.required' => 'Technik údržby nie je vyplnený',
                 'maintenanceTechnician.exists' => 'Zadaný technik neexistuje',
             ]);
@@ -116,29 +121,28 @@ class OrganizeMaintenanceList extends Component
             return;
         }
 
-            // Update the maintenance with the given id
-            Udrzba::where('id_udrzba', $maintenancesId)->update([
-                'spz' => $validatedData['spz'],
-                'nazov' => $validatedData['maintenanceName'],
-                'zaciatok_udrzby' => $validatedData['maintenanceTime'] . ' ' . $validatedData['maintenanceDate'],
-                'stav' => "Naplanovaná",
-                'popis' => $validatedData['maintenanceDescription'],
-            ]);
+        // Update the maintenance with the given id
+        Udrzba::where('id_udrzba', $maintenancesId)->update([
+            'zaciatok_udrzby' => $validatedData['maintenanceDate'] . " " . $validatedData['maintenanceTime'],
+            //'meno' => $validatedData['maintenanceName'], add when it is in database
+            'spz' => $validatedData['spz'],
+            'stav' => "Naplanovaná",
+            'popis' => $validatedData['maintenanceDescription']
+        ]);
 
-            // update maintenance record with the given technician-id
-            $id_technik = Uzivatel::where('email', $validatedData['maintenanceTechnician'])->first()->id_uzivatel;
-            ZaznamUdrzby::where('id_udrzba', $maintenancesId)->update([
-                'id_uzivatel_technik' => $id_technik->id_uzivatel_technik,
-            ]);
+        // update maintenance record with the given technician-id
+        ZaznamUdrzby::where('id_udrzba', $maintenancesId)->update([
+            'id_uzivatel_technik' => $validatedData['maintenanceTechnician'],
+        ]);
 
-            // toggleoff edit, dispatch event and display success message
-            $this->editButton = false;
-            $this->dispatch('refresh-maintenances-list')->to(ManageMaintenancesList::class);
-            $this->dispatch('alert-success', message: "Vozidlo bolo úspešne aktualizované");
+        // toggleoff edit, dispatch event and display success message
+        $this->editButton = false;
+        $this->dispatch('refresh-maintenances-list')->to(OrganizeMaintenanceList::class);
+        $this->dispatch('alert-success', message: "Vozidlo bolo úspešne aktualizované");
     }
 
     /* maintenanceEdit()
-    DESCRIPTION:    - Function which toggles the edit option for a user (UI)
+    DESCRIPTION:    - Function which toggles the edit option for a maintenance (UI)
                     - Uses 'Edit button' properties for displaying the UI and 'Input field' for filling the input fields
     */
     public function maintenanceEdit($maintenanceId)
@@ -150,24 +154,44 @@ class OrganizeMaintenanceList extends Component
         } else {
             // If the button is not in edit mode or is in edit mode for a different user, turn it on
             $this->editButton = true;
+            $this->showButton = false;
             $this->editValue = $maintenanceId;
             
+
             // Get the needed data from the database
-            $maintenance = DB::table('vozidlo')->where('spz', '=', $maintenanceId)->first();
-            [$date, $time] = explode(" ", $maintenance->zaciatok_udrzby);
+            $maintenance = DB::table('udrzba')->where('id_udrzba', '=', $maintenanceId)->first();
+            $datetime = explode(" ", $maintenance->zaciatok_udrzby);
             $recordedMaintenance = DB::table('zaznam_udrzby')->where('id_udrzba', '=', $maintenance->id_udrzba)->first();
-            $technician = DB::table('uzivatel')->where('id_uzivatel', '=', $recordedMaintenance->id_uzivatel)->first();
 
             // Fill the input fields with the current user data
             $this->maintenanceId = $maintenance->id_udrzba;
             $this->spz = $maintenance->spz;
-            $this->maintenanceName = $maintenance->nazov;
-            $this->maintenanceDate = $date;
-            $this->maintenanceTime = $time; 
-            $this->maintenanceTechnician = $technician->meno_uzivatela . ' ' . $technician->priezvisko_uzivatela . ' ' . $technician->email_uzivatela;
+            $this->maintenanceName = "N/A"; // $maintenance->nazov;
+            $this->maintenanceDate = $datetime[0];
+            $this->maintenanceTime = $datetime[1]; 
+            $this->maintenanceTechnician = $recordedMaintenance->id_uzivatel_technik;
             $this->maintenanceDescription = $maintenance->popis;
         }
     }
+
+    /* maintenanceShow()
+    DESCRIPTION:    - Function which toggles the edit option for a user (UI)
+                    - Uses 'Edit button' properties for displaying the UI and 'Input field' for filling the input fields
+    */
+    public function maintenanceShow($maintenanceId)
+    {
+        if ($this->showButton && $this->showValue === $maintenanceId) {
+            // If the button is already in edit mode for the current user, turn it off
+            $this->showButton = false;
+            $this->showValue = '';
+        } else {
+            // If the button is not in edit mode or is in edit mode for a different user, turn it on
+            $this->showButton = true;
+            $this->editButton = false;
+            $this->showValue = $maintenanceId;
+        }
+        //dd($maintenanceId, $this->showButton, $this->showValue);
+    }    
     
     /* maintenanceDelete()
     DESCRIPTION:    - Deletes a maintenance from the database
@@ -176,6 +200,7 @@ class OrganizeMaintenanceList extends Component
     public function maintenanceDelete($maintenaceId) {
         
         // delete user from DB
+        DB::table('zaznam_udrzby')->where('id_udrzba', '=', $maintenaceId)->delete();
         DB::table('udrzba')->where('id_udrzba', '=', $maintenaceId)->delete();
 
         // send a message & refresh list
@@ -191,7 +216,10 @@ class OrganizeMaintenanceList extends Component
     public function mount() {
 
         // Get all maintenances from the database
+        $this->vehicles = Vozidlo::all();
         $this->maintenances = $this->maintenanceGetAll();
+        $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
+
     }
 
     /* - Used for rendering the component in the browser */
