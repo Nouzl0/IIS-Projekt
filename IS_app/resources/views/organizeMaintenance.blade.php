@@ -33,7 +33,7 @@
 
         
 
-
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

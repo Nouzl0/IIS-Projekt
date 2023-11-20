@@ -26,6 +26,7 @@
         @livewire('alert')
         <h1>Vytvoriť plánovaný spoj</h1>
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

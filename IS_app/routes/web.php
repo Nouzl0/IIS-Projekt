@@ -28,41 +28,86 @@ Route::get('/search', function () {
 
 /* Driver (Vodič) */
 Route::get('/assignedPlan', function () {
-    return view('assignedPlan');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'vodič') { 
+        return view('assignedPlan'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('assignedPlan');
 
 Route::get('/reportIssue', function () {
-    return view('reportIssue');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'vodič') { 
+        return view('reportIssue'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('reportIssue');
 
 /* Dispatcher (Dispečer) */
 Route::get('/assignVehicles', function () {
-    return view('assignVehicles');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'dispečer') { 
+        return view('assignVehicles'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('assignVehicles');
 
 /* Technician (Technik) */
 Route::get('/recordMaintenance', function () {
-    return view('recordMaintenance');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'technik') { 
+        return view('recordMaintenance'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('recordMaintenance');
 
 /* Manager (správca) */
 Route::get('/manageVehicles', function () {
-    return view('manageVehicles');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'správca') { 
+        return view('manageVehicles'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('manageVehicles');
 
 Route::get('/organizeMaintenance', function () {
-    return view('organizeMaintenance');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'správca') { 
+        return view('organizeMaintenance'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('organizeMaintenance');
 
 Route::get('/scheduleRoutes', function () {
-    return view('scheduleRoutes');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'správca') { 
+        return view('scheduleRoutes'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('scheduleRoutes');
 
 Route::get('/manageLinks', function () {
-    return view('manageLinks');
+    if (session('userRole') === 'administrátor' || session('userRole') === 'správca') { 
+        return view('manageLinks'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('manageLinks');
 
 /* Administrator (Administrátor) */
 Route::get('/manageUsers', function () {
-    return view('manageUsers');
+    if (session('userRole') === 'administrátor') { 
+        return view('manageUsers'); 
+    } 
+    else { 
+        return view('login'); 
+    }
 })->name('manageUsers');
