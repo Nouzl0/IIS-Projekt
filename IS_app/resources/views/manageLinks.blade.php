@@ -32,6 +32,7 @@
         <h2>Pridať trasu</h2>
         @livewire('manage-links-add-routes')
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

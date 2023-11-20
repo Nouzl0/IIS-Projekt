@@ -32,6 +32,8 @@
         <h1>Mestská doprava Brno</h1>
             @livewire('home-add-search')
             @livewire('home-list-timetables')
+
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

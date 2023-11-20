@@ -31,6 +31,7 @@
         @livewire('manage-vehicles-add')
         @livewire('manage-vehicles-list')
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html> 

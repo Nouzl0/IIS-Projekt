@@ -12,6 +12,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
 
         <!-- Component Styles -->
+        <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">
 
         <!-- WebPage Styles -->
         <link rel="stylesheet" href="{{ asset('css/login.css') }}">
@@ -22,6 +23,8 @@
 
     <body>
         @livewire('login')
+        @livewire('alert') 
+        
 
         @livewireScripts
     </body>

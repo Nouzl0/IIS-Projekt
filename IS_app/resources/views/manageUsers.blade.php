@@ -31,6 +31,7 @@
         @livewire('manage-users-add')
         @livewire('manage-users-list')
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

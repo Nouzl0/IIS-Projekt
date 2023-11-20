@@ -35,6 +35,7 @@
         <h1>Odchody - Semillaso</h1>
         @livewire('search-list-departures')
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

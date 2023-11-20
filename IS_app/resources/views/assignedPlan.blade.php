@@ -28,6 +28,7 @@
         <h1>AssignedPlan</h1>
         @livewire('assigned-plan-list')
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

@@ -30,6 +30,7 @@
         <h1>Nahlásiť závadu vozidla</h1>
         @livewire('report-issue-add')
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>

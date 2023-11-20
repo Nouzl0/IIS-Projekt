@@ -24,6 +24,7 @@
         @livewire('nav')
         <h1>AssignVehicles</h1>
 
+        @livewire('timeout')
         @livewireScripts
     </body>
 </html>
