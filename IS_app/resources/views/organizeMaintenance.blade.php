@@ -14,8 +14,8 @@
         <!-- Component Styles -->  
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
-        <link rel="stylesheet" href="{{ asset('css/component/list.add.css') }}">        <!--organizeMaintenance-add-->
-        <link rel="stylesheet" href="{{ asset('css/component/list.show.css') }}">       <!--organizeMaintenance-list-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--organizeMaintenance-add-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--organizeMaintenance-list-->
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -28,10 +28,9 @@
         @livewire('alert')
 
         <h1>Organizovať údržbu</h1>
-        @livewire('add-maintenance')
-        @livewire('list-of-maintenance')
-
-        
+        @livewire('organize-maintenance-add')
+        @livewire('organize-maintenance-list')
+        @livewire('organize-maintenance-list-requests')
 
         @livewire('timeout')
         @livewireScripts
