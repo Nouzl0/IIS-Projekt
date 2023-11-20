@@ -26,8 +26,6 @@ class ManageUsersAdd extends Component
 
     NOTES:          - This function is completed and should be used as template for creating other similiar components
                     - After finishing the project [notes, todo] should be removed
-    
-    TODO:           - Test the component in the browser
     */
     public function userAdd()
     {

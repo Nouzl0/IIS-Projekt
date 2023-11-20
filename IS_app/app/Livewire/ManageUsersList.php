@@ -2,6 +2,7 @@
 namespace App\Livewire;
 
 use App\Models\Uzivatel;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -133,24 +134,25 @@ class ManageUsersList extends Component
     /* userDelete()
     DESCRIPTION:    - Deletes a user from the database
                     - Dispatches an event to component 'ManageUsersList' to refresh the user's list
-    TODO            - !!!!!!!deletes last admim DOESNT WORK!!!!!!!!
     */
     public function userDelete($userEmail) {
+        $adminCount = Uzivatel::where('rola_uzivatela', '=', 'administrátor')->count();             // count the number of admins in Uzivatel table
+        $userRole = Uzivatel::where('email_uzivatela', '=', $userEmail)->value('rola_uzivatela');   // get the role of the user we want to delete 
         
-        // delete user from DB
-        DB::table('uzivatel')->where('email_uzivatela', '=', $userEmail)->delete();
-
         // if the number of admin users is 1, do not delete the admin user
-        $adminCount = DB::table('uzivatel')->where('rola_uzivatela', '=', 'admin')->count();
-        $userRole = DB::table('uzivatel')->where('email_uzivatela', '=', $userEmail)->value('rola_uzivatela');
-        if ($adminCount == 1 && $userRole == 'admin') {
-            $this->dispatch('alert-error', message: "Užívatel nemôže byť odstránený, v databáze musí byť aspoň jeden administrátor");
+        if ($adminCount == 1 && $userRole == 'administrátor') {
+            $this->dispatch('alert-error', message: "Užívateľ nemôže byť odstránený, v databáze musí byť aspoň jeden administrátor");
             return;
-        }
+        } else {  // otherwise try to delete the user
+            try {
+                Uzivatel::where('email_uzivatela', '=', $userEmail)->delete();                      // delete the user
+                $this->dispatch('refresh-users-list')->to(ManageUsersList::class);                  // refresh user list
+                $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");    // send successful message
 
-        // send a message & refresh list
-        $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
-        $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
+            } catch (QueryException $e) {
+                $this->dispatch('alert-error', message: "Užívateľ \"$userEmail\" nemôže byť odstránený pretože má ešte pridelené úlohy");  // send error message
+            }
+        }
     }
 
 
