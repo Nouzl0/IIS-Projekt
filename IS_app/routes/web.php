@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*  Main routes  */
+/*  User (uživatel) routes  */
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -26,31 +26,43 @@ Route::get('/search', function () {
     return view('search');
 })->name('search');
 
-/* User specific routes */
+/* Driver (Vodič) */
 Route::get('/assignedPlan', function () {
     return view('assignedPlan');
 })->name('assignedPlan');
 
+Route::get('/reportIssue', function () {
+    return view('reportIssue');
+})->name('reportIssue');
+
+/* Dispatcher (Dispečer) */
 Route::get('/assignVehicles', function () {
     return view('assignVehicles');
 })->name('assignVehicles');
+
+/* Technician (Technik) */
+Route::get('/recordMaintenance', function () {
+    return view('recordMaintenance');
+})->name('recordMaintenance');
+
+/* Manager (správca) */
+Route::get('/manageVehicles', function () {
+    return view('manageVehicles');
+})->name('manageVehicles');
+
+Route::get('/organizeMaintenance', function () {
+    return view('organizeMaintenance');
+})->name('organizeMaintenance');
+
+Route::get('/scheduleRoutes', function () {
+    return view('scheduleRoutes');
+})->name('scheduleRoutes');
 
 Route::get('/manageLinks', function () {
     return view('manageLinks');
 })->name('manageLinks');
 
+/* Administrator (Administrátor) */
 Route::get('/manageUsers', function () {
     return view('manageUsers');
 })->name('manageUsers');
-
-Route::get('/manageVehicles', function () {
-    return view('manageVehicles');
-})->name('manageVehicles');
-
-Route::get('/recordMaintenance', function () {
-    return view('recordMaintenance');
-})->name('recordMaintenance');
-
-Route::get('/reportIssue', function () {
-    return view('reportIssue');
-})->name('reportIssue');

@@ -28,36 +28,51 @@ class NavAdmin extends Component
 
     
     /* Rederictions */
+
+    /* User */
     public function re_home() {
         return redirect()->route('home');
     }
 
+    /* Driver (vodič)*/
     public function re_assignedPlan() {
         return redirect()->route('assignedPlan');
     }
 
+    public function re_reportIssue() {
+        return redirect()->route('reportIssue');
+    }
+
+    /* Dispatcher (dispečer)*/
     public function re_assignVehicles() {
         return redirect()->route('assignVehicles');
     }
 
+    /* Technician (technik)*/
+    public function re_recordMaintenance() {
+        return redirect()->route('recordMaintenance');
+    }
+
+    /* Manager (správca)*/
     public function re_manageLinks() {
         return redirect()->route('manageLinks');
     }
-
-    public function re_manageUsers() {
-        return redirect()->route('manageUsers');
+    
+    public function re_scheduleRoutes() {
+        return redirect()->route('scheduleRoutes');
     }
 
     public function re_manageVehicles() {
         return redirect()->route('manageVehicles');
     }
 
-    public function re_recordMaintenance() {
-        return redirect()->route('recordMaintenance');
+    public function re_organizeMaintenance() {
+        return redirect()->route('organizeMaintenance');
     }
-
-    public function re_reportIssue() {
-        return redirect()->route('reportIssue');
+    
+    /* Admin (administrátor)*/
+    public function re_manageUsers() {
+        return redirect()->route('manageUsers');
     }
 
 

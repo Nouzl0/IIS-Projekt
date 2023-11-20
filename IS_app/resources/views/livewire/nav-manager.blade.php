@@ -21,7 +21,9 @@
 
             <!-- Link buttons -->
             <button wire:click="re_manageLinks" class="nav-button">Spravovať spoje</button>
+            <button wire:click="re_scheduleRoutes" class="nav-button">Vytvoriť plánovaný spoj</button>
             <button wire:click="re_manageVehicles" class="nav-button">Spravovať vozidlá</button>
+            <button wire:click="re_organizeMaintenance" class="nav-button">Organizovať údržbu</button>
 
             <!-- Logout button -->
             <button wire:click="logout" type="button" class="icon-button">
