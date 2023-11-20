@@ -8,8 +8,8 @@
                     <input wire:model="maintenanceName" class="add-input" type="text" id="maintenanceName" name="maintenanceName" required>
                 </div>
                 <div class="add-item">      <!-- Vehicle SPZ -->
-                    <label class="add-label" for="vehicle">ŠPZ vozidla*</label>
-                    <select class="add-select" wire:model="spz" id="vehicle" name="vehicle" required>
+                    <label class="add-label" for="spz">ŠPZ vozidla*</label>
+                    <select class="add-select" wire:model="spz" id="spz" name="spz" required>
                         <option value=""></option>
                         @foreach ($vehicles as $vehicle)
                             <option value="{{ $vehicle->spz }}">{{ $vehicle->spz }}</option>
@@ -30,7 +30,12 @@
             <div class="add-container">
                 <div class="add-item">
                     <label class="add-label" for="maintenanceTechnician">Priradiť technika*</label>
-                    <input wire:model="maintenanceTechnician" class="add-input" type="text" id="maintenanceTechnician" name="maintenanceTechnician" required>      
+                    <select class="add-select" wire:model="maintenanceTechnician" id="maintenanceTechnician" name="maintenanceTechnician" required>
+                        <option value=""></option>
+                        @foreach ($technicians as $technician)
+                            <option value="{{ $technician->id_uzivatel }}">{{ $technician->meno_uzivatela }} {{ $technician->priezvisko_uzivatela }} - ({{ $technician->email_uzivatela }})</option>
+                        @endforeach
+                    </select>    
                 </div> <br>
                 <div class="add-item">
                     <button class="add-button" type="submit">Vytvoriť údržbu</button>

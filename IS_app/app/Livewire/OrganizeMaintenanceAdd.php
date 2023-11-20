@@ -41,18 +41,16 @@ class OrganizeMaintenanceAdd extends Component
                 'maintenanceName' => 'required|string',
                 'spz' => 'required|string|exists:vozidlo,spz',
                 'maintenanceDescription' => 'required|string',
-                'maintenanceTime' => 'required|string|time',
-                'maintenanceDate' => 'required|string|date',
-                'maintenanceTechnician' => 'required|string|exists:uzivatel,login',
+                'maintenanceTime' => 'required|string',
+                'maintenanceDate' => 'required|string',
+                'maintenanceTechnician' => 'required|string|exists:uzivatel,id_uzivatel',
             ], [
                 'maintenanceName.required' => 'Meno údržby nie je vyplnené',
                 'spz.required' => 'ŠPZ nie je vyplnená',
                 'spz.exists' => 'Vozidlo so zadanou ŠPZ neexistuje',
                 'maintenanceDescription.required' => 'Popis údržby nie je vyplnený',
                 'maintenanceTime.required' => 'Čas údržby nie je vyplnený',
-                'maintenanceTime.time' => 'Čas údržby nie je v zlom formáte',
                 'maintenanceDate.required' => 'Dátum údržby nie je vyplnený',
-                'maintenanceDate.date' => 'Dátum údržby nie je v zlom formáte',
                 'maintenanceTechnician.required' => 'Technik údržby nie je vyplnený',
                 'maintenanceTechnician.exists' => 'Zadaný technik neexistuje',
             ]);
@@ -78,21 +76,20 @@ class OrganizeMaintenanceAdd extends Component
         $udrzba = Udrzba::create([
             'zaciatok_udrzby' => $validatedData['maintenanceDate'] . " " . $validatedData['maintenanceTime'],
             'id_vozidlo' => $vozidlo->id_vozidlo, 
+            //'meno' => $validatedData['maintenanceName'], add when it is in database
             'spz' => $validatedData['spz'], 
             'stav' => 'Vytvorená', 
             'popis' => $validatedData['maintenanceDescription']
         ]);
         
-        // Find the technician with the given email
-        $uzivatel = Uzivatel::where('email_uzivatela', $validatedData['maintenanceTechnician'])->first();
-
         // Create new maintenance record model:ZaznamUdrzby
         ZaznamUdrzby::create([
             'id_udrzba' => $udrzba->id_udrzba,
-            'id_uzivatel_technik' => $uzivatel->id_uzivatel,
+            'id_uzivatel_technik' => $validatedData['maintenanceTechnician'],
         ]);
 
         // show success message and reset fields
+        $this->dispatch('refresh-maintenances-list')->to(OrganizeMaintenancesList::class);
         $this->reset(['maintenanceName', 'spz', 'maintenanceDescription', 'maintenanceTime', 'maintenanceDate', 'maintenanceTechnician']);
         $this->dispatch('alert-success', message: "Plán údržby bol úspešne vytvorený.");
     }
@@ -103,7 +100,7 @@ class OrganizeMaintenanceAdd extends Component
     /* - TODO - Add description */
     public function mount() {
         $this->vehicles = Vozidlo::all();
-        $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
+        $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
     }
 
     /* - Used for rendering the component in the browser */

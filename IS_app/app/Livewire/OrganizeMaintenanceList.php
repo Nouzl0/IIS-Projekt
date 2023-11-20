@@ -44,45 +44,29 @@ class OrganizeMaintenanceList extends Component
     {
         // Retrieve all maintenance records from the database
         $dbMaintenances = DB::table('udrzba')->get()->toArray();
-    
+        
         // Initialize an empty array to store maintenance data
         $maintenances = [];
-    
+        
         // Loop through each maintenance record and format the data
         foreach ($dbMaintenances as $dbMaintenance) {
-
             // get date and time from datetime db-value
             $datetime = explode(" ", $dbMaintenance->zaciatok_udrzby);
-
-            // Set default values in case the format is unexpected
-            $formattedDate = "N/A";   $formattedTime = "N/A";
-
-            // Check if the array has the expected indices
-            if (count($datetime) >= 2) {
-                $formattedDate = $datetime[0];
-                $formattedTime = $datetime[1];
-            }
     
-            // get the name technician from record of the maintenance
-            $recordedMaintenance = DB::table('zaznam_udrzby')->where('id_udrzba', $dbMaintenance->id_udrzba)->first();
-            $technician = (object) [
-                'meno_uzivatela' => "N/A",
-                'priezvisko_uzivatela' => "",
-                'email_uzivatela' => "",
-            ];
+            // get the technician information directly with joins
+            $technician = DB::table('zaznam_udrzby')
+                ->join('uzivatel', 'zaznam_udrzby.id_uzivatel_technik', '=', 'uzivatel.id_uzivatel')
+                ->where('zaznam_udrzby.id_udrzba', $dbMaintenance->id_udrzba)
+                ->first();
     
-            if ($recordedMaintenance) {
-                $technician = DB::table('uzivatel')->where('id_uzivatel', $recordedMaintenance->id_uzivatel)->first();
-            }
-
             // Format the maintenance data
             $maintenances[] = [
                 'maintenanceId' => $dbMaintenance->id_udrzba,
                 'spz' => $dbMaintenance->spz,
                 'maintenanceName' => "N/A", //$dbMaintenance->nazov,
-                'maintenanceTime' => $formattedTime,
-                'maintenanceDate' => $formattedDate,
-                'maintenanceTechnician' => $technician->meno_uzivatela . ' ' . $technician->priezvisko_uzivatela . ' ' . $technician->email_uzivatela,
+                'maintenanceTime' => $datetime[1],
+                'maintenanceDate' => $datetime[0],
+                'maintenanceTechnician' => $technician->meno_uzivatela . ' ' . $technician->priezvisko_uzivatela . ' - (' . $technician->email_uzivatela . ')',
                 'maintenanceDescription' => $dbMaintenance->popis,
             ];
         }

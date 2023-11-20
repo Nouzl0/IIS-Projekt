@@ -15,11 +15,18 @@ class ZaznamUdrzby extends Model
     // Disable auto-incrementing for the primary key
     public $incrementing = false;
 
+    protected $fillable = [
+        'id_udrzba',
+        'id_uzivatel_technik',
+    ];
+
     // Define validation rules
     public static $rules = [
         'id_udrzba' => 'required|integer',
         'id_uzivatel_technik' => 'required|integer',
     ];
+
+
 
     // Define relationships
     public function udrzba()
