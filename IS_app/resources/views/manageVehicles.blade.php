@@ -18,17 +18,17 @@
         <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">           <!--manage-vehicles-list-->
 
         <!-- WebPage Styles -->
-        <!-- replace with css link -->
+        <!-- replace with css link --> 
 
         @livewireStyles
-    </head>
+    </head> 
 
     <body>
         @livewire('nav')
         @livewire('alert')
 
         <h1>Správa vozidiel</h1>
-        @livewire('add-vehicles')
+        @livewire('manage-vehicles-add')
         @livewire('manage-vehicles-list')
 
         @livewireScripts
