@@ -33,28 +33,36 @@
     background-color: #f9f9f9;
 }
 
+/* Table row style */
 .list-low-row td {
     padding: 10px;
     border-bottom: 1px solid #D0D0D0
 }
 
-
-.list-low-box {
+/* Table box style */
+.list-low-box,
+.list-low-box-buttons {
     /* Text style */
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-weight: 400;
+
+    /* Set the same height for both classes */
+    height: 100%;
 }
 
 .list-low-box-buttons {
     /* Container style */
-    align-items: center;
-    display: flex;
-    justify-content: space-evenly;
-    height: 30px;
+    text-align: center; /* Center horizontally */
 }
 
-/* Input, select, and button style */
+.list-low-box-buttons button {
+    display: inline-block;
+    margin: 0 8px; 
+    /* Add any additional styling for the buttons if needed */
+}
+
+/* Input, select, style */
 .list-low-input,
 .list-low-select {
     width: 100%;
@@ -70,6 +78,41 @@
 
 }
 
+/* Textarea style */
+.list-low-textarea {
+    /* Layout */
+    width: 100%;
+
+    /* Spacing and border */
+    padding: 10px;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    /* Initial height */
+    height: 100px;
+    resize: vertical;  
+}
+
+
+.list-low-textarea-long {
+    /* Layout */
+    width: 120%;
+
+    /* Spacing and border */
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    /* Initial height */
+    height: 60px;
+    resize: vertical;  
+}
+
+
+
+
+/* Button style */
 .list-low-button {
     background-color: #b8b8b8;
     padding: 6px;

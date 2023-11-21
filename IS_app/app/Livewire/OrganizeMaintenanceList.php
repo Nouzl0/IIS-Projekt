@@ -21,6 +21,19 @@ class OrganizeMaintenanceList extends Component
     public function toggleShow($toggleValue)
     {
         $this->showValue = $toggleValue;
+
+        // refresh used component
+        switch($this->showValue) {
+            case "Requests":
+                $this->dispatch('refresh-maintenances-list-requests')->to(OrganizeMaintenanceListRequests::class);
+                break;
+            case "History":
+                $this->dispatch('refresh-maintenances-list-history')->to(OrganizeMaintenanceListHistory::class);
+                break;
+            case "default":
+                $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceListActive::class);
+                break;
+        }
     }
 
     /* LIVEWIRE */

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 use App\Models\Vozidlo;
 use App\Models\Uzivatel;
@@ -24,6 +25,9 @@ class OrganizeMaintenanceAdd extends Component
     public $maintenanceTime;
     public $maintenanceDate;
     public $maintenanceTechnician;
+
+    public $importMode = false;
+    public $importValue = '';
 
     /* FUNCTIONS */
 
@@ -68,29 +72,99 @@ class OrganizeMaintenanceAdd extends Component
             return;
         }
 
-        // Find the vehicle with the given spz
-        $vozidlo = Vozidlo::where('spz', $validatedData['spz'])->first();
         
-        // Create new mainenance model:Udrzba amd get created udrzba id
-        $udrzba = Udrzba::create([
-            'zaciatok_udrzby' => $validatedData['maintenanceDate'] . " " . $validatedData['maintenanceTime'],
-            'id_vozidlo' => $vozidlo->id_vozidlo, 
-            //'meno' => $validatedData['maintenanceName'], add when it is in database
-            'spz' => $validatedData['spz'], 
-            'stav' => 'Vytvorená', 
-            'popis' => $validatedData['maintenanceDescription']
-        ]);
-        
-        // Create new maintenance record model:ZaznamUdrzby
-        ZaznamUdrzby::create([
-            'id_udrzba' => $udrzba->id_udrzba,
-            'id_uzivatel_technik' => $validatedData['maintenanceTechnician'],
-        ]);
+        // Importing from requests
+        if($this->importMode) {
+
+            // Find the vehicle with the given spz
+            $vozidlo = Vozidlo::where('spz', $validatedData['spz'])->first();
+
+            // Find the record by 'id_udrzba' and update its values
+            Udrzba::where('id_udrzba', $this->importValue)->update([
+                'zaciatok_udrzby' => $validatedData['maintenanceDate'] . " " . $validatedData['maintenanceTime'],
+                'id_vozidlo' => $vozidlo->id_vozidlo,
+                'nazov_spravy' => $validatedData['maintenanceName'],
+                'spz' => $validatedData['spz'],
+                'stav' => 'Priradená',
+                'popis' => $validatedData['maintenanceDescription']
+            ]);
+            
+            // Retrieve the updated record
+            $udrzba = Udrzba::where('id_udrzba', $this->importValue)->first();
+            
+            // Create new maintenance record model: ZaznamUdrzby
+            ZaznamUdrzby::create([
+                'id_udrzba' => $udrzba->id_udrzba,
+                'id_uzivatel_technik' => $validatedData['maintenanceTechnician'],
+            ]);
+
+            // change import mode to false
+            $this->importMode = false;
+            $this->importValue = '';
+
+            // referesh list and show success message
+            $this->dispatch('refresh-maintenances-list-requests')->to(OrganizeMaintenanceListRequests::class);
+
+        // Creating new maintenance
+        } else {
+
+            // Find the vehicle with the given spz
+            $vozidlo = Vozidlo::where('spz', $validatedData['spz'])->first();
+            
+            // Create new mainenance model:Udrzba amd get created udrzba id
+            $udrzba = Udrzba::create([
+                'zaciatok_udrzby' => $validatedData['maintenanceDate'] . " " . $validatedData['maintenanceTime'],
+                'id_vozidlo' => $vozidlo->id_vozidlo, 
+                'nazov_spravy' => $validatedData['maintenanceName'],
+                'spz' => $validatedData['spz'], 
+                'stav' => 'Priradená', 
+                'popis' => $validatedData['maintenanceDescription']
+            ]);
+
+            // Create new maintenance record model:ZaznamUdrzby
+            ZaznamUdrzby::create([
+                'id_udrzba' => $udrzba->id_udrzba,
+                'id_uzivatel_technik' => $validatedData['maintenanceTechnician'],
+            ]);
+            
+            // refresh list
+            $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceListActive::class);
+        }
 
         // show success message and reset fields
-        $this->dispatch('refresh-maintenances-list')->to(OrganizeMaintenanceList::class);
         $this->reset(['maintenanceName', 'spz', 'maintenanceDescription', 'maintenanceTime', 'maintenanceDate', 'maintenanceTechnician']);
         $this->dispatch('alert-success', message: "Plán údržby bol úspešne vytvorený.");
+    }
+
+
+    /* importMaintenance()
+    DESCRIPTION:    - Fills the input fields with data retrieved event
+                    - 
+    */
+    #[On('maintenances-add-import')]
+    public function importMaintenance($maintenanceId) {
+
+        // set to default values
+        if ($this->importMode & $maintenanceId == "-1") {
+            $this->importMode = false;
+            $this->importValue = '';
+            $this->dispatch('alert-clear');
+            $this->reset(['maintenanceName', 'spz', 'maintenanceDescription', 'maintenanceTime', 'maintenanceDate', 'maintenanceTechnician']);
+        
+        // set importMode to true
+        } else {
+            // Get maintenance data from database and fill the input fields
+            $data = Udrzba::where('id_udrzba', $maintenanceId)->first();
+            $this->maintenanceName = $data->nazov;
+            $this->spz = $data->spz;
+            $this->maintenanceDescription = $data->popis;
+            $this->maintenanceName = $data->nazov_spravy;
+
+            
+            $this->importMode = true;
+            $this->importValue = $maintenanceId;
+            $this->dispatch('alert-success', message: "Doplnte ostatné údaje o údržbe");
+        }
     }
 
     
@@ -98,8 +172,16 @@ class OrganizeMaintenanceAdd extends Component
 
     /* - TODO - Add description */
     public function mount() {
+
+        // (select) - get all vehicles
         $this->vehicles = Vozidlo::all();
-        $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
+
+        // (select) - get only technicians (final select will be chosen in the final version)
+        // $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
+        // (select) - get technicians and admins
+        $this->technicians = Uzivatel::where('rola_uzivatela', 'technik')
+            ->orWhere('rola_uzivatela', 'administrátor')
+            ->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
     }
 
     /* - Used for rendering the component in the browser */

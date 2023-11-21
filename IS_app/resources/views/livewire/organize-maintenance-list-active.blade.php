@@ -3,12 +3,11 @@
     <table class="list-table">
         <thead class="list-up-body"> <!-- Table Header -->
             <tr class="list-up-row">
-                <th class="list-up-box">ID</th>
                 <th class="list-up-box">ŠPZ</th>
                 <th class="list-up-box">Názov údržby</th>
-                <th class="list-up-box">Dátum</th>
-                <th class="list-up-box">Čas</th>
-                <th class="list-up-box">Technik</th>
+                <th class="list-up-box">Dátum termínu</th>
+                <th class="list-up-box">Čas termínu</th>
+                <th class="list-up-box">Priradený technik</th>
                 <th class="list-up-box"></th>
             </tr>
         </thead>
@@ -16,7 +15,6 @@
             @forelse ($maintenances as $maintenance)
                 @if ($editButton && ($editValue == $maintenance['maintenanceId']))
                     <tr class="list-low-row"> <!-- Edit User -->
-                        <td class="list-low-box"> {{ $maintenance['maintenanceId'] }} </td>     <!-- Input [ID] -->
                         <td class=list-low-box> <!-- Input [spz] -->
                             <select class="add-select" wire:model="spz" id="spz" name="spz" required>
                                 <option value=""></option>
@@ -55,7 +53,6 @@
                 @else
                     @if ($showButton && ($showValue == $maintenance['maintenanceId']))
                         <tr class="list-low-row">
-                            <td class="list-low-box"> {{ $maintenance['maintenanceId'] }} </td>
                             <td class="list-low-box"> {{ $maintenance['spz'] }} </td>
                             <td class="list-low-box"> {{ $maintenance['maintenanceName'] }} </td>
                             <td class="list-low-box"> {{ $maintenance['maintenanceDate'] }} </td>
@@ -73,7 +70,6 @@
                         </tr>
                     @else
                         <tr class="list-low-row">
-                            <td class="list-low-box"> {{ $maintenance['maintenanceId'] }} </td>
                             <td class="list-low-box"> {{ $maintenance['spz'] }} </td>
                             <td class="list-low-box"> {{ $maintenance['maintenanceName'] }} </td>
                             <td class="list-low-box"> {{ $maintenance['maintenanceDate'] }} </td>

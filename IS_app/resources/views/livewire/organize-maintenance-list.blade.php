@@ -3,19 +3,19 @@
         <div class="component-switch"> <!-- Corrected typo: "compoenent-switch" to "component-switch" -->
             @switch($showValue)
                 @case('Requests')
-                    <div class="switch-button-active" id="right">Nahlásené závady</div>
-                    <button wire:click="toggleShow('Active')" class="switch-button">Aktívne údržby</button>
-                    <button wire:click="toggleShow('History')" class="switch-button" id="left">História údržieb</button>
+                    <button wire:click="toggleShow('Requests')" class="switch-button-active" id="right">Nahlásené závady</button>
+                    <button wire:click="toggleShow('Active')"   class="switch-button">Aktívne údržby</button>
+                    <button wire:click="toggleShow('History')"  class="switch-button" id="left">História údržieb</button>
                 @break
                 @case('History')
                     <button wire:click="toggleShow('Requests')" class="switch-button" id="right">Nahlásené závady</button>
-                    <button wire:click="toggleShow('Active')" class="switch-button">Aktívne údržby</button>
-                    <div class="switch-button-active" id="left">História údržieb</div>
+                    <button wire:click="toggleShow('Active')"   class="switch-button">Aktívne údržby</button>
+                    <button wire:click="toggleShow('History')"  class="switch-button-active" id="left">História údržieb</button>
                 @break
                 @default
                     <button wire:click="toggleShow('Requests')" class="switch-button" id="right">Nahlásené závady</button>
-                    <div class="switch-button-active">Aktívne údržby</div>
-                    <button wire:click="toggleShow('History')" class="switch-button" id="left">História údržieb</button>
+                    <button wire:click="toggleShow('Active')"   class="switch-button-active">Aktívne údržby</button>
+                    <button wire:click="toggleShow('History')"  class="switch-button" id="left">História údržieb</button>
             @endswitch
         </div>
         <div class="component-content">

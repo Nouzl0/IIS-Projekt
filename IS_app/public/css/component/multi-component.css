@@ -33,6 +33,7 @@
     background-color: #E6E6E6;
     border: none;
     transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
 
     /* Text style */
     font-family: 'Roboto', sans-serif;

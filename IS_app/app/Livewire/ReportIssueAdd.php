@@ -64,10 +64,11 @@ class ReportIssueAdd extends Component
         // Insert row into the Udrzba table
         Udrzba::create([
             'id_vozidlo' => $vozidlo->id_vozidlo,
-            'nazov_spravy' => $this->nazov_spravy, 
-            'spz' => $vozidlo->spz, 
+            'nazov_spravy' => $validatedData['nazov_spravy'], 
+            'spz' => $validatedData['spz'], 
             'stav' => 'Vytvorená', 
-            'popis' => $this->popis]);
+            'popis' => $validatedData['popis']
+        ]);
         
         // show success message
         $this->reset(['nazov_spravy', 'spz', 'popis']);

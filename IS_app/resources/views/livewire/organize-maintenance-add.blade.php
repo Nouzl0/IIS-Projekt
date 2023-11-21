@@ -48,5 +48,16 @@
                 <textarea wire:model='maintenanceDescription' class="add-text" type="text" id="maintenanceDescription" name="maintenanceDescription" required></textarea><br>
             </div>
         </div>
+                
+        @if ($importMode) <!-- Import Mode (options) -->
+            <div class="add-container-row">
+                <div class="add-container">
+                    <div class="add-select" type="text" id="maintenanceDescription" name="maintenanceDescription">*Vytvára sa údržba pre nahlásenú závadu číslo ({{ $importValue }})</div>
+                </div>
+                <div class="add-container">
+                    <button wire:click="importMaintenance('{{ '-1' }}')" class="add-button">Zrušiť</button>
+                </div>
+            </div>
+        @endif
     </form>
 </div>

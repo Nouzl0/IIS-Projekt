@@ -49,7 +49,7 @@ class OrganizeMaintenanceListActive extends Component
     private function maintenanceGetAll()
     {
         // Retrieve all maintenance records from the database
-        $dbMaintenances = DB::table('udrzba')->get()->toArray();
+        $dbMaintenances = DB::table('udrzba')->get()->where('stav', '=', 'Priradená')->values()->toArray();
         
         // Initialize an empty array to store maintenance data
         $maintenances = [];
@@ -69,7 +69,7 @@ class OrganizeMaintenanceListActive extends Component
             $maintenances[] = [
                 'maintenanceId' => $dbMaintenance->id_udrzba,
                 'spz' => $dbMaintenance->spz,
-                'maintenanceName' => "N/A", //$dbMaintenance->nazov,
+                'maintenanceName' => $dbMaintenance->nazov_spravy,
                 'maintenanceDate' => $datetime[0],
                 'maintenanceTime' => $datetime[1],
                 'maintenanceTechnician' => $technician->meno_uzivatela . ' ' . $technician->priezvisko_uzivatela . ' - (' . $technician->email_uzivatela . ')',
@@ -124,9 +124,9 @@ class OrganizeMaintenanceListActive extends Component
         // Update the maintenance with the given id
         Udrzba::where('id_udrzba', $maintenancesId)->update([
             'zaciatok_udrzby' => $validatedData['maintenanceDate'] . " " . $validatedData['maintenanceTime'],
-            //'meno' => $validatedData['maintenanceName'], add when it is in database
+            'nazov_spravy' => $validatedData['maintenanceName'],
             'spz' => $validatedData['spz'],
-            'stav' => "Naplanovaná",
+            'stav' => "Priradená",
             'popis' => $validatedData['maintenanceDescription']
         ]);
 
@@ -137,7 +137,7 @@ class OrganizeMaintenanceListActive extends Component
 
         // toggleoff edit, dispatch event and display success message
         $this->editButton = false;
-        $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceList::class);
+        $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceListActive::class);
         $this->dispatch('alert-success', message: "Vozidlo bolo úspešne aktualizované");
     }
 
@@ -166,7 +166,7 @@ class OrganizeMaintenanceListActive extends Component
             // Fill the input fields with the current user data
             $this->maintenanceId = $maintenance->id_udrzba;
             $this->spz = $maintenance->spz;
-            $this->maintenanceName = "N/A"; // $maintenance->nazov;
+            $this->maintenanceName = $maintenance->nazov_spravy;
             $this->maintenanceDate = $datetime[0];
             $this->maintenanceTime = $datetime[1]; 
             $this->maintenanceTechnician = $recordedMaintenance->id_uzivatel_technik;
@@ -195,7 +195,7 @@ class OrganizeMaintenanceListActive extends Component
     
     /* maintenanceDelete()
     DESCRIPTION:    - Deletes a maintenance from the database
-                    - Dispatches an event to component 'OrganizeMaintenanceList' to refresh the user's list
+                    - Dispatches an event to component 'OrganizeMaintenanceListActive' to refresh the user's list
     */
     public function maintenanceDelete($maintenaceId) {
         
@@ -204,7 +204,7 @@ class OrganizeMaintenanceListActive extends Component
         DB::table('udrzba')->where('id_udrzba', '=', $maintenaceId)->delete();
 
         // send a message & refresh list
-        $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceList::class);
+        $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceListActive::class);
         $this->dispatch('alert-success', message: "Údržba bola odstránená z databázy");
     }
 
@@ -216,9 +216,17 @@ class OrganizeMaintenanceListActive extends Component
     public function mount() {
 
         // Get all maintenances from the database
-        $this->vehicles = Vozidlo::all();
         $this->maintenances = $this->maintenanceGetAll();
-        $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
+
+        // (select) get all the vehicles
+        $this->vehicles = Vozidlo::all();
+
+        // (select) - get only technicians (final select will be chosen in the final version)
+        // $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
+        // (select) - get technicians and admins
+        $this->technicians = Uzivatel::where('rola_uzivatela', 'technik')
+            ->orWhere('rola_uzivatela', 'administrátor')
+            ->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
 
     }
 
