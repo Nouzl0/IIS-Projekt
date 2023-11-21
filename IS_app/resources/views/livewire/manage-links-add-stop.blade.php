@@ -7,8 +7,7 @@
         <label class="add-label" for="stop_address">Adresa zastávky*</label>
         <input class="add-input" type="text" name="stop_address" wire:model="stop_address" required> <br>
 
-
-        <button type="submit" value="Pridať zastávku" class="add_button">Pridať zastávku</button>
+        <button type="submit" value="Pridať zastávku" class="list-low-button">Pridať zastávku</button>
     </form>
 
 </div>

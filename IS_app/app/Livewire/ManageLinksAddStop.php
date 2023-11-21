@@ -15,15 +15,10 @@ class ManageLinksAddStop extends Component
 
     /* FUNCTIONS */
 
-    /* userAdd()
-    DESCRIPTION:    - Function which validates and adds a new user to the database
+    /* stopAdd()
+    DESCRIPTION:    - Function which validates and adds a new stop to the database
                     - Uses 'Input field' for getting input data
                     - Is dispatching an event to component 
-
-    NOTES:          - This function is completed and should be used as template for creating other similiar components
-                    - After finishing the project [notes, todo] should be removed
-    
-    TODO:           - Test the component in the browser
     */
     public function stopAdd()
     {
@@ -31,7 +26,7 @@ class ManageLinksAddStop extends Component
 
             // Validate input fields with custom error messages
             $validatedData = $this->validate([
-                'stop_name' => 'required|string',
+                'stop_name' => 'required|string|unique:zastavka,meno_zastavky',
                 'stop_address' => 'required|string',
             ], [
                 'stop_name.required' => 'Vyplnte meno zastávky',
@@ -52,27 +47,19 @@ class ManageLinksAddStop extends Component
             $this->dispatch('alert-error', message: "ERROR - Validation failed");
             return;
         }
-        
 
-        // $stop_exists = Zastavka::where ('meno_zastavky', $this->stop_name)->first();
-        // if ($stop_exists) {
-        //     // error msg
-        //     $this->dispatch('alert-error', message: "Zástávka už existuje\n");
-        //     return;
-        // }
 
         Zastavka::create([
             'meno_zastavky' => $validatedData['stop_name'],
             'adresa_zastavky' => $validatedData['stop_address'],
         ]);
+
         return redirect()->to('/manageLinks');   // refresh the page
 
         // Reset input field properties, display success message and dispatch an event to refresh the users list
         $this->reset(['stop_name', 'stop_address']);
         $this->dispatch('refresh-stop-list')->to(ManageLinksAddStop::class);
         $this->dispatch('alert-success', message: "Zastávka bol pridaná do databázy");
-        // return redirect()->to('/manageLinks');   // refresh the page
-
 
     }
 
