@@ -14,9 +14,11 @@
         rel="stylesheet">
 
     <!-- Component Styles -->
-    <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
+    <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
+    <link rel="stylesheet" href="{{ asset('css/component/multi-component.css') }}"> <!--manage-links-container-->
+    <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--list-->
+    <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--add-->
 
     <!-- WebPage Styles -->
     <!-- replace with css link -->
@@ -27,18 +29,8 @@
 <body>
     @livewire('nav')
     @livewire('alert')
-    <h1>ManageLinksConnections</h1>
-    {{-- <h2>Pridať zastávku</h2>
-    @livewire('manage-links-add-stop')
-    @livewire('manage-links-list-of-stops') --}}
-    <h2>Pridať trasu</h2>
-    @livewire('manage-links-add-routes') 
-    @livewire('manage-links-list-routes')
 
-    {{-- <h2>Vytvoriť linku</h2>
-    @livewire('manage-links-add-line')
-    <h3>Aktuálne linky</h3>
-    @livewire('manage-links-lines-list') --}}
+    @livewire('manage-links-container')
 
     @livewire('timeout')
     @livewireScripts

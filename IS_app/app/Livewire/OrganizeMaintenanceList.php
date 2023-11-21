@@ -36,6 +36,7 @@ class OrganizeMaintenanceList extends Component
         }
     }
 
+    
     /* LIVEWIRE */
 
     /* - Used for mounting the component, with listener to refresh the the list */
