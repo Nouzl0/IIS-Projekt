@@ -14,7 +14,7 @@ class ReportIssueAdd extends Component
     public $vehicles;
 
     /* message properties*/
-    public $messageName;
+    public $nazov_spravy;
     public $spz;
     public $popis;
     
@@ -23,19 +23,17 @@ class ReportIssueAdd extends Component
 
     /* addVehicleIssue()
     DESCRIPTION:    - xxx
-    
-    TODO:           - Add description
     */
     public function addVehicleIssue()
     {
         try { 
             // Validate input fields with custom error messages
             $validatedData = $this->validate([
-                'messageName' => 'required|string',
+                'nazov_spravy' => 'required|string',
                 'spz' => 'required|string',
                 'popis' => 'required|string',
             ], [
-                'messageName.required' => 'Meno je povinné',
+                'nazov_spravy.required' => 'Meno je povinné',
                 'spz.required' => 'Priezvisko je povinné',
                 'popis.required' => 'E-mail adresa je povinná',
             ]);
@@ -65,13 +63,14 @@ class ReportIssueAdd extends Component
 
         // Insert row into the Udrzba table
         Udrzba::create([
-            'id_vozidlo' => $vozidlo->id_vozidlo, 
+            'id_vozidlo' => $vozidlo->id_vozidlo,
+            'nazov_spravy' => $this->nazov_spravy, 
             'spz' => $vozidlo->spz, 
             'stav' => 'Vytvorená', 
             'popis' => $this->popis]);
         
         // show success message
-        $this->reset(['messageName', 'spz', 'popis']);
+        $this->reset(['nazov_spravy', 'spz', 'popis']);
         $this->dispatch('alert-success', message: "Závada na vozidle bola nahlásená");
     }
 

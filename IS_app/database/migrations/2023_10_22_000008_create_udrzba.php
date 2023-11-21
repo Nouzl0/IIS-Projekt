@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('id_udrzba');
             $table->dateTime('zaciatok_udrzby')->nullable();
             $table->unsignedBigInteger('id_vozidlo');
+            $table->string('nazov_spravy');
             $table->string('spz');
             //$table->unsignedBigInteger('id_uzivatel_spravca');
             $table->string('stav');

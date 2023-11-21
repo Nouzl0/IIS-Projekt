@@ -14,6 +14,8 @@
         <!-- Component Styles -->  
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -25,7 +27,7 @@
         @livewire('nav')        
         @livewire('alert')
         <h1>Vytvoriť záznam o údržbe</h1>
-
+        @livewire('record-maintenance-list')
         
         @livewire('timeout')
         @livewireScripts

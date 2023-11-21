@@ -5,7 +5,7 @@
             <div class="add-container">
                 <div class="add-item">      <!-- Messaage name -->
                     <label class="add-label" for="messageName">Názov správy*</label>
-                    <input wire:model="messageName" class="add-input" type="text" id="messageName" name="messageName" required>
+                    <input wire:model="nazov_spravy" class="add-input" type="text" id="messageName" name="messageName" required>
                 </div>
             </div>
             <div class="add-container">

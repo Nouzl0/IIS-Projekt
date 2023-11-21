@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             uzivatelSeeder::class,
             vozidloSeeder::class,
             planovanySpojSeeder::class,
+            udrzbaSeeder::class,
+            zaznamUdrzbySeeder::class,
         ]);
     }
 }

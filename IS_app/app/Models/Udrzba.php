@@ -16,6 +16,7 @@ class Udrzba extends Model
     protected $fillable = [
         'zaciatok_udrzby',
         'id_vozidlo',
+        'nazov_spravy',
         'spz',
         //'id_uzivatel_spravca',
         'stav',
@@ -26,6 +27,7 @@ class Udrzba extends Model
     public static $rules = [
         'zaciatok_udrzby' => 'nullable|date',
         'id_vozidlo' => 'required|integer',
+        'nazov_spravy' => 'required|string',
         'spz' => 'required|string',
         //'id_uzivatel_spravca' => 'required|integer',
         'stav' => 'required|string',
