@@ -14,7 +14,8 @@ class planovanySpojSeeder extends Seeder
     public function run(): void
     {
         $rows = [
-            ['zaciatok_trasy' => Carbon::tomorrow()->setTime(15, 0), 'id_trasa' => 1, 'id_vozidlo' => 1, 'id_uzivatel_dispecer' => 4, 'id_uzivatel_sofer' => 5],
+            ['zaciatok_trasy' => '2023-11-20 15:00:00', 'id_trasa' => 1, 'id_vozidlo' => 1, 'id_uzivatel_dispecer' => 4, 'id_uzivatel_sofer' => 5, 'opakovanie' => 'denne', 'platny_do' => '2023-11-30 23:00:00'],
+            ['zaciatok_trasy' => '2023-11-10 16:00:00', 'id_trasa' => 2, 'id_vozidlo' => 2, 'id_uzivatel_dispecer' => 4, 'id_uzivatel_sofer' => 5, 'opakovanie' => 'denne', 'platny_do' => '2023-12-01 23:00:00'],
         ];
 
         foreach ($rows as $row) {

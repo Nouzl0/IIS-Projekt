@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_vozidlo');
             $table->unsignedBigInteger('id_uzivatel_dispecer');
             $table->unsignedBigInteger('id_uzivatel_sofer');
+            $table->string('opakovanie');
+            $table->dateTime('platny_do');
             $table->timestamps();
 
             $table->foreign('id_trasa')

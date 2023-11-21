@@ -19,15 +19,19 @@ class PlanovanySpoj extends Model
         'id_vozidlo',
         'id_uzivatel_dispecer',
         'id_uzivatel_sofer',
+        'opakovanie',
+        'platny_do',
     ];
 
     // Define validation rules
     public static $rules = [
-        'zaciatok_trasy' => 'nullable|date',
+        'zaciatok_trasy' => 'nullable|dateTime',
         'id_trasa' => 'required|integer',
         'id_vozidlo' => 'required|integer',
         'id_uzivatel_dispecer' => 'required|integer',
         'id_uzivatel_sofer' => 'required|integer',
+        'opakovanie' => 'required|string',
+        'platny_do' => 'required|dateTime'
     ];
 
     // Define relationships

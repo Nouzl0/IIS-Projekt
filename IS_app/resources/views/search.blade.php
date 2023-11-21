@@ -32,7 +32,7 @@
 
 
         <!-- TODO: Name of "Meno zástavky" should be dynamically changed based on the search input. -->
-        <h1>Odchody - Semillaso</h1>
+        <h1>Odchody - {{ session('selectedBusStop') }}</h1>
         @livewire('search-list-departures')
 
         @livewire('timeout')
