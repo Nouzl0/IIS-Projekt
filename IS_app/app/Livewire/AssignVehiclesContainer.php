@@ -13,26 +13,26 @@ class AssignVehiclesContainer extends Component
 
     /* FUNCTIONS */
 
-    /* maintenanceShow()
+    /* toggleShow()
     DESCRIPTION:    - Function which toggles the edit option for a user (UI)
-                    - Uses 'Edit button' properties for displaying the UI and 'Input field' for filling the input fields
+                    - User can choose between different relevant components
     */
     public function toggleShow($toggleValue)
     {
         $this->showValue = $toggleValue;
 
-        // refresh used component (TODO: fix this)
-        //switch($this->showValue) {
-        //    case "assign":
-        //        $this->dispatch('refresh-maintenances-list-requests')->to(Name::class);
-        //        break;
-        //    case "history":
-        //        $this->dispatch('refresh-maintenances-list-history')->to(Name::class);
-        //        break;
-        //    case "default":
-        //        $this->dispatch('refresh-maintenances-list-active')->to(Name::class);
-        //        break;
-        //}
+        // refresh used component
+        switch($this->showValue) {
+            case "assign":
+                $this->dispatch('assign-vehicles-list-assign')->to(AssignVehiclesListAssign::class);
+                break;
+            case "history":
+                $this->dispatch('assign-vehicles-list-edit')->to(AssignVehiclesListEdit::class);
+                break;
+            case "default":
+                $this->dispatch('assign-vehicles-list-history')->to(AssignVehiclesListHistory::class);
+                break;
+        }
     }
 
     
