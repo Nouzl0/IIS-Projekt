@@ -14,9 +14,10 @@ class ManageLinksListRoutes extends Component
 {
     public $routes;
     public $lines;
-
+    public $stops;
     public $editButton = false;
     public $editValue = '';
+    public $all_stops = true;
 
     public $meno_trasy, $info_trasy, $id_linka;
     public $cislo_linky;
@@ -34,6 +35,7 @@ class ManageLinksListRoutes extends Component
     {
         // Retrieve all users from the DB
         $dbTrasy = Trasa::all();
+        $this->stops = Zastavka::all();
 
         // Initialize an empty array to store users
         $routes = [];
@@ -78,16 +80,21 @@ class ManageLinksListRoutes extends Component
             }
             $meno_zastavok = [];
             $meno_poslednej_zastavky = Zastavka::where('id_zastavka', end($zastavky_koniec))->first();
-            array_push($meno_zastavok, $meno_poslednej_zastavky->meno_zastavky);
-            array_push($meno_zastavok, $dlzkaU[$i]);
-            array_push($meno_zastavok, $casU[$i]);
-            array_push($vsetky_zastavky, $meno_zastavok);
+            if ($meno_poslednej_zastavky != null) {
+
+                array_push($meno_zastavok, $meno_poslednej_zastavky->meno_zastavky);
+                array_push($meno_zastavok, $dlzkaU[$i]);
+                array_push($meno_zastavok, $casU[$i]);
+                array_push($vsetky_zastavky, $meno_zastavok);
+            }
 
             // dd($meno_zastavok);
+            $aktual_linka =  Linka::where('id_linka', $dbRoute->id_linka)->first();
             $routes[] = [
                 'meno_trasy' => $dbRoute->meno_trasy,
                 'info_trasy' => $dbRoute->info_trasy,
                 'id_linka' => $dbRoute->id_linka,
+                'cislo_linky' => $aktual_linka->cislo_linky,
                 'zastavky' => $vsetky_zastavky,
             ];
         }
@@ -186,6 +193,36 @@ class ManageLinksListRoutes extends Component
             // get cislo linky from Linka using id_linka
             $newLinka = Linka::where('id_linka', $trasa->id_linka)->first();
             $this->cislo_linky = $newLinka->cislo_linky;
+        }
+    }
+
+    public function hide_all_stops() {
+        if ($this->all_stops === true) {
+            $this->all_stops = false;
+        } else {
+            $this->all_stops = true;
+        }
+    }
+    
+    public function stopInRouteEdit($id) {
+        if ($this->editButton && $this->editValue === $id) {
+            // If the button is already in edit mode for the current user, turn it off
+            $this->editButton = false;
+            $this->editValue = '';
+        } else {
+            // If the button is not in edit mode or is in edit mode for a different user, turn it on
+            $this->editButton = true;
+            $this->editValue = $id;
+
+            // Fill the input fields with the current user data
+            $trasa = DB::table('trasa')->where('meno_trasy', '=', $id)->first();
+            $this->meno_trasy = $trasa->meno_trasy;
+            $this->info_trasy = $trasa->info_trasy;
+            $this->id_linka = $trasa->id_linka;
+
+            // get cislo linky from Linka using id_linka
+            // $newLinka = Linka::where('id_linka', $trasa->id_linka)->first();
+            // $this->cislo_linky = $newLinka->cislo_linky;
         }
     }
 

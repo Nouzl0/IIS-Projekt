@@ -13,6 +13,7 @@ class ManageLinksAddRoutes extends Component
     // public $route_name, $info;
     public $meno_trasy, $info_trasy, $id_linka;
     public $stop;
+    public $stops; //all stops
     public $cislo_linky;
 
     public $zastavky;
@@ -61,6 +62,7 @@ class ManageLinksAddRoutes extends Component
    {
        // Retrieve all users from the DB
        $dbroutes = DB::table('trasa')->get()->toArray();
+       $this->stops = Zastavka::all();
 
        // Initialize an empty array to store routes
        $routes = [];
