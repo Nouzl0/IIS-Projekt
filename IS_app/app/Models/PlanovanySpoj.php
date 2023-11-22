@@ -27,9 +27,9 @@ class PlanovanySpoj extends Model
     public static $rules = [
         'zaciatok_trasy' => 'nullable|dateTime',
         'id_trasa' => 'required|integer',
-        'id_vozidlo' => 'required|integer',
-        'id_uzivatel_dispecer' => 'required|integer',
-        'id_uzivatel_sofer' => 'required|integer',
+        'id_vozidlo' => 'nullable|integer',
+        'id_uzivatel_dispecer' => 'nullable|integer',
+        'id_uzivatel_sofer' => 'nullable|integer',
         'opakovanie' => 'required|string',
         'platny_do' => 'required|dateTime'
     ];

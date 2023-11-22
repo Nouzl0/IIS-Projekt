@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id('id_plan_trasy');
             $table->dateTime('zaciatok_trasy')->nullable();
             $table->unsignedBigInteger('id_trasa');
-            $table->unsignedBigInteger('id_vozidlo');
-            $table->unsignedBigInteger('id_uzivatel_dispecer');
-            $table->unsignedBigInteger('id_uzivatel_sofer');
+            $table->unsignedBigInteger('id_vozidlo')->nullable();
+            $table->unsignedBigInteger('id_uzivatel_dispecer')->nullable();
+            $table->unsignedBigInteger('id_uzivatel_sofer')->nullable();
             $table->string('opakovanie');
             $table->dateTime('platny_do');
             $table->timestamps();

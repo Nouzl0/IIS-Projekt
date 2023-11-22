@@ -2,7 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\PlanovanySpoj;
+use DateTime;
 use Livewire\Component;
+use App\Models\Trasa;
 
 class ScheduleRoutesAdd extends Component
 {
@@ -10,8 +13,9 @@ class ScheduleRoutesAdd extends Component
 
     /* All data property */
     public $scheduledRoutes;
-    public $linkRoutes;
+    public $linkRoutes = [];
     public $repeatTypes = ['Nikdy', 'Denne'];
+    public $vehicles = [];
 
     /* Input field properties */
     public $scheduledRoute;
@@ -19,6 +23,7 @@ class ScheduleRoutesAdd extends Component
     public $scheduledTime;
     public $scheduledRepeat;
     public $scheduledValidUntil; 
+    //public $scheduledVehicle;
 
 
     /* FUNCTIONS */
@@ -27,49 +32,48 @@ class ScheduleRoutesAdd extends Component
     DESCRIPTION:    - Function which gets all the Routes&Links from the database and formats them
                     - Returns an array of scheduledRoutes
                     - Given data will be used for select input field
-    
-    TODO:           - Get all scheduledRoutes from the database which are NOT in the past
-                    - Get additional information about the scheduled route
-                    - Format the scheduledRoute data
     */
     private function scheduleGetLinkRoutes()
     {
-        // Retrieve all maintenance records from the database
-        $dbLinkRoutes = [1]; // TODO - get all routes from the database
+        // Retrieve all routes with additional information about the line from the database
+        $dbLinkRoutes = Trasa::select(
+            'trasa.*',
+            'linka.cislo_linky',
+            'linka.vozidla_linky'
+        )
+        ->join('linka', 'trasa.id_linka', '=', 'linka.id_linka')
+        ->get()
+        ->toArray();
         
-        // Initialize an empty array to store maintenance data
-        $linkRoutes = [];
+        // Initialize an empty array to store the formatted data for the view
+        //$linkRoutes = [];
         
-        // Loop through each maintenance record and format the data
+        // Loop through each route and format the data
         foreach ($dbLinkRoutes as $dbLinkRoute) {
-
-            // TODO - get additional information about the route -> linkName
-
-            // TODO - format the maintenance data (replace the 'N/A' values)
-            $linkRoutes[] = [
-                'routeId' => "N/A",
-                'linkName' => "N/A",
-                'routeName' => "N/A",
+            $this->linkRoutes[] = [
+                'routeId' => $dbLinkRoute['id_trasa'],
+                'linkName' => $dbLinkRoute['cislo_linky'],
+                'routeName' => $dbLinkRoute['meno_trasy'],
             ];
         }
-        return $linkRoutes;
+
+        //$this->vehicles = Vozidlo::all();
+
+        //return $linkRoutes;
     }
 
     /* schedueleAdd()
-    DESCRIPTION:    - xxx
-    
-    TODO:           - Add description
+    DESCRIPTION:    - This method adds a new planned route to the database based on the inputs from the user
     */
-    public function scheduleAdd($scheduleId) 
+    public function scheduleAdd() 
     {   
         // Check if the input fields aren't empty
         try { 
-            // TODO - Validate input fields with custom error messages
             $validatedData = $this->validate([
-                'scheduledRoute' => 'reqired|string',
-                'scheduledDate' => 'reqired|string',
-                'scheduledTime' => 'reqired|string',
-                'scheduledRepeat' => 'reqired|string',
+                'scheduledRoute' => 'required|string',
+                'scheduledDate' => 'required|string',
+                'scheduledTime' => 'required|string',
+                'scheduledRepeat' => 'required|string',
             ], [
                 'scheduledRoute.required'  => 'Trasa nie je vyplnené',
                 'scheduledDate.required' => 'Dátum nie je vyplnený',
@@ -91,11 +95,15 @@ class ScheduleRoutesAdd extends Component
             return;
         }
 
-        // TODO - add other checks
+        // Build start of the planned route from selected date and time
+        $zaciatok_trasy = $this->scheduledDate . ' ' . $this->scheduledTime . ':00';
 
+        // Build valid until date and time, and format it
+        $platny_do = new DateTime($this->scheduledValidUntil);
+        $platny_do = $platny_do->format('Y-m-d H:i:s');
 
-        // TODO - Create new schedule with the given id
-
+        //Create new planned route in the database 
+        PlanovanySpoj::create(['id_trasa' => $this->scheduledRoute, 'zaciatok_trasy' => $zaciatok_trasy, 'opakovanie' => $this->scheduledRepeat, 'platny_do' => $platny_do]);
 
         // toggleoff edit, dispatch event and display success message
         $this->reset(['scheduledRoute', 'scheduledDate', 'scheduledTime', 'scheduledRepeat', 'scheduledValidUntil']);
@@ -110,7 +118,7 @@ class ScheduleRoutesAdd extends Component
     public function mount() {
 
         // (select) get all link & routes
-        $this->linkRoutes = $this->scheduleGetLinkRoutes();
+        $this->scheduleGetLinkRoutes();
     }
 
     /* - Used for rendering the component in the browser */
