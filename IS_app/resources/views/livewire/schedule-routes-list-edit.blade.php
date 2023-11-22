@@ -17,7 +17,7 @@
                 @if ($editButton && ($editValue == $scheduledRoute['id']))
                     <tr class="list-low-row">
                         <td class=list-low-box colspan="2"> <!-- Input Link & Route -->
-                            <select wire:model="scheduledRoute" class="add-select" id="scheduledRoute" name="scheduledRoute" required>
+                            <select wire:model="scheduledRoute" class="list-low-select" id="scheduledRoute" name="scheduledRoute" required>
                                 <option value=""></option>
                                 @foreach ($linkRoutes as $linkRoute)
                                     <option value="{{ $linkRoute['routeId'] }}">{{ $linkRoute['linkName'] }} - {{ $linkRoute['routeName'] }}</option>
@@ -31,7 +31,7 @@
                             <input wire:model="scheduledTime"  type="time" name="scheduledTime" class="list-low-input" required>
                         </td>
                         <td class="list-low-box"> <!-- Input [scheduledRepeat] -->
-                            <select wire:model="scheduledRepeat" class="add-select" id="scheduledRepeat" name="scheduledRepeat" required>
+                            <select wire:model="scheduledRepeat" class="list-low-select" id="scheduledRepeat" name="scheduledRepeat" required>
                                 <option value=""></option>
                                 @foreach ($repeatTypes as $repeatType)
                                     <option value="{{ $repeatType }}">{{ $repeatType }}</option>

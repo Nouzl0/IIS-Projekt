@@ -21,18 +21,15 @@ class ScheduleRoutesContainer extends Component
     {
         $this->showValue = $toggleValue;
 
-        // refresh used component (TODO: fix this)
-        //switch($this->showValue) {
-        //    case "assign":
-        //        $this->dispatch('refresh-maintenances-list-requests')->to(Name::class);
-        //        break;
-        //    case "history":
-        //        $this->dispatch('refresh-maintenances-list-history')->to(Name::class);
-        //        break;
-        //    case "default":
-        //        $this->dispatch('refresh-maintenances-list-active')->to(Name::class);
-        //        break;
-        //}
+        // refresh used component
+        switch($this->showValue) {
+            case "history":
+                $this->dispatch('refresh-scheduled-list-history')->to(ScheduleRoutesListHistory::class);
+                break;
+            case "default":
+                $this->dispatch('refresh-scheduled-list-edit')->to(ScheduleRoutesListEdit::class);
+                break;
+        }
     }
 
     
