@@ -19,7 +19,7 @@
                         <td class="list-low-box">{{ $departure['time'] }}</td>  <!-- Text [time] -->
                         <td class="list-low-box">{{ $departure['date'] }}</td> <!-- Text [date] -->
                         <td class="list-low-box"> <!-- Button [Zobraziť] -->
-                            <button wire:click="departureShow('{{ $departure['time'] }}', '{{ $departure['date'] }}', '{{ $departure['route'] }}')" class="list-low-button">Schovať</button>
+                            <button wire:click="departureShow('{{ json_encode($departure) }}')" class="list-low-button">Zobraziť</button>
                         </td>
                     </tr>
                     @forelse ($routes as $route)
@@ -42,7 +42,7 @@
                         <td class="list-low-box">{{ $departure['time'] }}</td>  <!-- Text [time] -->
                         <td class="list-low-box">{{ $departure['date'] }}</td> <!-- Text [date] -->
                         <td class="list-low-box"> <!-- Button [Zobraziť] -->
-                            <button wire:click="departureShow('{{ $departure['time'] }}', '{{ $departure['date'] }}', '{{ $departure['route'] }}')" class="list-low-button">Zobraziť</button>
+                            <button wire:click="departureShow('{{ json_encode($departure) }}')" class="list-low-button">Zobraziť</button>
                         </td>
                     </tr>
                 @endif

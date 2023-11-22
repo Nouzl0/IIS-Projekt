@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use App\Models\Usek;
+use DateTime;
 
 
 class SearchListDepartures extends Component
@@ -32,9 +33,13 @@ class SearchListDepartures extends Component
     
     TODO:           - Finish the function, (updating route) & (displaying the route data)
     */
-    public function departureShow($time, $date, $route)
+    public function departureShow($departure)
     {
-        if ($this->showButton && ($this->showValueTime === $time) && ($this->showValueDate === $date) && ($this->showValueRoute === $route)) {
+        $this->routes = [];
+        $departure = json_decode($departure, true);
+        //dd($departure);
+
+        if ($this->showButton && ($this->showValueTime === $departure['time']) && ($this->showValueDate === $departure['date']) && ($this->showValueRoute === $departure['route'])) {
             // If the button is already in show mode for the current search, turn it off
             $this->showButton = false;
             $this->showValueTime = '';
@@ -43,62 +48,47 @@ class SearchListDepartures extends Component
         } else {
             // If the button is not in show mode or is in show mode for a different serach, turn it on
             $this->showButton = true;
-            $this->showValueTime = $time;
-            $this->showValueDate = $date;
-            $this->showValueRoute = $route;
+            $this->showValueTime = $departure['time'];
+            $this->showValueDate = $departure['date'];
+            $this->showValueRoute = $departure['route'];
 
-            /* TODO - Display the route data with given time and date, code bellow is just for testing
-            */
-            /* $this->routes = [
-                0 => ['stop' => 'Skácelová', 'time' => 'xx:43'],
-                1 => ['stop' => 'Semilasso', 'time' => 'xx:53'],
-                2 => ['stop' => 'Královo Pole', 'time' => 'xx:03'],
-            ]; */
+            /****** SEARCH THE DB AND CREATE RESULTS ******/
+            $meno_trasy = $departure['route'];
+            $id_trasa = $departure['id_route'];
 
-            foreach ($this->departures as $departure) {
-                $meno_trasy = $departure['route'];
-                $id_trasa = $departure['id_route'];
+            $useky_na_trase = Usek::select(
+                'usek.*',
+                'zastavka.meno_zastavky',
+                'planovany_spoj.id_plan_trasy',
+                'planovany_spoj.zaciatok_trasy'
+            )
+            ->join('zastavka', 'usek.id_zastavka_zaciatok', '=', 'zastavka.id_zastavka')
+            ->join('trasa', 'usek.id_trasa', '=', 'trasa.id_trasa')
+            ->join('planovany_spoj', 'trasa.id_trasa', '=', 'planovany_spoj.id_trasa')
+            ->where('usek.id_trasa', '=', $id_trasa)
+            ->get()
+            ->toArray();
 
-                //$useky_na_trase = Usek::where('id_trasa', '=', $id_trasa)->get()->toArray();   // retrieve all sections of that route
-                //dd($useky_na_trase);
+            foreach ($useky_na_trase as $usek_na_trase) {
+                $suma_minut = 0;
+                $aktualna_zastavka = $usek_na_trase['id_zastavka_zaciatok'];
 
-                $useky_na_trase = Usek::select(
-                    'usek.*',
-                    'zastavka.meno_zastavky'
-                )
-                ->join('zastavka', 'usek.id_zastavka_zaciatok', '=', 'zastavka.id_zastavka')
-                ->where('id_trasa', '=', $id_trasa)
-                ->get()
-                ->toArray();
-
-                //dd($useky_na_trase);
-
-                // join Usek a zastavka (zastavka_zaciatok)
-                // dva foreach, prvy len na meno_zastavky a id_zastavka, druhy na cas v danej zastavke
+                // Cycle through all the sections of the route that goes through the current stop
                 foreach ($useky_na_trase as $usek_na_trase) {
-                    $this->routes[] = ['id_zastavka' => $usek_na_trase['id_zastavka_zaciatok'], 'stop' => $usek_na_trase['meno_zastavky'] , 'time' => '??'];
-                    //$this->routes[$usek_na_trase['id_zastavka_zaciatok']] = ['stop' => $usek_na_trase['meno_zastavky']];
+                    if ($usek_na_trase['id_zastavka_zaciatok'] == $aktualna_zastavka) {       // if the starting stop of the section equals current stop, then stop the calculation of the duration
+                        break;
+                    } 
+                    $suma_minut += $usek_na_trase['cas_useku_minuty'];     // add the duration of the section to the entire duration of the journey
                 }
-                //dd($this->routes);
 
-                foreach ($this->routes as $zastavka) {
-                    /* foreach ($useky_na_trase as $usek_na_trase) {
-                        if ($usek_na_trase['id_zastavka_zaciatok'] == $vybrata_zastavka['id_zastavka']) {       // if the starting stop of the section equals selected stop, then stop the calculation of the duration
-                            break;
-                        } 
-                        $suma_minut += $usek_na_trase['cas_useku_minuty'];     // add the duration of the section to the entire duration of the journey
-                    } */
-                    $suma_minut = 0;
-                    foreach ($useky_na_trase as $usek_na_trase) {
-                        //dd($usek_na_trase);
-                        if ($usek_na_trase['id_zastavka_zaciatok'] == $zastavka['id_zastavka']) {
-                            break;
-                        }
-                        $suma_minut += $usek_na_trase['cas_useku_minuty'];
-                    }
+                // Calculate the duration of the journey until the current stop
+                $cas_prichodu_na_aktualnu_zastavku = new DateTime($usek_na_trase['zaciatok_trasy']);
+                $cas_prichodu_na_aktualnu_zastavku->modify("+$suma_minut minutes");
 
-                }
+                // Add the formatted data to the routes which are displayed in the view
+                $this->routes[] = ['id_zastavka' => $usek_na_trase['id_zastavka_zaciatok'], 'stop' => $usek_na_trase['meno_zastavky'] , 'time' => $cas_prichodu_na_aktualnu_zastavku->format('H:i:s')];
             }
+            /****** END SEARCH THE DB AND CREATE RESULTS ******/
         }
     }
 

@@ -70,6 +70,7 @@ class HomeAddSearch extends Component
             'trasa.meno_trasy',
             'linka.cislo_linky',
             'linka.vozidla_linky',
+            'planovany_spoj.id_plan_trasy',
             'planovany_spoj.zaciatok_trasy',
             'planovany_spoj.opakovanie',
             'planovany_spoj.platny_do'
@@ -124,7 +125,7 @@ class HomeAddSearch extends Component
 
                 // If the selected time is earlier than the time of arrival to the selected stop -> show the planned route to the user, otherwise continue with another planned route
                 if ($vybraty_cas <= $cas_prichodu_na_vybratu_zastavku) {
-                    $departures[] = ['line' => $spoj_cez_zastavku['cislo_linky'], 'id_route' => $spoj_cez_zastavku['id_trasa'], 'route' => $spoj_cez_zastavku['meno_trasy'], 'time' => $cas_prichodu_na_vybratu_zastavku->format('H:i:s'), 'date' => $vybraty_datum->format('d.m.Y')]; // store the data for the view
+                    $departures[] = ['line' => $spoj_cez_zastavku['cislo_linky'], 'id_route' => $spoj_cez_zastavku['id_trasa'], 'id_planned_route' => $spoj_cez_zastavku['id_plan_trasy'], 'route' => $spoj_cez_zastavku['meno_trasy'], 'time' => $cas_prichodu_na_vybratu_zastavku->format('H:i:s'), 'date' => $vybraty_datum->format('d.m.Y')]; // store the data for the view
                 } else {
                     continue;
                 }
