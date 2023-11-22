@@ -4,8 +4,8 @@
         <thead class="list-up-body"> <!-- Table Header -->
             <tr class="list-up-row">
                 <th class="list-up-box">Linka</th>
-                <th class="list-up-box">Trasa</th>
-                <th class="list-up-box">Čas</th>
+                <th class="list-up-box">Smer trasy</th>
+                <th class="list-up-box">Odchod</th>
                 <th class="list-up-box">Dátum</th>
                 <th class="list-up-box"></th>
             </tr>

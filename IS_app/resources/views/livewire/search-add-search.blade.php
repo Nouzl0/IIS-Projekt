@@ -3,7 +3,7 @@
     <form wire:submit.prevent="searchAdd" class="add-form">    <!-- Add Search QUarry -->
         <div class="add-container">
             <div class="add-item">
-                <label class="add-label" for="firstName">Zástavka:</label>    <!-- Input [Zástavka] -->
+                <label class="add-label" for="firstName">Zastávka:</label>    <!-- Input [Zástavka] -->
                 <input wire:model="busStop" class="add-input" type="text" id="busStop" name="busStop" required>
             </div>
         </div>
