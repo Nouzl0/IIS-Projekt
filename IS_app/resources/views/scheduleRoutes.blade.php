@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
         <link rel="stylesheet" href="{{ asset('css/component/multi-component.css') }}"> <!--schedule-routes-container-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--schedule-routes-list-new-schedule-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--schedule-routes-list-(new-schedule/edit/history)-->
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
