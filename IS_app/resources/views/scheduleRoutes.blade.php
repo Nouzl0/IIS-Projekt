@@ -14,6 +14,7 @@
         <!-- Component Styles -->  
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
+        <link rel="stylesheet" href="{{ asset('css/component/multi-component.css') }}"> <!--schedule-routes-container-->
 
         <!-- WebPage Styles -->
         <!-- replace with css link -->
@@ -25,6 +26,8 @@
         @livewire('nav')
         @livewire('alert')
         <h1>Vytvoriť plánovaný spoj</h1>
+
+        @livewire('schedule-routes-container')
 
         @livewire('timeout')
         @livewireScripts

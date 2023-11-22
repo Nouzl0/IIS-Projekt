@@ -4,12 +4,12 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-class ManageLinksContainer extends Component
+class AssignVehiclesContainer extends Component
 {
     /* ATRIBUTES */
 
     /* Show button properties */
-    public $showValue = "route";
+    public $showValue = "edit";
 
     /* FUNCTIONS */
 
@@ -23,10 +23,10 @@ class ManageLinksContainer extends Component
 
         // refresh used component (TODO: fix this)
         //switch($this->showValue) {
-        //    case "Requests":
+        //    case "assign":
         //        $this->dispatch('refresh-maintenances-list-requests')->to(Name::class);
         //        break;
-        //    case "History":
+        //    case "history":
         //        $this->dispatch('refresh-maintenances-list-history')->to(Name::class);
         //        break;
         //    case "default":
@@ -43,6 +43,6 @@ class ManageLinksContainer extends Component
     /* - Used for rendering the component in the browser */
     public function render()
     {
-        return view('livewire.manage-links-container');
+        return view('livewire.assign-vehicles-container');
     }
 }
