@@ -102,6 +102,7 @@ class ScheduleRoutesAdd extends Component
         $platny_do = new DateTime($this->scheduledValidUntil);
         $platny_do = $platny_do->format('Y-m-d H:i:s');
 
+        //dd($this->scheduledRoute, $zaciatok_trasy, $this->scheduledRepeat, $platny_do);
         //Create new planned route in the database 
         PlanovanySpoj::create(['id_trasa' => $this->scheduledRoute, 'zaciatok_trasy' => $zaciatok_trasy, 'opakovanie' => $this->scheduledRepeat, 'platny_do' => $platny_do]);
 

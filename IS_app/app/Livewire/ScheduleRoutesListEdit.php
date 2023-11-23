@@ -2,9 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\PlanovanySpoj;
+use App\Models\Uzivatel;
+use App\Models\Trasa;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class ScheduleRoutesListEdit extends Component
 {
@@ -31,33 +35,45 @@ class ScheduleRoutesListEdit extends Component
     /* maintenanceGetAll()
     DESCRIPTION:    - Function which gets all the ScheduledRoutes from the database and formats them
                     - Returns an array of scheduledRoutes
-    
-    TODO:           - Get all scheduledRoutes from the database which are NOT in the past
-                    - Get additional information about the scheduled route
-                    - Format the scheduledRoute data
     */
     private function scheduleGetAll()
     {
-        // Retrieve all maintenance records from the database
-        $dbScheudledRoutes = [1]; // TODO - get all scheduled routes from the database filer by date (in the past)
+        // Retrieve all scheduled routes records from the database with additional information about the line and route
+        $dbScheduledRoutes = PlanovanySpoj::select(
+            'planovany_spoj.*',
+            'trasa.meno_trasy',
+            'linka.cislo_linky',
+        )
+        ->join('trasa', 'planovany_spoj.id_trasa', '=', 'trasa.id_trasa')
+        ->join('linka', 'trasa.id_linka', '=', 'linka.id_linka')
+        ->where('planovany_spoj.platny_do', '>=', date('Y-m-d H:i:s'))
+        ->get()
+        ->toArray();
         
         // Initialize an empty array to store maintenance data
         $scheduledRoutes = [];
         
         // Loop through each maintenance record and format the data
-        foreach ($dbScheudledRoutes as $dbScheudledRoute) {
+        foreach ($dbScheduledRoutes as $dbScheduledRoute) {
 
-            // TODO - get additional information about the scheduled route
+            // Get and format the information about the driver for the view
+            $dbDriver = Uzivatel::where('uzivatel.id_uzivatel', '=', $dbScheduledRoute['id_uzivatel_sofer'])->first();
+            if (is_null($dbDriver)) {
+                $dbDriver = 'Nie je priradený';
+            } else {
+                $dbDriver = $dbDriver->toArray();
+                $dbDriver = $dbDriver['meno_uzivatela'] . ' ' . $dbDriver['priezvisko_uzivatela'] . ' - ' . $dbDriver['email_uzivatela'];
+            }
 
-            // TODO - format the maintenance data (replace the 'N/A' values)
+            // Format the scheduled routes data for the view
             $scheduledRoutes[] = [
-                'id' => "N/A",
-                'link' => "N/A",
-                'name' => "N/A",
-                'start' => "N/A",
-                'repeat' => "N/A",
-                'validUntil' => "N/A",
-                'driver' => "N/A",
+                'id' => $dbScheduledRoute['id_plan_trasy'],
+                'link' => $dbScheduledRoute['cislo_linky'],
+                'name' => $dbScheduledRoute['meno_trasy'],
+                'start' => $dbScheduledRoute['zaciatok_trasy'],
+                'repeat' => $dbScheduledRoute['opakovanie'],
+                'validUntil' => $dbScheduledRoute['platny_do'],
+                'driver' => $dbDriver,
             ];
         }
         return $scheduledRoutes;
@@ -67,29 +83,28 @@ class ScheduleRoutesListEdit extends Component
     DESCRIPTION:    - Function which gets all the Routes&Links from the database and formats them
                     - Returns an array of scheduledRoutes
                     - Given data will be used for select input field
-    
-    TODO:           - Get all scheduledRoutes from the database which are NOT in the past
-                    - Get additional information about the scheduled route
-                    - Format the scheduledRoute data
     */
     private function scheduleGetLinkRoutes()
     {
-        // Retrieve all maintenance records from the database
-        $dbLinkRoutes = [1]; // TODO - get all routes from the database
+        // Retrieve all routes from the database with additional information about the line
+        $dbLinkRoutes = Trasa::select(
+            'trasa.*',
+            'linka.cislo_linky'
+        )
+        ->join('linka', 'trasa.id_linka', '=', 'linka.id_linka')
+        ->get()
+        ->toArray();
         
-        // Initialize an empty array to store maintenance data
+        // Initialize an empty array to store the formatted data
         $linkRoutes = [];
         
-        // Loop through each maintenance record and format the data
+        // Loop through each route record and format the data for the view
         foreach ($dbLinkRoutes as $dbLinkRoute) {
 
-            // TODO - get additional information about the route -> linkName
-
-            // TODO - format the maintenance data (replace the 'N/A' values)
             $linkRoutes[] = [
-                'routeId' => "N/A",
-                'linkName' => "N/A",
-                'routeName' => "N/A",
+                'routeId' => $dbLinkRoute['id_trasa'],
+                'linkName' => $dbLinkRoute['cislo_linky'],
+                'routeName' => $dbLinkRoute['meno_trasy'],
             ];
         }
         return $linkRoutes;
@@ -98,25 +113,21 @@ class ScheduleRoutesListEdit extends Component
     /* maintenanceSave()
     DESCRIPTION:    - Function which validates and updates a schedules in the database
                     - Refreshes the list component
-    
-    TODO:           - Validate the input fields, if needed add other checks
-                    - Update the schedule with the given id
     */
     public function scheduleSave($scheduleId) 
     {   
-        // Check if the input fields aren't empty
+        // Check if the input fields aren't empty and check their types
         try { 
-            // TODO - Validate input fields with custom error messages
             $validatedData = $this->validate([
-                'scheduledRoute' => 'reqired|string',
-                'scheduledDate' => 'reqired|string',
-                'scheduledTime' => 'reqired|string',
-                'scheduledRepeat' => 'reqired|string',
+                'scheduledRoute' => 'required|integer',
+                'scheduledDate' => 'required|string',
+                'scheduledTime' => 'required|string',
+                'scheduledRepeat' => 'required|string',
             ], [
-                'scheduledRoute.required'  => 'Trasa nie je vyplnené',
+                'scheduledRoute.required'  => 'Trasa nie je vyplnená',
                 'scheduledDate.required' => 'Dátum nie je vyplnený',
                 'scheduledTime.required'=> ' Čas nie je vyplnený',
-                'scheduledRepeat.required' => 'Opakvanie jazdy nie je vyplnené',
+                'scheduledRepeat.required' => 'Opakovanie jazdy nie je vyplnené',
             ]);
 
         // If validation fails, exception is caught and then is displayed error messages
@@ -133,11 +144,16 @@ class ScheduleRoutesListEdit extends Component
             return;
         }
 
-        // TODO - add other checks
+        // Build start of the planned route from the selected date and time
+        $zaciatok_trasy = $this->scheduledDate . ' ' . $this->scheduledTime;
 
+        // Build valid until date and time from the selected valid until date
+        $platny_do = new DateTime($this->scheduledValidUntil);
+        $platny_do = $platny_do->format('Y-m-d H:i:s');
 
-        // TODO - Update the maintenance with the given id
-
+        // Update the selected scheduled route with the inputted data
+        PlanovanySpoj::where('id_plan_trasy', '=', $scheduleId)
+                     ->update(['id_trasa' => $this->scheduledRoute, 'zaciatok_trasy' => $zaciatok_trasy, 'opakovanie' => $this->scheduledRepeat, 'platny_do' => $platny_do]);
 
         // toggleoff edit, dispatch event and display success message
         $this->editButton = false;
@@ -160,26 +176,52 @@ class ScheduleRoutesListEdit extends Component
             $this->editButton = true;
             $this->editValue = $scheduleId;
             
-            // TODO - Get data about the scheduled route from the database
+            // Retrieve data about the selected scheduled route with additional information about the route and line
+            $selectedScheduledRoute = PlanovanySpoj::select(
+                'planovany_spoj.*',
+                'trasa.meno_trasy',
+                'trasa.id_trasa',
+                'linka.cislo_linky'
+            )
+            ->join('trasa', 'planovany_spoj.id_trasa', '=', 'trasa.id_trasa')
+            ->join('linka', 'trasa.id_linka', '=', 'linka.id_linka')
+            ->where('id_plan_trasy' ,'=', $scheduleId)
+            ->first();
 
-            // TODO - Fill the input fields with the data (replace the 'N/A' values)
-            $this->scheduledRoute = "N/A";
-            $this->scheduledDate = "N/A";
-            $this->scheduledTime = "N/A";
-            $this->scheduledRepeat = "N/A";
-            $this->scheduledValidUntil = "N/A";
+            // Format the date and time of the start
+            $date_time_start = explode(' ', $selectedScheduledRoute->zaciatok_trasy);
+            $date_start = $date_time_start[0];
+            $time_start = $date_time_start[1];
+
+            // Format the date of the valid until
+            $date_time_valid_until = explode(' ', $selectedScheduledRoute->platny_do);
+            $date_valid_until = $date_time_valid_until[0];
+
+            // Fill the input fields with the selected planned route data
+            if (is_null($selectedScheduledRoute)) {
+                $this->scheduledRoute = "N/A";
+                $this->scheduledDate = "N/A";
+                $this->scheduledTime = "N/A";
+                $this->scheduledRepeat = "N/A";
+                $this->scheduledValidUntil = "N/A";
+            } else {
+                $this->scheduledRoute = $selectedScheduledRoute->id_trasa;
+                $this->scheduledDate = $date_start;
+                $this->scheduledTime = $time_start;
+                $this->scheduledRepeat = $selectedScheduledRoute->opakovanie;
+                $this->scheduledValidUntil = $date_valid_until;
+            }
         }
     }
     
     /* scheduleDelete()
     DESCRIPTION:    - Deletes a scheduledRoute from the database's history
                     - Refresh the the list itself
-    
-    TODO:           - Delete the scheduledRoute from the database
     */
     public function scheduleDelete($scheduleId) {
         
-        // TODO - delete user from DB
+        // Delete the selected planned route
+        PlanovanySpoj::where('id_plan_trasy', '=', $scheduleId)->delete();
 
         // send a message & refresh list
         $this->dispatch('refresh-scheduled-list-edit')->to(ScheduleRoutesListEdit::class);

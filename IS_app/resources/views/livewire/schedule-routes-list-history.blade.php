@@ -23,7 +23,7 @@
                     <td class="list-low-box"> {{ $scheduledRoute['driver'] }} </td>
 
                     <td class="list-low-box-buttons"> <!-- Button [Delete] -->
-                        <button wire:click="maintenanceDelete('{{ $scheduledRoute['id'] }}')" class="list-low-button">Vymazať</button>
+                        <button wire:click="scheduledRoutesDeleteExpired('{{ $scheduledRoute['id'] }}')" class="list-low-button">Vymazať</button>
                     </td>
                 </tr>
             @empty
