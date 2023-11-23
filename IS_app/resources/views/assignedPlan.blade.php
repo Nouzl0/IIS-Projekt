@@ -15,9 +15,10 @@
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
         <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--assigned-plan-list-->
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">          <!--'footer'-->
 
         <!-- WebPage Styles -->
-        <!-- replace with css link -->
+        <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
         @livewireStyles
     </head>
@@ -25,9 +26,14 @@
     <body>
         @livewire('nav')
         @livewire('alert')
-        <h1>Priradené spoje</h1>
-        @livewire('assigned-plan-list')
-
+        <div class="title">Priradený plán</div>
+        <div class="component-container">
+            <div class="component-item-large">
+                <label class="label">• Priradené plánované spoje</label>
+                <div class="component">@livewire('assigned-plan-list')</div>
+            </div>
+        </div>
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

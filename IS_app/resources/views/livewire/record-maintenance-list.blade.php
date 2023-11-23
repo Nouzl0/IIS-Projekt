@@ -45,6 +45,10 @@
             @empty
                 <tr class="list-low-row">   <!-- No User -->
                     <td class="list-low-box">Nemáte priradené žiadne údržby</td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
                 </tr>
             @endforelse
         </tbody>

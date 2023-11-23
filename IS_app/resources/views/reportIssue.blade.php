@@ -15,11 +15,10 @@
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">    <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">          <!--alert-->
         <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">       <!--report-issue-add-->
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">         <!--'footer'-->
         
-
-
         <!-- WebPage Styles -->
-        <!-- replace with css link -->
+        <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
         @livewireStyles
     </head>
@@ -27,9 +26,13 @@
     <body>
         @livewire('nav')
         @livewire('alert')
-        <h1>Nahlásiť závadu vozidla</h1>
-        @livewire('report-issue-add')
-
+        <div class="title">Nahlásiť závadu vozidla</div>
+        <div class="component-container">
+            <div class="component-item-large">
+                <div class="component">@livewire('report-issue-add')</div>
+            </div>
+        </div>
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

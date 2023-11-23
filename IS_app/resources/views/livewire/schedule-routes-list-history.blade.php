@@ -29,6 +29,12 @@
             @empty
             <tr class="list-low-row">   <!-- No Vehicle -->
                 <td class="list-low-box">V databáze nie je žiaden dokončený plánovaný spoj</td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
             </tr>
             @endforelse
         </tbody>

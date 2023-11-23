@@ -14,11 +14,12 @@
         <!-- Component Styles -->  
         <link rel="stylesheet" href="{{ asset('css/component/account-nav.css') }}">     <!--nav-->
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
-        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--record-maintenance-add-->
+        <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--record-maintenance-list-->
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">          <!--'footer'-->
 
         <!-- WebPage Styles -->
-        <!-- replace with css link -->
+        <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
         @livewireStyles
     </head>
@@ -26,9 +27,14 @@
     <body>
         @livewire('nav')        
         @livewire('alert')
-        <h1>Vytvoriť záznam o údržbe</h1>
-        @livewire('record-maintenance-list')
-        
+        <div class="title">Záznamy údržieb</div>
+        <div class="component-container">
+            <div class="component-item-large">
+                <label class="label">• Priradené údržby</label>
+                <div class="component">@livewire('record-maintenance-list')</div>
+            </div>
+        </div>
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

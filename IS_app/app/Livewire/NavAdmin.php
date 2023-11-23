@@ -24,6 +24,7 @@ class NavAdmin extends Component
     public function toggleContent()
     {
         $this->showMoreNav = !$this->showMoreNav;
+        $this->dispatch('alert-clear');
     }
 
     

@@ -9,7 +9,7 @@
                 <img src="{{ asset('images/icon-home.svg') }}" alt="home button">
             </button>
             <section class='account-name'>
-                <span>{{ session('userFirstName', 'guest') }}</span>    <!-- should take name from database -->
+                <span>{{ session('userFirstName', 'guest') }} {{ session('userLastName', 'guest')}}</span>    <!-- should take name from database -->
             </section>
             <section class='account-role'>
                 <span>({{ session('userRole', 'guest') }})</span>    <!-- should take role from database -->

@@ -8,6 +8,9 @@
     
     /* Text */
     color: #155724;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
 }
 
 /* Style for error message */
@@ -20,4 +23,7 @@
     
     /* Text */
     color: #721c24;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
 }

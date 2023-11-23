@@ -19,9 +19,10 @@
     <link rel="stylesheet" href="{{ asset('css/component/multi-component.css') }}"> <!--manage-links-container-->
     <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--list-->
     <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--add-->
+    <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">          <!--'footer'-->
 
     <!-- WebPage Styles -->
-    <!-- replace with css link -->
+    <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
     @livewireStyles
 </head>
@@ -29,9 +30,13 @@
 <body>
     @livewire('nav')
     @livewire('alert')
-
-    @livewire('manage-links-container')
-
+    <div class="title">Správa spojov</div>
+    <div class="component-container">
+        <div class="component-item-large">
+            <div class="component">@livewire('manage-links-container')</div>
+        </div>
+    </div>
+    @livewire('footer')
     @livewire('timeout')
     @livewireScripts
 </body>

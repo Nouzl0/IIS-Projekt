@@ -30,6 +30,15 @@
                         <td class="list-sub-low-box"></td>
                         <td class="list-sub-low-box"></td>
                     </tr>
+                        @if ($route['stop'] === session('selectedBusStop'))
+                            <tr class="list-sub-low-row"> 
+                                <td class="list-sub-low-box-bold"></td> 
+                                <td class="list-sub-low-box-bold">• {{ $route['stop'] }}</td> <!-- Text [stop/stand] -->
+                                <td class="list-sub-low-box-bold">{{ $route['time'] }}</td>  <!-- Text [departure-time] -->
+                                <td class="list-sub-low-box-bold"></td>
+                                <td class="list-sub-low-box-bold"></td>
+                            </tr>
+                        @endif
                     @empty
                         <tr class="list-sub-low-row">
                             <td class="list-sub-low-box">Žiadne zastávky neboli nájdené</td>
@@ -49,6 +58,10 @@
             @empty
                 <tr class="list-low-row">   <!-- No User -->
                     <td class="list-low-box">Žiadne odchody neboli nájdené</td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
                 </tr>
             @endforelse
         </tbody>

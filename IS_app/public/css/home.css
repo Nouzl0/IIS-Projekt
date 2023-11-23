@@ -1,58 +1,48 @@
-/* Doesn't work right now */
-#poriadky {
-    background-color: aliceblue;
+.title {
+  /* Layout style */
+  position: relative;
+  text-align: center;
+  width: 100%; 
+  height: 600px; 
+  overflow: hidden;
 }
 
-.searchbar {
-    background-color: beige;
+.title-text {
+  /* Center the text */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+
+  /* Text Styling */
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 80px;
+  font-weight: 900;
 }
-.banner {
-    background-color: blanchedalmond;
-    font-size: 50;
-    padding: 12px 20px;
-    margin: 8px 0;
+
+.title-img {
+  /* Center and scale the image nicely */
+  width: 100%;
+  height: 90%;
+  object-fit: cover; /* Crop the image to cover the entire container */
+
 }
 
-input[type=text], select {
-    display: flex;
-    flex-direction: row;
-    padding: 12px 20px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-input[type=password], select {
-    display: flex;
-    flex-direction: row;
-    padding: 12px 20px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-.login, .button_login {
-    display: flex;
-    flex-direction: row;
-    padding: 12px 20px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
+.home-add-search {
+  /* Layout style */
+  position: absolute;
+  top: 90%; /* Adjust the percentage to move it vertically */
+  left: 50%; /* Center it horizontally */
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Ensure the component is in front */
+  width: 90%;
+}
 
-  .button_search {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    width: 500px;   
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    border-radius: 8px;
-  }
-
-  label {
-    margin: 10px;
-  }
+.home-list-timetables {
+  /* Layout style */
+  margin: auto;
+  width: 85%;
+  align-items: center;
+}

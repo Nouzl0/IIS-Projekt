@@ -16,11 +16,10 @@
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--'alert'-->
         <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--'home-add-search'-->
         <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--'home-list-timetables'-->
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">          <!--'footer'-->
         
         <!-- WebPage Styles -->
-        <!--
-        <link rel="stylesheet" href="{{ asset('css/home.css') }}">  
-        -->
+        <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 
         @livewireStyles
     </head>
@@ -29,10 +28,19 @@
         @livewire('nav')
         @livewire('alert')
 
-        <h1>Mestská doprava Brno</h1>
-            @livewire('home-add-search')
-            @livewire('home-list-timetables')
+        <div class="title">
+            <div class="title-text">Mestská doprava</div>
+            <img class="title-img" src="{{ asset('images/tram-prague.jpg') }}" alt="login icon">
+            <div class="home-add-search">
+                @livewire('home-add-search')
+            </div>
+        </div>
 
+        <div class="home-list-timetables">
+            @livewire('home-list-timetables')
+        </div>
+
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

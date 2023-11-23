@@ -16,9 +16,10 @@
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">               <!--alert-->
         <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">            <!--manage-vehicles-add-->
         <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">           <!--manage-vehicles-list-->
-
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">              <!--'footer'-->
+        
         <!-- WebPage Styles -->
-        <!-- replace with css link --> 
+        <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
         @livewireStyles
     </head> 
@@ -26,11 +27,19 @@
     <body>
         @livewire('nav')
         @livewire('alert')
+        <div class="title">Správa vozidiel</div>
+        <div class="component-container">
+            <div class="component-item">
+                <label class="label">• Pridať nové vozidlo</label>
+                <div class="component">@livewire('manage-vehicles-add')</div>
+            </div>
 
-        <h1>Správa vozidiel</h1>
-        @livewire('manage-vehicles-add')
-        @livewire('manage-vehicles-list')
-
+            <div class="component-item-large">
+                <label class="label">• Zoznam vozidiel</label>
+                <div class="component">@livewire('manage-vehicles-list')</div>
+            </div>
+        </div>
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

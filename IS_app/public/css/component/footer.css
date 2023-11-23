@@ -1,0 +1,65 @@
+html, body {
+    height: 90%;
+    margin: 0;
+}
+
+.wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    flex: 1; /* This makes sure that the main content takes up the remaining space */
+}
+
+.footer {
+    background-color: #cfcfcf; /* Set your desired background color */
+    color: #000000; /* Set text color */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; /* Push the footer to the bottom */
+}
+
+.footer-image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 80px;
+    border-radius: 8px; /* Add border-radius for rounded corners if desired */
+}
+
+.footer-text {
+    max-width: 600px;
+    text-align: left;
+}
+
+.footer-text-title {
+    /* Text */
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.footer-text-subtitle {
+    /* Text */
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-text {
+        max-width: 100%;
+        margin-top: 20px;
+    }
+}

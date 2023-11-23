@@ -19,7 +19,7 @@
                 </tr>
             @empty
                 <tr class="list-low-row"> <!-- No User -->
-                    <td class="list-low-box">Máte voľno kolega</td>
+                    <td class="list-low-box">Nemáte priradené žiadne spoje</td>
                     <td class="list-low-box"></td>
                     <td class="list-low-box"></td>
                     <td class="list-low-box"></td>

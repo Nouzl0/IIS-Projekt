@@ -60,6 +60,12 @@
             @empty
                 <tr class="list-low-row">   <!-- No User -->
                     <td class="list-low-box">No existing user</td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
+                    <td class="list-low-box"></td>
                 </tr>
             @endforelse
         </tbody>

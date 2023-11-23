@@ -1,18 +1,16 @@
-<div class="login-container">
-            <h2>Login</h2>
-            <form wire:submit.prevent="login">
-                <div class="input-group">
-                    <label for="username">E-mail</label>
-                    <input type="text" wire:model="email" id="email" name="email" placeholder="Zadajte svoj e-mail" required>                
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" wire:model="password" id="password" name="password" placeholder="Zadajte svoje heslo" required>
-                </div>
-                <button type="submit" class="login-button">Prihlásiť sa</button>
-            </form>
-
-            @if (session()->has('message'))
-                <p>{{ session('message') }}</p>
-            @endif
+<div class="add-form-body">
+    <div class="add-form-title">Informačný systém MD</div>
+    <form wire:submit.prevent="login" class="add-form-submit">
+        <div class="input-form-item">
+            <label class="add-form-label" for="username">E-mail</label>
+            <input class="add-form-input" type="text" wire:model="email" id="email" name="email" placeholder="Zadajte svoj e-mail" required>                
+        </div>
+        <div class="add-form-item">
+            <label class="add-form-label" for="password">Heslo</label>
+            <input class="add-form-input" type="password" wire:model="password" id="password" name="password" placeholder="Zadajte svoje heslo" required>
+        </div>
+        <div class="add-form-item">
+            <button type="submit" class="add-form-button">Prihlásiť sa</button>
+        </div>
+    </form>
 </div>

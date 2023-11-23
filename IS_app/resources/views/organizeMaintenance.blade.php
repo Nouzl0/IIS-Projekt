@@ -17,9 +17,10 @@
         <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">            <!--organizeMaintenance-add-->
         <link rel="stylesheet" href="{{ asset('css/component/multi-component.css') }}">     <!--organize-maintenance-list (multicomponent)-->
         <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">           <!--organize-maintenance-list (requests/active/history)-->
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">              <!--'footer'-->
 
         <!-- WebPage Styles -->
-        <!-- replace with css link -->
+        <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
         @livewireStyles
     </head>
@@ -27,11 +28,19 @@
     <body>
         @livewire('nav')
         @livewire('alert')
+        <div class="title">Organizácia údržieb</div>
+        <div class="component-container">
+            <div class="component-item">
+                <label class="label">• Vytvoriť novú údržbu</label>
+                <div class="component">@livewire('organize-maintenance-add')</div>
+            </div>
 
-        <h1>Organizovať údržbu</h1>
-        @livewire('organize-maintenance-add')
-        @livewire('organize-maintenance-list')
-
+            <div class="component-item-large">
+                <label class="label">• Zoznamy závad/udržieb</label>
+                <div class="component">@livewire('organize-maintenance-list')</div>
+            </div>
+        </div>
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

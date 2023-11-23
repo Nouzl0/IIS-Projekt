@@ -16,9 +16,10 @@
         <link rel="stylesheet" href="{{ asset('css/component/alert.css') }}">           <!--alert-->
         <link rel="stylesheet" href="{{ asset('css/component/multi-component.css') }}"> <!--assign-vehicles-container-->
         <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--assign-vehicles-list-(assign/edit/history)-->
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">          <!--'footer'-->
 
         <!-- WebPage Styles -->
-        <!-- replace with css link -->
+        <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
         @livewireStyles
     </head>
@@ -26,10 +27,13 @@
     <body>
         @livewire('nav')
         @livewire('alert')
-
-        <h1>Priradiť vozidlo</h1>
-        @livewire('assign-vehicles-container')
-
+        <div class="title">Správa dispečinku</div>
+        <div class="component-container">
+            <div class="component-item-large">
+                <div class="component">@livewire('assign-vehicles-container')</div>
+            </div>
+        </div>
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

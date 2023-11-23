@@ -17,9 +17,10 @@
         <link rel="stylesheet" href="{{ asset('css/component/list-add.css') }}">        <!--schedule-routes-list-add-->
         <link rel="stylesheet" href="{{ asset('css/component/multi-component.css') }}"> <!--schedule-routes-container-->
         <link rel="stylesheet" href="{{ asset('css/component/list-show.css') }}">       <!--schedule-routes-list-(edit/history)-->
+        <link rel="stylesheet" href="{{ asset('css/component/footer.css') }}">          <!--'footer'-->
 
         <!-- WebPage Styles -->
-        <!-- replace with css link -->
+        <link rel="stylesheet" href="{{ asset('css/page.css') }}">
 
         @livewireStyles
     </head>
@@ -27,11 +28,19 @@
     <body>
         @livewire('nav')
         @livewire('alert')
-        
-        <h1>Vytvoriť plánovaný spoj</h1>
-        @livewire('schedule-routes-add')
-        @livewire('schedule-routes-container')
+        <div class="title">Plánovanie spojov</div>
+        <div class="component-container">
+            <div class="component-item">
+                <label class="label">• Vytvoriť plánovaný spoj</label>
+                <div class="component">@livewire('schedule-routes-add')</div>
+            </div>
 
+            <div class="component-item-large">
+                <label class="label">• Zoznamy naplánovaných spojov</label>
+                <div class="component">@livewire('schedule-routes-container')</div>
+            </div>
+        </div>
+        @livewire('footer')
         @livewire('timeout')
         @livewireScripts
     </body>

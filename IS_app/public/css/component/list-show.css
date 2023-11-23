@@ -36,7 +36,8 @@
 /* Table row style */
 .list-low-row td {
     padding: 10px;
-    border-bottom: 1px solid #D0D0D0
+    border-bottom: 1px solid #D0D0D0;
+    border-top: 1px solid #D0D0D0;
 }
 
 /* Table box style */
@@ -60,6 +61,32 @@
     display: inline-block;
     margin: 0 8px; 
     /* Add any additional styling for the buttons if needed */
+}
+
+.list-sub-low-row {
+    /* Layout style */
+    padding: 10px;
+    height: 100%;
+}
+
+.list-sub-low-box {
+    /* Text style */
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+
+    /* Layout style */
+    padding-left: 8px;
+}
+
+.list-sub-low-box-bold {
+    /* Text style */
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+
+    /* Layout style */
+    padding-left: 7px;
 }
 
 /* Input, select, style */
