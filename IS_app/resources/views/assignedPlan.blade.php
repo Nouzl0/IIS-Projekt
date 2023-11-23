@@ -25,7 +25,7 @@
     <body>
         @livewire('nav')
         @livewire('alert')
-        <h1>AssignedPlan</h1>
+        <h1>Priradené spoje</h1>
         @livewire('assigned-plan-list')
 
         @livewire('timeout')
