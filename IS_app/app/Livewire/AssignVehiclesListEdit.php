@@ -5,6 +5,9 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\DB;
+use App\Models\PlanovanySpoj;
+use App\Models\Uzivatel;
+use App\Models\Vozidlo;
 
 class AssignVehiclesListEdit extends Component
 {
@@ -29,34 +32,55 @@ class AssignVehiclesListEdit extends Component
     /* maintenanceGetAll()
     DESCRIPTION:    - Function which gets all the ScheduledRoutes from the database and formats them
                     - Returns an array of scheduledRoutes
-    
-    TODO:           - Get all scheduledRoutes from the database which are NOT in the past
-                    - Get additional information about the scheduled route
-                    - Format the scheduledRoute data
     */
     private function assignGetScheduledRoutes()
     {
-        // Retrieve all maintenance records from the database
-        $dbScheudledRoutes = [1]; // TODO - get all scheduled routes from the database filer by date (in the past)
+        // Retrieve all scheduled routes records from the database with additional information about the line and route
+        $dbScheduledRoutes = PlanovanySpoj::select(
+            'planovany_spoj.*',
+            'trasa.meno_trasy',
+            'linka.cislo_linky',
+        )
+        ->join('trasa', 'planovany_spoj.id_trasa', '=', 'trasa.id_trasa')
+        ->join('linka', 'trasa.id_linka', '=', 'linka.id_linka')
+        ->where('planovany_spoj.platny_do', '>=', date('Y-m-d H:i:s'))
+        ->get()
+        ->toArray();
         
         // Initialize an empty array to store maintenance data
         $scheduledRoutes = [];
         
         // Loop through each maintenance record and format the data
-        foreach ($dbScheudledRoutes as $dbScheudledRoute) {
+        foreach ($dbScheduledRoutes as $dbScheduledRoute) {
 
-            // TODO - get additional information about the scheduled route
+            // Get and format the information about the driver for the view
+            $dbDriver = Uzivatel::where('uzivatel.id_uzivatel', '=', $dbScheduledRoute['id_uzivatel_sofer'])->first();
+            if (is_null($dbDriver)) {
+                $dbDriver = 'Nie je priradený';
+            } else {
+                $dbDriver = $dbDriver->toArray();
+                $dbDriver = $dbDriver['meno_uzivatela'] . ' ' . $dbDriver['priezvisko_uzivatela'] . ' - ' . $dbDriver['email_uzivatela'];
+            }
 
-            // TODO - format the maintenance data (replace the 'N/A' values)
+            // Get and format the information about the vehicle for the view
+            $dbVehicle = Vozidlo::where('vozidlo.id_vozidlo', '=', $dbScheduledRoute['id_vozidlo'])->first();
+            if (is_null($dbVehicle)) {
+                $dbVehicle = 'Nie je priradené';
+            } else {
+                $dbVehicle = $dbVehicle->toArray();
+                $dbVehicle = $dbVehicle['spz'] . ' - ' . $dbVehicle['druh_vozidla'];
+            }
+
+            // Format the scheduled routes data for the view
             $scheduledRoutes[] = [
-                'id' => "N/A",
-                'link' => "N/A",
-                'name' => "N/A",
-                'start' => "N/A",
-                'repeat' => "N/A",
-                'validUntil' => "N/A",
-                'driver' => "N/A",
-                'vehicle' => "N/A",
+                'id' => $dbScheduledRoute['id_plan_trasy'],
+                'link' => $dbScheduledRoute['cislo_linky'],
+                'name' => $dbScheduledRoute['meno_trasy'],
+                'start' => $dbScheduledRoute['zaciatok_trasy'],
+                'repeat' => $dbScheduledRoute['opakovanie'],
+                'validUntil' => $dbScheduledRoute['platny_do'],
+                'driver' => $dbDriver,
+                'vehicle' => $dbVehicle,
             ];
         }
         return $scheduledRoutes;
@@ -66,29 +90,22 @@ class AssignVehiclesListEdit extends Component
     DESCRIPTION:    - Function which gets all driver (users) from the database and formats them
                     - Returns an array of drivers
                     - Given data will be used for select input field
-    
-    TODO:           - Get all drivers from the database
-                    - Format the driver data
     */
     private function assignGetDrivers()
     {
-        // Retrieve all maintenance records from the database
-        $dbDrivers = [1]; // TODO - get all routes from the database
+        // Retrieve all drivers from the database
+        $dbDrivers = Uzivatel::where('rola_uzivatela', '=', 'vodič')->get()->toArray();
         
-        // Initialize an empty array to store maintenance data
+        // Initialize an empty array to store the data of all drivers
         $drivers = [];
         
-        // Loop through each maintenance record and format the data
+        // Loop through each driver and format their data for the view
         foreach ($dbDrivers as $dbDriver) {
-
-            // TODO - get additional information about the route -> linkName
-
-            // TODO - format the maintenance data (replace the 'N/A' values)
             $drivers[] = [
-                'id' => "N/A",
-                'firstName' => "N/A",
-                'lastName' => "N/A",
-                'email' => "N/A",
+                'id' => $dbDriver['id_uzivatel'],
+                'firstName' => $dbDriver['meno_uzivatela'],
+                'lastName' => $dbDriver['priezvisko_uzivatela'],
+                'email' => $dbDriver['email_uzivatela'],
             ];
         }
         return $drivers;
@@ -98,27 +115,20 @@ class AssignVehiclesListEdit extends Component
     DESCRIPTION:    - Function which gets all vehicles from the database and formats them
                     - Returns an array of vehicles
                     - Given data will be used for select input field
-    
-    TODO:           - Get all vehicles from the database
-                    - Format the driver data
     */
     private function assignGetVehicles()
     {
-        // Retrieve all maintenance records from the database
-        $dbVehicles = [1]; // TODO - get all routes from the database
+        // Retrieve all vehicles from the database
+        $dbVehicles = Vozidlo::all()->toArray();
         
-        // Initialize an empty array to store maintenance data
+        // Initialize an empty array to store the data of all vehicles
         $vehicles = [];
         
-        // Loop through each maintenance record and format the data
+        // Loop through each vehicle and format the data
         foreach ($dbVehicles as $dbVehicle) {
-
-            // TODO - get additional information about the route -> linkName
-
-            // TODO - format the maintenance data (replace the 'N/A' values)
             $vehicles[] = [
-                'id' => "N/A",
-                'spz' => "N/A",
+                'id' => $dbVehicle['id_vozidlo'],
+                'spz' => $dbVehicle['spz'],
             ];
         }
         return $vehicles;
@@ -127,18 +137,15 @@ class AssignVehiclesListEdit extends Component
     /* assignSave()
     DESCRIPTION:    - Function which validates and updates a assigned driver
                     - Refreshes the list component
-    
-    TODO:           - Validate the input fields, if needed add other checks
-                    - Update the schedule with the given id
     */
     public function assignSave($scheduleId) 
     {   
+        //dd($this->scheduledDriver, $this->scheduledVehicle);
         // Check if the input fields aren't empty
         try { 
-            // TODO - Validate input fields with custom error messages
             $validatedData = $this->validate([
-                'scheduledDriver' => 'required|string',
-                'scheduledVehicle' => 'required|string',
+                'scheduledDriver' => 'required|integer',
+                'scheduledVehicle' => 'required|integer',
             ], [
                 'scheduledDriver.required'  => 'Vodič nie je vyplnený',
                 'scheduledVehicle.required' => 'Vozidlo nie je vyplnené',
@@ -158,10 +165,9 @@ class AssignVehiclesListEdit extends Component
             return;
         }
 
-        // TODO - add other checks
-
-
-        // TODO - Update the schedule with the given validated data
+        // Update the schedule with the selected driver and vehicle
+        PlanovanySpoj::where('id_plan_trasy', '=', $scheduleId)
+                     ->update(['id_uzivatel_sofer' => $this->scheduledDriver, 'id_vozidlo' => $this->scheduledVehicle]);
 
 
         // toggleoff edit, dispatch event and display success message
@@ -173,9 +179,6 @@ class AssignVehiclesListEdit extends Component
     /* assignEdit()
     DESCRIPTION:    - Function which toggles the edit option for a schedules (UI)
                     - Uses 'Edit button' properties for displaying the UI and 'Input field' for filling the input fields
-
-    TODO:           - Get data about the scheduled route from the database
-                    - Fill the input fields with the data (replace the 'N/A' values)
     */
     public function assignEdit($scheduleId)
     {
@@ -188,11 +191,17 @@ class AssignVehiclesListEdit extends Component
             $this->editButton = true;
             $this->editValue = $scheduleId;
             
-            // TODO - Get data about the scheduled route from the database
+            // Get data about the selected scheduled route from the database
+            $selectedScheduledRoute = PlanovanySpoj::where('id_plan_trasy', '=', $scheduleId)->first();
 
-            // TODO - Fill the input fields with the data (replace the 'N/A' values)
-            $this->scheduledDriver= "N/A";
-            $this->scheduledVehicle = "N/A";
+            // Fill the input fields with the scheduled route data
+            if (is_null($selectedScheduledRoute)) {
+                $this->scheduledDriver= "N/A";
+                $this->scheduledVehicle = "N/A";
+            } else {
+                $this->scheduledDriver= $selectedScheduledRoute->id_uzivatel_sofer;
+                $this->scheduledVehicle = $selectedScheduledRoute->id_vozidlo;
+            }
         }
     }
 
