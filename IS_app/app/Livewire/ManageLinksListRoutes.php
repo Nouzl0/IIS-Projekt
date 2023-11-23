@@ -10,6 +10,7 @@ use App\Models\Zastavka;
 use Illuminate\Support\Facades\DB;
 
 
+
 class ManageLinksListRoutes extends Component
 {
     public $routes;
@@ -17,10 +18,38 @@ class ManageLinksListRoutes extends Component
     public $stops;
     public $editButton = false;
     public $editValue = '';
+    public $editButtonStop = false;
+    public $editValueStop = '';
     public $all_stops = true;
 
     public $meno_trasy, $info_trasy, $id_linka;
     public $cislo_linky;
+
+    /** add dynamic button fot stops */
+    public $inputs;
+    public $i;
+    public $zastavka;
+    public $dlzka;
+    public $cas;
+    public $button_add;
+
+
+    public function add($i)
+    {
+        $this->button_add = true;
+        $this->i = $i + 1;
+        if ($this->inputs != "") {
+            array_push($this->inputs, $i);
+        }
+    }
+
+    public function remove($key)
+    {
+        $this->button_add = true;
+        unset($this->inputs[$key]);
+    }
+
+    /** end dynamic button */
 
 
 
@@ -204,21 +233,25 @@ class ManageLinksListRoutes extends Component
         }
     }
     
+    public $edit_stops = [];
+
     public function stopInRouteEdit($id) {
-        if ($this->editButton && $this->editValue === $id) {
+        if ($this->editButtonStop && $this->editValueStop === $id) {
             // If the button is already in edit mode for the current user, turn it off
-            $this->editButton = false;
-            $this->editValue = '';
+            $this->editButtonStop = false;
+            $this->editValueStop = '';
         } else {
             // If the button is not in edit mode or is in edit mode for a different user, turn it on
-            $this->editButton = true;
-            $this->editValue = $id;
+            $this->editButtonStop = true;
+            $this->editValueStop = $id;
+
+            dd($this->edit_stops);
 
             // Fill the input fields with the current user data
-            $trasa = DB::table('trasa')->where('meno_trasy', '=', $id)->first();
-            $this->meno_trasy = $trasa->meno_trasy;
-            $this->info_trasy = $trasa->info_trasy;
-            $this->id_linka = $trasa->id_linka;
+            // $trasa = DB::table('trasa')->where('meno_trasy', '=', $id)->first();
+            // $this->meno_trasy = $trasa->meno_trasy;
+            // $this->info_trasy = $trasa->info_trasy;
+            // $this->id_linka = $trasa->id_linka;
 
             // get cislo linky from Linka using id_linka
             // $newLinka = Linka::where('id_linka', $trasa->id_linka)->first();
@@ -238,6 +271,15 @@ class ManageLinksListRoutes extends Component
 
         $this->routes = $this->routesGetAll();
         $this->lines = Linka::all();
+
+        $this->lines = Linka::all();
+        $this->routes = $this->routesGetAll();
+
+        $this->inputs = [];
+        $this->zastavka = [];
+        $this->dlzka = [];
+        $this->cas = [];
+        $this->i = 1;
     }
 
 
