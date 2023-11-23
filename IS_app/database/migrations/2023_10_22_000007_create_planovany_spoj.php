@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_trasa')
-                ->references('id_linka')
+                ->references('id_trasa')
                 ->on('trasa')
                 ->onUpdate('NO ACTION')
                 ->onDelete('NO ACTION');

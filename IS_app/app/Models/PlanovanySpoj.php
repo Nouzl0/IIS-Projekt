@@ -37,7 +37,7 @@ class PlanovanySpoj extends Model
     // Define relationships
     public function trasa()
     {
-        return $this->belongsTo(Trasa::class, 'id_trasa', 'id_linka');
+        return $this->belongsTo(Trasa::class, 'id_trasa', 'id_trasa');
     }
 
     public function vozidlo()
