@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Zastavka;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -30,8 +31,6 @@ class SearchListDepartures extends Component
     DESCRIPTION:    - Function which toggles the show option for a user (UI)
                     - Uses 'Show button' properties for displaying the UI
                     - Upadates route depening on which route is selected
-    
-    TODO:           - Finish the function, (updating route) & (displaying the route data)
     */
     public function departureShow($departure)
     {
@@ -69,11 +68,20 @@ class SearchListDepartures extends Component
             ->get()
             ->toArray();
 
-            foreach ($useky_na_trase as $usek_na_trase) {
-                $suma_minut = 0;
-                $aktualna_zastavka = $usek_na_trase['id_zastavka_zaciatok'];
+            $pocet_usekov_na_trase = count($useky_na_trase);        // count all the sections on the selected route
+            $pocet_spracovanych_usekov = 0;                         // set a counter for the already handled sections
 
-                // Cycle through all the sections of the route that goes through the current stop
+            // Cycle through all the sections of the selected route
+            foreach ($useky_na_trase as $usek_na_trase) {
+                
+                // Increment the counter for already handled sections
+                $pocet_spracovanych_usekov++;
+
+                // Set the current stop and reset the duration of the journey to the current stop
+                $aktualna_zastavka = $usek_na_trase['id_zastavka_zaciatok'];
+                $suma_minut = 0;
+
+                // Cycle through all the sections of the route that go through the current stop
                 foreach ($useky_na_trase as $usek_na_trase) {
                     if ($usek_na_trase['id_zastavka_zaciatok'] == $aktualna_zastavka) {       // if the starting stop of the section equals current stop, then stop the calculation of the duration
                         break;
@@ -87,6 +95,31 @@ class SearchListDepartures extends Component
 
                 // Add the formatted data to the routes which are displayed in the view
                 $this->routes[] = ['id_zastavka' => $usek_na_trase['id_zastavka_zaciatok'], 'stop' => $usek_na_trase['meno_zastavky'] , 'time' => $cas_prichodu_na_aktualnu_zastavku->format('H:i:s')];
+            
+                // If the current section is the last section of the route, add also the final stop to the routes array which is displayed in the view
+                if ($pocet_spracovanych_usekov === $pocet_usekov_na_trase) {
+
+                    // Reset the duration of the journey to the current stop
+                    $suma_minut = 0;
+
+                    // The final stop is the last stop in the route, so just go through all sections of the route and calculate the duration of the journey
+                    foreach ($useky_na_trase as $usek_na_trase) {
+                        $suma_minut += $usek_na_trase['cas_useku_minuty'];
+                    }
+                    $cas_prichodu_na_aktualnu_zastavku = new DateTime($usek_na_trase['zaciatok_trasy']);
+                    $cas_prichodu_na_aktualnu_zastavku->modify("+$suma_minut minutes");
+
+                    // Get the final stop from the database and retrieve only the name of the final stop
+                    $konecna_zastavka = Zastavka::where('id_zastavka', '=', $usek_na_trase['id_zastavka_koniec'])->first();
+                    if (is_null($konecna_zastavka)) {
+                        $meno_konecnej_zastavky = 'N/A';
+                    } else {
+                        $meno_konecnej_zastavky = $konecna_zastavka->meno_zastavky;
+                    }
+
+                    // Add the formatted data of the final stop to the routes which are displayed in the view
+                    $this->routes[] = ['id_zastavka' => $usek_na_trase['id_zastavka_koniec'], 'stop' => $meno_konecnej_zastavky, 'time' => $cas_prichodu_na_aktualnu_zastavku->format('H:i:s')];
+                }
             }
             /****** END SEARCH THE DB AND CREATE RESULTS ******/
         }
