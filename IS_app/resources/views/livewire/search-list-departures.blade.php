@@ -23,13 +23,6 @@
                         </td>
                     </tr>
                     @forelse ($routes as $route)
-                    <tr class="list-sub-low-row"> 
-                        <td class="list-sub-low-box"></td> 
-                        <td class="list-sub-low-box">{{ $route['stop'] }}</td> <!-- Text [stop/stand] -->
-                        <td class="list-sub-low-box">{{ $route['time'] }}</td>  <!-- Text [departure-time] -->
-                        <td class="list-sub-low-box"></td>
-                        <td class="list-sub-low-box"></td>
-                    </tr>
                         @if ($route['stop'] === session('selectedBusStop'))
                             <tr class="list-sub-low-row"> 
                                 <td class="list-sub-low-box-bold"></td> 
@@ -37,6 +30,14 @@
                                 <td class="list-sub-low-box-bold">{{ $route['time'] }}</td>  <!-- Text [departure-time] -->
                                 <td class="list-sub-low-box-bold"></td>
                                 <td class="list-sub-low-box-bold"></td>
+                            </tr>
+                        @else 
+                            <tr class="list-sub-low-row"> 
+                                <td class="list-sub-low-box"></td> 
+                                <td class="list-sub-low-box">{{ $route['stop'] }}</td> <!-- Text [stop/stand] -->
+                                <td class="list-sub-low-box">{{ $route['time'] }}</td>  <!-- Text [departure-time] -->
+                                <td class="list-sub-low-box"></td>
+                                <td class="list-sub-low-box"></td>
                             </tr>
                         @endif
                     @empty

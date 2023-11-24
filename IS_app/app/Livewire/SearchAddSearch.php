@@ -151,7 +151,6 @@ class SearchAddSearch extends Component
         session(['departuresResults' => $departures]);
         $this->dispatch('refresh-departures')->to(SearchListDepartures::class);
         $this->dispatch('alert-success', message: "Vyhľadávanie prebehlo úspešne");
-        return redirect()->route('search');
     }
 
 
