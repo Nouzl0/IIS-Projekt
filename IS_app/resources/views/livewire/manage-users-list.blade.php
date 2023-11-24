@@ -9,7 +9,6 @@
                 <th class="list-up-box">Heslo</th>
                 <th class="list-up-box">Rola</th>
                 <th class="list-up-box"></th>
-                <th class="list-up-box"></th>
             </tr>
         </thead>
         <tbody class="list-low-body"> <!-- Table Body -->
@@ -37,10 +36,9 @@
                                 <option value="technik">technik</option>
                             </select>
                         </td>
-                        <td class="list-low-box"> <!-- Button [Save] -->
+                        <td class="list-low-box-buttons"> <!-- Button [Save] -->
                             <button wire:click="userSave('{{ $user['email'] }}')" class="list-low-button">Uložiť</button>
                         </td>
-                        <td class="list-low-box"></th>
                     </tr>
                 @else
                     <tr class="list-low-row">   <!-- Show User -->
@@ -49,10 +47,8 @@
                         <td class="list-low-box">{{ $user['email'] }}</td>  <!-- Text [Email] -->
                         <td class="list-low-box">{{ $user['password'] }}</td> <!-- Text [Password] -->
                         <td class="list-low-box">{{ $user['role'] }}</td> <!-- Text [Role] -->
-                        <td class="list-low-box"> <!-- Button [Edit] & Button [Delete] -->
+                        <td class="list-low-box-buttons"> <!-- Button [Edit] & Button [Delete] -->
                             <button wire:click="userEdit('{{ $user['email'] }}')" class="list-low-button">Upraviť</button>
-                        </td>
-                        <td class="list-low-box">
                             <button wire:click="userDelete('{{ $user['email'] }}')" class="list-low-button">Vymazať</button>
                         </td>
                     </tr>

@@ -5,7 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use App\Models\Linka;
-
+use Livewire\Attributes\On;
 
 
 class ManageLinksLinesList extends Component
@@ -16,12 +16,13 @@ class ManageLinksLinesList extends Component
     public $editValue = '';
 
     /* Input field properties */
-    public $cislo_linky, $vozidla_linky;
+    public $cislo_linky;
+    public $vozidla_linky;
 
 
     /* FUNCTIONS */
 
-    /* userGetAll()
+    /* lineGetAll()
     DESCRIPTION:    - Function which gets all the lines from the database and formats them
                     - Returns an array of lines
     */
@@ -56,9 +57,10 @@ class ManageLinksLinesList extends Component
                 'vozidla_linky' => 'required',
                 'cislo_linky' => 'required|integer|unique:linka,cislo_linky,' . $id . ',cislo_linky',
             ], [
-                'cislo_linky.required' => 'čislo linky je povinné',
-                'cislo_linky.unique' => 'čislo linky už existuje',
-                'vozidla_linky.required' => 'vyber typ vozidla',
+                'cislo_linky.required' => 'Čislo linky musí byť vyplnené',
+                'cislo_linky.unique' => 'Existuje už linka s týmto číslom',
+                'cislo_linky.integer' => 'Zadajte (číslo) linky',
+                'vozidla_linky.required' => 'Typ vozidla musí byť vyplnený',
             ]);
 
             // After successful validation, find the user with the given email and update it's data
@@ -69,8 +71,7 @@ class ManageLinksLinesList extends Component
     
             // toggleoff edit, dispatch event amd display success message
             $this->editButton = false;
-            // $this->dispatch('refresh-lines-list')->to(ManagelinesList::class);
-            $this->mount();
+            $this->dispatch('refresh-line-list')->to(ManageLinksLinesList::class);
             $this->dispatch('alert-success', message: "Linka bola úspešne aktualizovaná");
             return;
         
@@ -92,7 +93,7 @@ class ManageLinksLinesList extends Component
     public function lineEdit($cislo_linky)
     {
         if ($this->editButton && $this->editValue == $cislo_linky) {
-            // dd($this->editButton,$this->cislo_linky, $this->editValue);
+
             // If the button is already in edit mode for the current line, turn it off
             $this->editButton = false;
             $this->editValue = '';
@@ -108,10 +109,8 @@ class ManageLinksLinesList extends Component
         }
     }
 
-    /* userDelete()
-    DESCRIPTION:    - Deletes a user from the database
-                    - Dispatches an event to component 'ManagelinesList' to refresh the user's list
-    TODO            - !!!!!!!deletes last admim DOESNT WORK!!!!!!!!
+    /* lineDelete()
+    DESCRIPTION:    - add descriptio TODO
     */
     public function lineDelete($cislo_linky) {
         
@@ -119,13 +118,11 @@ class ManageLinksLinesList extends Component
         try{
             DB::table('linka')->where('cislo_linky', '=', $cislo_linky)->delete();
     
-            // if the number of admin lines is 1, do not delete the admin user
             // send a message & refresh list
-            // $this->dispatch('refresh-lines-list')->to(ManagelinesList::class);
-            $this->mount();
+            $this->dispatch('refresh-line-list')->to(ManageLinksLinesList::class);
             $this->dispatch('alert-success', message: "Linka bola odstránená z databázy");
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - najpr musíš vymazať linku z trasy");
+            $this->dispatch('alert-error', message: "Ku linke sú priradené trasy, nie je možné ju odstrániť");
         }
     }
 
@@ -133,11 +130,13 @@ class ManageLinksLinesList extends Component
     /* LIVEWIRE */
 
     /* - Used for mounting the component, with listener to refresh the the list */
+    #[On('refresh-line-list')]
     public function mount()
     {
         // Set the $lines property with the formatted lines array
         $this->lines = $this->lineGetAll();
     }
+
     public function render()
     {
         return view('livewire.manage-links-lines-list');

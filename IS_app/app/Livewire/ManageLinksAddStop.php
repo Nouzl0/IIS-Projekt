@@ -31,7 +31,7 @@ class ManageLinksAddStop extends Component
             ], [
                 'stop_name.required' => 'Vyplnte meno zastávky',
                 'stop_address.required' => 'Vyplnte adresu',
-                'stop_name.unique' => 'Zastávak už existuje',
+                'stop_name.unique' => 'Zástavka už existuje',
             ]);
 
         // If validation fails, exception is caught and then is displayed error messages
@@ -48,17 +48,16 @@ class ManageLinksAddStop extends Component
             return;
         }
 
-
+        // After successful validation, create a new stop in the database
         Zastavka::create([
             'meno_zastavky' => $validatedData['stop_name'],
             'adresa_zastavky' => $validatedData['stop_address'],
         ]);
 
-        return redirect()->to('/manageLinks');   // refresh the page
 
         // Reset input field properties, display success message and dispatch an event to refresh the users list
         $this->reset(['stop_name', 'stop_address']);
-        $this->dispatch('refresh-stop-list')->to(ManageLinksAddStop::class);
+        $this->dispatch('refresh-stop-list')->to(ManageLinksListOfStops::class);
         $this->dispatch('alert-success', message: "Zastávka bol pridaná do databázy");
 
     }

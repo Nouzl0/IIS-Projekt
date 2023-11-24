@@ -3,9 +3,10 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Zastavka;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 
+use App\Models\Zastavka;
 
 class ManageLinksListOfStops extends Component
 {
@@ -72,7 +73,7 @@ class ManageLinksListOfStops extends Component
 
             // toggleoff edit, dispatch event amd display success message
             $this->editButton = false;
-            // $this->dispatch('refresh-users-list')->to(ManageLinksListOfStops::class);
+            $this->dispatch('refresh-stop-list')->to(ManageLinksListOfStops::class);
             $this->dispatch('alert-success', message: "Zástavka bola úspešne aktualizovaná");
             return;
 
@@ -118,11 +119,11 @@ class ManageLinksListOfStops extends Component
         // delete stop from DB
         try {
             DB::table('zastavka')->where('meno_zastavky', '=', $stop_name)->delete();
-            // send a message & refresh list
-            // $this->dispatch('refresh-users-list')->to(ManageLinksListOfStops::class);
+            $this->dispatch('refresh-stop-list')->to(ManageLinksListOfStops::class);
             $this->dispatch('alert-success', message: "Zastávka bola odstránená z databázy");
+
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "Zastávka je už v úseku, najprv vymaž úsek");
+            $this->dispatch('alert-error', message: "Zastávka je už použitá v trase, najprv je potrebné vymazať úsek");
         }
 
         $this->mount();
@@ -130,13 +131,12 @@ class ManageLinksListOfStops extends Component
 
 
     /* LIVEWIRE */
-
+    #[On('refresh-stop-list')]
     public function mount()
     {
         // Set the $stop property with the formatted stop array
         $this->stops = $this->stopGetAll();
     }
-
 
 
     public function render()

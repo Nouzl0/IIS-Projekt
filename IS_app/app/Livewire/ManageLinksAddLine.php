@@ -4,11 +4,12 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Linka;
+use Livewire\Attributes\On;
 
 class ManageLinksAddLine extends Component
 {
-
-    public $cislo_linky, $vozidla_linky;
+    public $cislo_linky;
+    public $vozidla_linky;
     
 
     // * lineAdd()
@@ -22,10 +23,10 @@ class ManageLinksAddLine extends Component
                 'vozidla_linky' => 'required',
                 'cislo_linky' => 'required|integer||unique:linka,cislo_linky',
             ], [
-                'cislo_linky.required' => 'čislo linky je povinné',
-                'cislo_linky.unique' => 'toto číslo linky je v databáze',
-                'cislo_linky.integer' => 'toto číslo linky musí byť číslo',
-                'vozidla_linky.required' => 'vyber typ vozidla',
+                'cislo_linky.required' => 'Čislo linky musí byť vyplnené',
+                'cislo_linky.unique' => 'Existuje už linka s týmto číslom',
+                'cislo_linky.integer' => 'Zadajte (číslo) linky',
+                'vozidla_linky.required' => 'Typ vozidla musí byť vyplnený',
             ]);
 
         // Displaying error messages
@@ -44,14 +45,16 @@ class ManageLinksAddLine extends Component
             'cislo_linky' => $validatedData['cislo_linky'],    
             'vozidla_linky' => $validatedData['vozidla_linky'],
         ]);
+
+        $this->reset(['cislo_linky', 'vozidla_linky']);
         $this->dispatch('alert-success', message: "Linka bola úspešne pridaná");
-        return redirect()->to('/manageLinks');   // refresh the page
+        $this->dispatch('refresh-line-list')->to(ManageLinksLinesList::class);
 
     }
 
-    public function mount() {
-    }
+    /* LIVEWIRE */
 
+    // * render()
     public function render()
     {
         return view('livewire.manage-links-add-line');

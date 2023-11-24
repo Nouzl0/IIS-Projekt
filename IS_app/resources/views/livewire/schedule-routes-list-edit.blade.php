@@ -65,6 +65,13 @@
             @empty
             <tr class="list-low-row">   <!-- No Schedules -->
                 <td class="list-low-box">V databáze nie je žiaden naplánovaný spoj</td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
+                <td class="list-low-box"></td>
             </tr>
             @endforelse
         </tbody>
