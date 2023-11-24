@@ -34,8 +34,9 @@
                         </td>
 
                         <td class=list-low-box>
-                            <button wire:click="routeEdit('{{ $route['meno_trasy'] }}')"
-                                class="list-low-button">Upraviť</button>
+                            <button wire:click="routeSave('{{ $route['meno_trasy'] }}')" class="list-low-button">Uložiť</button>
+
+
                             <button wire:click="routeDelete('{{ $route['meno_trasy'] }}')"
                                 class="list-low-button">Vymazať</button>
                         </td>
@@ -57,15 +58,15 @@
                         <tr class="list-sub-low-row">
                             <td class="list-sub-low-box"></td>
                             <td class="list-sub-low-box">
-                                <input type="text" name="zastavka" value="{{ $stop[0] }}"
+                                <input wire:model="sectionStop.{{ $stop[3] }}"  type="text"  name="zastavka"  
                                     class="input_edit_form">
                             </td> <!-- Text [stop/stand] -->
                             <td class="list-sub-low-box">
-                                <input type="text" name="zastavka" value="{{ $stop[1] }}"
+                                <input wire:model="sectionLength.{{ $stop[3] }}" type="text" name="zastavka" 
                                     class="input_edit_form">
                             </td> <!-- Text [stop/stand] -->
                             <td class="list-sub-low-box">
-                                <input type="text" name="zastavka" value="{{ $stop[2] }}"
+                                <input wire:model="sectionTime.{{ $stop[3] }}" type="text" name="zastavka"
                                     class="input_edit_form">
                             </td> <!-- Text [stop/stand] -->
                             <td class="list-sub-low-box"></td>
@@ -107,10 +108,8 @@
                     @foreach ($inputs as $key => $value)
                         <div>
                             <tr>
-
                                 <td></td>
                                 <td>
-
                                     <select wire:model="zastavka.{{ $value }}"
                                         id="zastavka.{{ $value }}" name="zastavka.{{ $value }}"
                                         required>
@@ -122,16 +121,13 @@
                                     </select>
                                 </td>
                                 <td>
-
                                     <input type="text" wire:model="dlzka.{{ $value }}"
                                         placeholder="Dlzka useku">
                                 </td>
                                 <td>
-
                                     <input type="text" wire:model="cas.{{ $value }}" placeholder="Čas úseku">
                                 </td>
                                 <td>
-
                                     <button type="text" wire:click="remove({{ $key }})">Vymaž</button>
                                 </td>
                             </tr>

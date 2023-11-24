@@ -23,6 +23,7 @@ class ManageLinksListRoutes extends Component
     public $all_stops = true;
 
     public $meno_trasy, $info_trasy, $id_linka;
+    public $id_trasa;
     public $cislo_linky;
 
     /** add dynamic button fot stops */
@@ -32,6 +33,17 @@ class ManageLinksListRoutes extends Component
     public $dlzka;
     public $cas;
     public $button_add;
+
+
+    /* edit */
+
+    public $sectionStop = [];
+    public $sectionLength = [];
+    public $sectionTime = [];
+
+    public $numberOfStops;
+    public $nextStopIndex;
+
 
 
     public function add($i)
@@ -89,35 +101,38 @@ class ManageLinksListRoutes extends Component
             $zastavky_koniec = array_column($aktualny_usek, 'id_zastavka_koniec');
             $dlzkaU = array_column($aktualny_usek, 'dlzka_useku_km');
             $casU = array_column($aktualny_usek, 'cas_useku_minuty');
+            $poradieU = array_column($aktualny_usek, 'poradie_useku');
             $vsetky_zastavky = [];
-            $i = -1;
-            
+            $i = 0;
+
+            /** add to beginning 0 */
+            array_unshift($dlzkaU, 0);
+            array_unshift($casU, 0);
+            array_unshift($poradieU, 0);
+            $this->nextStopIndex = count($zastavky_zaciatok);
+            // print_r($zastavky_zaciatok);
+            // dd($dlzkaU);
             foreach ($zastavky_zaciatok as $zastavka) {
-                $meno_zastavok = [];        
+                $meno_zastavok = [];
                 $meno_zastavky = Zastavka::where('id_zastavka', $zastavka)->first();
                 array_push($meno_zastavok, $meno_zastavky->meno_zastavky);
-                if($i < 0) {
-                    array_push($meno_zastavok, 0);
-                    array_push($meno_zastavok, 0);
-                }else {
-                    array_push($meno_zastavok, $dlzkaU[$i]);
-                    array_push($meno_zastavok, $casU[$i]);
-                }
+                array_push($meno_zastavok, $dlzkaU[$i]);
+                array_push($meno_zastavok, $casU[$i]);
+                array_push($meno_zastavok, $poradieU[$i]);
                 array_push($vsetky_zastavky, $meno_zastavok);
                 $i = $i + 1;
-                // dd($vsetky_zastavky);
             }
             $meno_zastavok = [];
             $meno_poslednej_zastavky = Zastavka::where('id_zastavka', end($zastavky_koniec))->first();
             if ($meno_poslednej_zastavky != null) {
-
                 array_push($meno_zastavok, $meno_poslednej_zastavky->meno_zastavky);
                 array_push($meno_zastavok, $dlzkaU[$i]);
                 array_push($meno_zastavok, $casU[$i]);
+                array_push($meno_zastavok, $poradieU[$i]);
+
                 array_push($vsetky_zastavky, $meno_zastavok);
             }
 
-            // dd($meno_zastavok);
             $aktual_linka =  Linka::where('id_linka', $dbRoute->id_linka)->first();
             $routes[] = [
                 'meno_trasy' => $dbRoute->meno_trasy,
@@ -187,10 +202,50 @@ class ManageLinksListRoutes extends Component
             'id_linka' => $linka_na_trase->id_linka,
 
         ]);
+
+        /** EDIT STOPS */
+            
+            /** delete all Usek with Trasa id */
+            $aktualnaTrasa = Trasa::where('meno_trasy', $id)->first();
+            Usek::where('id_trasa', $aktualnaTrasa->id_trasa)->delete();
+
+            /** add to edited sectionStop new stops */
+            $numberOfNewStops = count($this->zastavka);
+            for ($j = 0; $j < $numberOfNewStops; $j++) {
+                array_push($this->sectionStop, $this->zastavka[$j]);
+                array_push($this->sectionLength, $this->dlzka[$j]);
+                array_push($this->sectionTime, $this->cas[$j]);
+            }
+
+            /** insert new stops */
+            $numberOfStops = count($this->sectionStop);
+            if ($numberOfStops <= 1) {
+                $this->dispatch('alert-error', message: "trasa musí mať aspoň 2 zastávky");
+                return;
+            }
+
+            for ($i = 0; $i <= $numberOfStops - 2; $i++) {
+                $zaciatok = $this->sectionStop[$i];
+                $koniec = $this->sectionStop[$i + 1];
+                $dbZastavka_zaciatok = Zastavka::where('meno_zastavky', $zaciatok)->first();
+                $dbZastavka_koniec = Zastavka::where('meno_zastavky', $koniec)->first();
+                // dd( $dbZastavka_zaciatok->id_zastavka ,$dbZastavka_koniec->id_zastavka);
+                Usek::create([
+                    'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
+                    'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
+                    'dlzka_useku_km' => $this->sectionLength[$i+1],
+                    'cas_useku_minuty' => $this->sectionTime[$i+1],
+                    'id_trasa' => $aktualnaTrasa->id_trasa,
+                    'poradie_useku' => $i+1,
+                ]);
+                
+            }
         // return redirect()->to('/manageLinks');   // refresh the page
 
-        $this->editButton = false;
+        
+        // return redirect()->to('/manageLinks');   // refresh the page
         $this->mount();
+        $this->editButton = false;
 
         // if ($this->cislo_linky == "") {
         //     $this->dispatch('alert-error', message: "vyber_linku");
@@ -213,50 +268,96 @@ class ManageLinksListRoutes extends Component
             $this->editButton = true;
             $this->editValue = $id;
 
+            /** fill up section data */
+            $this->sectionStop = [];
+            $this->sectionLength = [];
+            $this->sectionTime = [];
+
+            foreach ($this->routes as $route) {
+                if ($route['meno_trasy'] === $id) {
+                    // dd($route['zastavky']);
+                    $this->sectionStop = array_column($route['zastavky'], 0);
+                    $this->sectionLength = array_column($route['zastavky'], 1);
+                    $this->sectionTime = array_column($route['zastavky'], 2);
+                }
+            }
+
             // Fill the input fields with the current user data
             $trasa = DB::table('trasa')->where('meno_trasy', '=', $id)->first();
             $this->meno_trasy = $trasa->meno_trasy;
             $this->info_trasy = $trasa->info_trasy;
             $this->id_linka = $trasa->id_linka;
+            $this->id_trasa = $trasa->id_trasa;
 
             // get cislo linky from Linka using id_linka
             $newLinka = Linka::where('id_linka', $trasa->id_linka)->first();
             $this->cislo_linky = $newLinka->cislo_linky;
+
+            
         }
     }
 
-    public function hide_all_stops() {
+    public function hide_all_stops()
+    {
         if ($this->all_stops === true) {
             $this->all_stops = false;
         } else {
             $this->all_stops = true;
         }
     }
-    
-    public $edit_stops = [];
 
-    public function stopInRouteEdit($id) {
-        if ($this->editButtonStop && $this->editValueStop === $id) {
-            // If the button is already in edit mode for the current user, turn it off
-            $this->editButtonStop = false;
-            $this->editValueStop = '';
-        } else {
-            // If the button is not in edit mode or is in edit mode for a different user, turn it on
-            $this->editButtonStop = true;
-            $this->editValueStop = $id;
 
-            dd($this->edit_stops);
+    public function stopInRouteEdit($id)
+    {
 
-            // Fill the input fields with the current user data
-            // $trasa = DB::table('trasa')->where('meno_trasy', '=', $id)->first();
-            // $this->meno_trasy = $trasa->meno_trasy;
-            // $this->info_trasy = $trasa->info_trasy;
-            // $this->id_linka = $trasa->id_linka;
 
-            // get cislo linky from Linka using id_linka
-            // $newLinka = Linka::where('id_linka', $trasa->id_linka)->first();
-            // $this->cislo_linky = $newLinka->cislo_linky;
-        }
+        // if ($this->editButtonStop && $this->editValueStop === $id) {
+        //     // If the button is already in edit mode for the current user, turn it off
+        //     $this->editButtonStop = false;
+        //     $this->editValueStop = '';
+        // } else {
+        //     // If the button is not in edit mode or is in edit mode for a different user, turn it on
+        //     $this->editButtonStop = true;
+        //     $this->editValueStop = $id;
+
+        //     /** delete all Usek with Trasa id */
+        //     $aktualnaTrasa = Trasa::where('meno_trasy', $id)->first();
+        //     Usek::where('id_trasa', $aktualnaTrasa->id_trasa)->delete();
+
+        //     /** add to edited sectionStop new stops */
+        //     $numberOfNewStops = count($this->zastavka);
+        //     for ($j = 0; $j < $numberOfNewStops; $j++) {
+        //         array_push($this->sectionStop, $this->zastavka[$j]);
+        //         array_push($this->sectionLength, $this->dlzka[$j]);
+        //         array_push($this->sectionTime, $this->cas[$j]);
+        //     }
+
+        //     /** insert new stops */
+        //     $numberOfStops = count($this->sectionStop);
+        //     if ($numberOfStops <= 1) {
+        //         $this->dispatch('alert-error', message: "trasa musí mať aspoň 2 zastávky");
+        //         return;
+        //     }
+
+        //     for ($i = 0; $i <= $numberOfStops - 2; $i++) {
+        //         $zaciatok = $this->sectionStop[$i];
+        //         $koniec = $this->sectionStop[$i + 1];
+        //         $dbZastavka_zaciatok = Zastavka::where('meno_zastavky', $zaciatok)->first();
+        //         $dbZastavka_koniec = Zastavka::where('meno_zastavky', $koniec)->first();
+        //         // dd( $dbZastavka_zaciatok->id_zastavka ,$dbZastavka_koniec->id_zastavka);
+        //         Usek::create([
+        //             'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
+        //             'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
+        //             'dlzka_useku_km' => $this->sectionLength[$i+1],
+        //             'cas_useku_minuty' => $this->sectionTime[$i+1],
+        //             'id_trasa' => $aktualnaTrasa->id_trasa,
+        //             'poradie_useku' => $i+1,
+        //         ]);
+                
+        //     }
+
+        //     $this->mount();
+        // }
     }
 
     public function routeDelete($id)
@@ -268,9 +369,6 @@ class ManageLinksListRoutes extends Component
 
     public function mount()
     {
-
-        $this->routes = $this->routesGetAll();
-        $this->lines = Linka::all();
 
         $this->lines = Linka::all();
         $this->routes = $this->routesGetAll();
