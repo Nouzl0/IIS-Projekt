@@ -1,6 +1,4 @@
 <div>
-    {{-- If your happiness depends on money, you will never be happy with yourself. --}}
-    <!-- Table -->
     <table class="list-table">
         <thead class="list-up-body"> <!-- Table Header -->
             <tr class="list-up-row">
@@ -17,7 +15,7 @@
                             <input wire:model="cislo_linky" type="text" name="cislo_linky" class="list-low-input" required>
                         </td>
                         <td class="list-low-box"> 
-                            <select wire:model="vozidla_linky" class="add-select" id="vozidla_linky" name="vozidla_linky" required>
+                            <select wire:model="vozidla_linky" class="list-low-select" id="vozidla_linky" name="vozidla_linky" required>
                                 <option value="Autobus">Autobus</option>
                                 <option value="Električka">Električka</option>
                                 <option value="Trolejbus">Trolejbus</option>

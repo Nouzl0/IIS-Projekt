@@ -1,30 +1,22 @@
 <?php
 
 namespace App\Livewire;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 
 use App\Models\Linka;
 use Livewire\Component;
 use App\Models\Trasa;
 use App\Models\Usek;
 use App\Models\Zastavka;
-use Illuminate\Support\Facades\DB;
-
-
 
 class ManageLinksListRoutes extends Component
 {
-    /** table from db */
+    /** Data from db */
     public $routes;
     public $lines;
     public $stops;
 
-    /** buttion, edit */
-    public $editButton = false;
-    public $editValue = '';
-    public $all_stops = true;
-
-    
-    public $meno_trasy, $info_trasy, $id_linka;
     public $id_trasa;
     public $cislo_linky;
 
@@ -38,29 +30,23 @@ class ManageLinksListRoutes extends Component
 
     public $numRange;
 
+    /* Edit Toggle */
+    public $editButton = false;
+    public $editValue = '';
 
-    /* edit stops*/
+    /* Show Toggle */
+    public $showButton = false;
+    public $showValue = '';
+
+    /* Route Input-Field */
+    public $meno_trasy;
+    public $id_linka;
+
+    /* Stop Input-Field */
     public $sectionStop = [];
     public $sectionLength = [];
     public $sectionTime = [];
 
-    /** dynamic button functions */
-    public function add($i)
-    {
-        $this->button_add = true;
-        $this->i = $i + 1;
-        if ($this->inputs != "") {
-            array_push($this->inputs, $i);
-        }
-    }
-
-    public function remove($key)
-    {
-        $this->button_add = true;
-        unset($this->inputs[$key]);
-    }
-
-    /** end dynamic button */
 
     /* routesGetAll()
     DESCRIPTION:    - Function which gets all the data from the database and formats them
@@ -136,9 +122,15 @@ class ManageLinksListRoutes extends Component
     DESCRIPTION:    - Function which validates and updates data in the database
                     - Uses 'Input field' for getting input data
                     - Is dispatching an event to component '' to refresh the user's list
+    
+    TODO            - save given data do db
     */
     public function routeSave($id)
     {
+        // TODO - FINISH DATABESE UPDATE, DEBUG HERE
+        dd("Finish routeSave()", $this->sectionStop, $this->sectionLength, $this->sectionTime);
+
+
         // try { 
         //     // Validate input fields with custom error messages
         //     $validatedData = $this->validate([
@@ -195,45 +187,45 @@ class ManageLinksListRoutes extends Component
         /** delete all Usek with Trasa id */
         try {
 
-        $aktualnaTrasa = Trasa::where('meno_trasy', $id)->first();
-        Usek::where('id_trasa', $aktualnaTrasa->id_trasa)->delete();
+            $aktualnaTrasa = Trasa::where('meno_trasy', $id)->first();
+            Usek::where('id_trasa', $aktualnaTrasa->id_trasa)->delete();
 
-        /** add to edited sectionStop/length/time new stops */
-        $numberOfNewStops = count($this->zastavka);
-        for ($j = 0; $j < $numberOfNewStops; $j++) {
-            array_push($this->sectionStop, $this->zastavka[$j]);
-            array_push($this->sectionLength, $this->dlzka[$j]);
-            array_push($this->sectionTime, $this->cas[$j]);
-        }
+            /** add to edited sectionStop/length/time new stops */
+            $numberOfNewStops = count($this->zastavka);
+            for ($j = 0; $j < $numberOfNewStops; $j++) {
+                array_push($this->sectionStop, $this->zastavka[$j]);
+                array_push($this->sectionLength, $this->dlzka[$j]);
+                array_push($this->sectionTime, $this->cas[$j]);
+            }
 
-        /** insert new stops */
-        $numberOfStops = count($this->sectionStop);
-        if ($numberOfStops <= 1) {
-            $this->dispatch('alert-error', message: "trasa musí mať aspoň 2 zastávky");
-            return;
-        }
+            /** insert new stops */
+            $numberOfStops = count($this->sectionStop);
+            if ($numberOfStops <= 1) {
+                $this->dispatch('alert-error', message: "trasa musí mať aspoň 2 zastávky");
+                return;
+            }
 
-        for ($i = 0; $i <= $numberOfStops - 2; $i++) {
-            $zaciatok = $this->sectionStop[$i];
-            $koniec = $this->sectionStop[$i + 1];
-            $dbZastavka_zaciatok = Zastavka::where('meno_zastavky', $zaciatok)->first();
-            $dbZastavka_koniec = Zastavka::where('meno_zastavky', $koniec)->first();
-            // dd( $dbZastavka_zaciatok->id_zastavka ,$dbZastavka_koniec->id_zastavka);
+            for ($i = 0; $i <= $numberOfStops - 2; $i++) {
+                $zaciatok = $this->sectionStop[$i];
+                $koniec = $this->sectionStop[$i + 1];
+                $dbZastavka_zaciatok = Zastavka::where('meno_zastavky', $zaciatok)->first();
+                $dbZastavka_koniec = Zastavka::where('meno_zastavky', $koniec)->first();
+                // dd( $dbZastavka_zaciatok->id_zastavka ,$dbZastavka_koniec->id_zastavka);
 
-                Usek::create([
-                    'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
-                    'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
-                    'dlzka_useku_km' => $this->sectionLength[$i + 1],
-                    'cas_useku_minuty' => $this->sectionTime[$i + 1],
-                    'id_trasa' => $aktualnaTrasa->id_trasa,
-                    'poradie_useku' => $i + 1,
-                ]);
-            } 
+                    Usek::create([
+                        'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
+                        'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
+                        'dlzka_useku_km' => $this->sectionLength[$i + 1],
+                        'cas_useku_minuty' => $this->sectionTime[$i + 1],
+                        'id_trasa' => $aktualnaTrasa->id_trasa,
+                        'poradie_useku' => $i + 1,
+                    ]);
+                } 
+
         } catch (\Exception $e) {
             $this->dispatch('alert-error', message: "ERROR - Nesprávne údaje");
             return;
         } 
-
 
 
         $this->editButton = false;
@@ -244,6 +236,7 @@ class ManageLinksListRoutes extends Component
     /* routeEdit()
     DESCRIPTION:    - Function which toggles the edit option 
                     - Uses 'Edit button' properties for displaying the UI and 'Input field' for filling the input fields
+                    - Function is finished 
     */
     public function routeEdit($id)
     {
@@ -252,9 +245,6 @@ class ManageLinksListRoutes extends Component
             $this->editButton = false;
             $this->editValue = '';
         } else {
-            // If the button is not in edit mode or is in edit mode for a different user, turn it on
-            $this->editButton = true;
-            $this->editValue = $id;
 
             /** fill up section data */
             $this->sectionStop = [];
@@ -273,44 +263,95 @@ class ManageLinksListRoutes extends Component
             // Fill the input fields with the current user data
             $trasa = DB::table('trasa')->where('meno_trasy', '=', $id)->first();
             $this->meno_trasy = $trasa->meno_trasy;
-            $this->info_trasy = $trasa->info_trasy;
             $this->id_linka = $trasa->id_linka;
             $this->id_trasa = $trasa->id_trasa;
 
             // get cislo linky from Linka using id_linka
             $newLinka = Linka::where('id_linka', $trasa->id_linka)->first();
             $this->cislo_linky = $newLinka->cislo_linky;
+
+            // toggle off show and turn on edit
+            $this->editButton = true;
+            $this->editValue = $id;
+            $this->showButton = false;
         }
     }
 
-    /**
-     * not working
-     */
-    public function hide_all_stops()
+    /* routeEditDelete()
+    DESCRIPTION:    - Function is finished  
+    */
+    public function routeEditDelete($id)
     {
-        if ($this->all_stops === true) {
-            $this->all_stops = false;
-        } else {
-            $this->all_stops = true;
-        }
+        unset($this->sectionStop[$id]);
+        unset($this->sectionLength[$id]);
+        unset($this->sectionTime[$id]);
+    
+        // Optionally, you can re-index the arrays if needed
+        $this->sectionStop = array_values($this->sectionStop);
+        $this->sectionLength = array_values($this->sectionLength);
+        $this->sectionTime = array_values($this->sectionTime);
     }
 
-    /**
-     * delete route
+    /* routeEditAdd()
+    DESCRIPTION:    - Function is finished   
+    */
+    public function routeEditAdd()
+    {
+        $newKey = max(array_keys($this->sectionStop)) + 1;
+    
+        $this->sectionStop[$newKey] = '';
+        $this->sectionLength[$newKey] = '';
+        $this->sectionTime[$newKey] = '';
+    }
+
+    /* routeShow()
+    DESCRIPTION:    - Function is finished 
+    */
+    public function routeShow($id)
+    {
+        if ($this->showButton && $this->showValue === $id) {
+            // If the button is already in show mode for the current user, turn it off
+            $this->showButton = false;
+            $this->showValue = '';
+        } else {
+            // If the button is not in show mode or is in show mode for a different user, turn it on
+            $this->editButton = false;
+            $this->showButton = true;
+            $this->showValue = $id;
+        } 
+    }
+
+    /* routeDelete()
+    DESCRIPTION:    - Deletes route from database
+
+    TODO            - remove all useky from db
      */
     public function routeDelete($id)
     {
         try {            
+            // TODO - Removes all (úseky) from DB
+            dd("Finish routeDelete() function")
+
+            // Removes route from DB
             DB::table('trasa')->where('meno_trasy', '=', $id)->delete();
+
+            // Displays success message and refreshes the users list
             $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
-            $this->mount();
+            $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
+        
+        // Internal error => display error message
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR -  Nemôžeš vymazať trasu");
+            $this->dispatch('alert-error', message: "Chyba v databáze, kontaktujte administrátora o chybe");
             return;
         } 
 
     }
 
+    
+    /* LIVEWIRE */
+
+    /* - Used for mounting the component, with listener to refresh the the list */
+    #[On('refresh-routes-list')]
     public function mount()
     {
         $this->routes = $this->routesGetAll();
@@ -323,10 +364,9 @@ class ManageLinksListRoutes extends Component
         $this->i = 1;
 
         $this->numRange = range(0, 15);
-
     }
 
-
+    /* - Used for rendering the component in the browser */
     public function render()
     {
         return view('livewire.manage-links-list-routes');
