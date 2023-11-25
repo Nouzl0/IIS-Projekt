@@ -85,7 +85,7 @@ class ManageVehiclesList extends Component
     
             // toggleoff edit, dispatch event and display success message
             $this->editButton = false;
-            $this->dispatch('refresh-users-list')->to(ManageVehiclesList::class);
+            $this->dispatch('refresh-vehicles-list')->to(ManageVehiclesList::class);
             $this->dispatch('alert-success', message: "Vozidlo bolo úspešne aktualizované");
             return;
         
