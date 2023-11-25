@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire;
+
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 
@@ -132,27 +133,27 @@ class ManageLinksListRoutes extends Component
         // dd("Finish routeSave()", $this->sectionStop, $this->sectionLength, $this->sectionTime);
 
 
-        try { 
+        try {
             // Validate input fields with custom error messages
             $validatedData = $this->validate([
-                'meno_trasy' => 'required|string|unique:trasa,meno_trasy,' .$id. ',meno_trasy',
+                'meno_trasy' => 'required|string|unique:trasa,meno_trasy,' . $id . ',meno_trasy',
             ], [
                 'meno_trasy.required' => 'zadaj meno trasy',
-                'meno_trasy.unique' => 'Názov musí byť unikatny',        
+                'meno_trasy.unique' => 'Názov musí byť unikatny',
             ]);
 
-              /** udate Trasa */
-        $linka_na_trase = Linka::where('cislo_linky', $this->cislo_linky)->first();
-        // dd($linka_na_trase->cislo_linky, $linka_na_trase->id_linka);
-        Trasa::where('meno_trasy', $id)->update([
-            'meno_trasy' => $this->meno_trasy,
-            'id_linka' => $linka_na_trase->id_linka,
+            /** udate Trasa */
+            $linka_na_trase = Linka::where('cislo_linky', $this->cislo_linky)->first();
+            // dd($linka_na_trase->cislo_linky, $linka_na_trase->id_linka);
+            Trasa::where('meno_trasy', $id)->update([
+                'meno_trasy' => $validatedData['meno_trasy'],
+                'id_linka' => $linka_na_trase->id_linka,
 
-        ]);
+            ]);
 
-        /** EDIT STOPS */
+            /** EDIT STOPS */
 
-        /** delete all Usek with Trasa id */
+            /** delete all Usek with Trasa id */
             $aktualnaTrasa = Trasa::where('meno_trasy', $id)->first();
             Usek::where('id_trasa', $aktualnaTrasa->id_trasa)->delete();
 
@@ -171,7 +172,9 @@ class ManageLinksListRoutes extends Component
                 return;
             }
 
-            if (!is_numeric($this->sectionLength[0]) || $this->sectionLength[0] != 0 || !is_numeric($this->sectionTime[0]) || $this->sectionTime[0] != 0)
+            if (!is_numeric($this->sectionLength[0]) || $this->sectionLength[0] != 0 || !is_numeric($this->sectionTime[0]) || $this->sectionTime[0] != 0) {
+                throw ValidationException::withMessages(['field_name' => ' usek začína nulou']);
+            }
 
             for ($i = 0; $i <= $numberOfStops - 2; $i++) {
                 $zaciatok = $this->sectionStop[$i];
@@ -190,24 +193,24 @@ class ManageLinksListRoutes extends Component
                     throw ValidationException::withMessages(['field_name' => 'dlza useku je nespravna']);
                 }
 
-                    Usek::create([
-                        'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
-                        'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
-                        'dlzka_useku_km' => $dlzka_useku,
-                        'cas_useku_minuty' => $cas_useku,
-                        'id_trasa' => $aktualnaTrasa->id_trasa,
-                        'poradie_useku' => $i + 1,
-                    ]);
-                } 
+                Usek::create([
+                    'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
+                    'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
+                    'dlzka_useku_km' => $dlzka_useku,
+                    'cas_useku_minuty' => $cas_useku,
+                    'id_trasa' => $aktualnaTrasa->id_trasa,
+                    'poradie_useku' => $i + 1,
+                ]);
+            }
 
-   
+
 
             // toggleoff edit, dispatch event amd display success message
             $this->editButton = false;
             // $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
             $this->dispatch('alert-success', message: "Užívateľ bol úspešne aktualizovaný");
 
-        // If validation fails, exception is caught and then is displayed error messages
+            // If validation fails, exception is caught and then is displayed error messages
         } catch (\Illuminate\Validation\ValidationException $e) {
             $messages = $e->validator->getMessageBag()->all();
             foreach ($messages as $message) {
@@ -215,7 +218,7 @@ class ManageLinksListRoutes extends Component
             }
             return;
 
-        // If there is any other exception, display basic error message
+            // If there is any other exception, display basic error message
         } catch (\Exception $e) {
             $this->dispatch('alert-error', message: "ERROR - Validation failed");
             return;
@@ -277,7 +280,7 @@ class ManageLinksListRoutes extends Component
         unset($this->sectionStop[$id]);
         unset($this->sectionLength[$id]);
         unset($this->sectionTime[$id]);
-    
+
         // Optionally, you can re-index the arrays if needed
         $this->sectionStop = array_values($this->sectionStop);
         $this->sectionLength = array_values($this->sectionLength);
@@ -290,7 +293,7 @@ class ManageLinksListRoutes extends Component
     public function routeEditAdd()
     {
         $newKey = max(array_keys($this->sectionStop)) + 1;
-    
+
         $this->sectionStop[$newKey] = '';
         $this->sectionLength[$newKey] = '';
         $this->sectionTime[$newKey] = '';
@@ -310,7 +313,7 @@ class ManageLinksListRoutes extends Component
             $this->editButton = false;
             $this->showButton = true;
             $this->showValue = $id;
-        } 
+        }
     }
 
     /* routeDelete()
@@ -320,7 +323,7 @@ class ManageLinksListRoutes extends Component
      */
     public function routeDelete($id)
     {
-        try {            
+        try {
             // Removes all (úseky) from DB
             $id_trasy = Trasa::where('meno_trasy', $id)->first();
             $id_trasy = $id_trasy->id_trasa;
@@ -332,16 +335,15 @@ class ManageLinksListRoutes extends Component
             // Displays success message and refreshes the users list
             $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
             $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
-        
-        // Internal error => display error message
+
+            // Internal error => display error message
         } catch (\Exception $e) {
             $this->dispatch('alert-error', message: "Chyba v databáze, kontaktujte administrátora o chybe");
             return;
-        } 
-
+        }
     }
 
-    
+
     /* LIVEWIRE */
 
     /* - Used for mounting the component, with listener to refresh the the list */
