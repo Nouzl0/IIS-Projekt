@@ -27,7 +27,7 @@ class ManageLinksAddRoutes extends Component
 
     public $button_add;
     public $numRange;
-  
+
 
     /* routeGetAll()
    DESCRIPTION:    - Function which gets all the routes from the database and formats them
@@ -103,6 +103,7 @@ class ManageLinksAddRoutes extends Component
             ]);
 
             // dd($zastavka_length);
+
             for ($i = 0; $i <= $zastavka_length - 2; $i++) {
                 $zaciatok = $this->zastavka[$i];
                 $koniec = $this->zastavka[$i + 1];
@@ -110,27 +111,65 @@ class ManageLinksAddRoutes extends Component
                 $dbZastavka_koniec = Zastavka::where('meno_zastavky', $koniec)->first();
                 // dd( $dbZastavka_zaciatok->id_zastavka ,$dbZastavka_koniec->id_zastavka);
                 $dlzkaU = $this->dlzka[$i];
-                if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
-                    Trasa::where('meno_trasy', $this->meno_trasy)->delete();
-                    throw ValidationException::withMessages(['field_name' => 'dlza useku je nespravna']);
-                }
                 $casU = $this->cas[$i];
-                if (!is_numeric($casU) || $casU <= 0) {
-                    Trasa::where('meno_trasy', $this->meno_trasy)->delete();
-                    throw ValidationException::withMessages(['field_name' => 'cas useku je nespravna']);
 
-                    return;
-                } 
-                
 
-                Usek::create([
-                    'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
-                    'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
-                    'dlzka_useku_km' => $dlzkaU,
-                    'cas_useku_minuty' => $casU,
-                    'id_trasa' => $nova_trasa->id_trasa,
-                    'poradie_useku' => $i,
-                ]);
+                if (($zastavka_length - $i - 1) == 1) {
+
+                    // dd($dlzkaU);
+                    if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'dlza useku je nespravna']);
+                    }
+                    if (!is_numeric($casU) || $casU <= 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'cas useku je nespravna']);
+                    }
+                }
+                elseif ($i == 0) {
+                    if (!is_numeric($dlzkaU) || $dlzkaU != 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať dĺžku 0']);
+                    }
+                    if (!is_numeric($casU) || $casU != 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať čas 0']);
+
+                        return;
+                    }
+                } else {
+                    // dd($dlzkaU);
+                    if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'dlza useku je nespravna']);
+                    }
+                    if (!is_numeric($casU) || $casU <= 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'cas useku je nespravna']);
+                    }
+                }
+
+                if (($zastavka_length - $i - 1) == 1) {
+
+                    Usek::create([
+                        'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
+                        'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
+                        'dlzka_useku_km' => $this->dlzka[$i + 1],
+                        'cas_useku_minuty' => $this->cas[$i + 1],
+                        'id_trasa' => $nova_trasa->id_trasa,
+                        'poradie_useku' => $i,
+                    ]);
+                } else {
+
+                    Usek::create([
+                        'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
+                        'id_zastavka_koniec' => $dbZastavka_koniec->id_zastavka,
+                        'dlzka_useku_km' => $dlzkaU,
+                        'cas_useku_minuty' => $casU,
+                        'id_trasa' => $nova_trasa->id_trasa,
+                        'poradie_useku' => $i,
+                    ]);
+                }
             }
 
 
@@ -143,9 +182,9 @@ class ManageLinksAddRoutes extends Component
             return;
 
             // If there is any other exception, display basic error message
-        } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - zly format dat");
-            return;
+            // } catch (\Exception $e) {
+            //     $this->dispatch('alert-error', message: "ERROR - zly format dat");
+            //     return;
         }
 
         // Reset input field properties, display success message and dispatch an event to refresh the users list
