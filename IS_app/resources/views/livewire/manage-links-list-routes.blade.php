@@ -20,7 +20,6 @@
                         <td class=list-low-box colspan="2">
                             <label for="cislo_linky" class="list-low-label">Linka</label>
                             <select wire:model="cislo_linky" name="cislo_linky" class="list-low-select" required>
-                                <option value=""></option>
                                 @foreach ($lines as $line)
                                     <option value="{{ $line->cislo_linky }}"> {{ $line->cislo_linky }} </option>
                                 @endforeach
@@ -90,7 +89,7 @@
                 @else @if($showButton && $showValue === $route['meno_trasy'])
                     <tr class="list-low-row">
                         <td class="list-low-box" colspan="2">{{ $route['meno_trasy'] }}</td> <!-- Text [meno_trasy] -->
-                        <td class="list-low-box" colspan="2">{{ $route['id_linka'] }}</td> <!-- Text [adresa_trasy] -->
+                        <td class="list-low-box" colspan="2">{{ $route['cislo_linky'] }}</td> <!-- Text [adresa_trasy] -->
                         <td class="list-low-box-buttons" colspan="1">
                             <button wire:click="routeShow('{{ $route['meno_trasy']}}')" class="list-low-button">Minimalizovať</button>
                         </td>
@@ -122,7 +121,7 @@
                 @else
                     <tr class="list-low-row"> <!-- Show User -->
                         <td class="list-low-box" colspan="1">{{ $route['meno_trasy'] }}</td> <!-- Text [meno_trasy] -->
-                        <td class="list-low-box" colspan="2">{{ $route['id_linka'] }}</td> <!-- Text [adresa_trasy] -->
+                        <td class="list-low-box" colspan="2">{{ $route['cislo_linky'] }}</td> <!-- Text [adresa_trasy] -->
                         <td class="list-low-box-buttons" colspan="2">
                             <button wire:click="routeShow('{{ $route['meno_trasy']}}')" class="list-low-button">Zobraziť</button>
                             <button wire:click="routeEdit('{{ $route['meno_trasy'] }}')" class="list-low-button">Upraviť</button>
