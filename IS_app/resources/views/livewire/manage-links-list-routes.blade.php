@@ -47,6 +47,7 @@
                             <td class="list-sub-low-box-bold"></td>
                             <td class="list-sub-low-box">
                                 <select wire:model="sectionStop.{{ $key }}" type="text" name="zastavka" class="list-low-input" required>
+                                    <option value=""></option>
                                     @foreach ($stops as $stopOption)
                                         <option value="{{ $stopOption->meno_zastavky }}">{{ $stopOption->meno_zastavky }}</option>
                                     @endforeach

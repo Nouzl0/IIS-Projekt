@@ -207,7 +207,8 @@ class ManageLinksListRoutes extends Component
 
             // toggleoff edit, dispatch event amd display success message
             $this->editButton = false;
-            // $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
+            $this->showButton = false;
+            $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
             $this->dispatch('alert-success', message: "Užívateľ bol úspešne aktualizovaný");
 
             // If validation fails, exception is caught and then is displayed error messages
@@ -281,7 +282,7 @@ class ManageLinksListRoutes extends Component
         unset($this->sectionLength[$id]);
         unset($this->sectionTime[$id]);
 
-        // Optionally, you can re-index the arrays if needed
+        // re-index the arrays if needed
         $this->sectionStop = array_values($this->sectionStop);
         $this->sectionLength = array_values($this->sectionLength);
         $this->sectionTime = array_values($this->sectionTime);
@@ -291,9 +292,17 @@ class ManageLinksListRoutes extends Component
     DESCRIPTION:    - Function is finished   
     */
     public function routeEditAdd()
-    {
-        $newKey = max(array_keys($this->sectionStop)) + 1;
+    {   
+        // no stops in route
+        if (count($this->sectionStop) == 0) {
+            $this->sectionStop[0] = '';
+            $this->sectionLength[0] = '';
+            $this->sectionTime[0] = '';
+            return;
+        }
 
+        // add new stop to route
+        $newKey = max(array_keys($this->sectionStop)) + 1;
         $this->sectionStop[$newKey] = '';
         $this->sectionLength[$newKey] = '';
         $this->sectionTime[$newKey] = '';

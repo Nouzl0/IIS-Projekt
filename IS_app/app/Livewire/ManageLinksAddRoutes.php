@@ -3,12 +3,14 @@
 namespace App\Livewire;
 
 use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\On;
+
 use App\Models\Trasa;
 use App\Models\Linka;
 use App\Models\Usek;
 use App\Models\Zastavka;
-use Livewire\Component;
-use Illuminate\Validation\ValidationException;
 
 class ManageLinksAddRoutes extends Component
 {
@@ -146,49 +148,68 @@ class ManageLinksAddRoutes extends Component
             return;
         }
 
-
         // Reset input field properties, display success message and dispatch an event to refresh the users list
         $this->reset(['meno_trasy', 'info_trasy']);
-        // $this->dispatch('refresh-list')->to(ManageLinksListRoutes::class);
-        $this->dispatch('alert-success', message: "Trasa bola pridana do databázy");
-        return redirect()->to('/manageLinks');   // refresh the page
+        $this->zastavka = [];
+        $this->dlzka = [];
+        $this->cas = [];
+        $this->i = 1;
 
+        $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
+        $this->dispatch('alert-success', message: "Trasa bola pridana do databázy");
     }
 
 
     /** add dynamic button fot stops */
-    public $inputs;
     public $i;
     public $zastavka;
     public $dlzka;
     public $cas;
     // init in mount
 
-    public function add($i)
+    public function add()
     {
-        $this->button_add = true;
-        $this->i = $i + 1;
-        if ($this->inputs != "") {
-            array_push($this->inputs, $i);
+        // no stops in route
+        if (count($this->zastavka) == 0) {
+            $this->zastavka[0] = '';
+            $this->dlzka[0] = '';
+            $this->cas[0] = '';
+            return;
         }
+
+        // add new stop to route
+        $newKey = max(array_keys($this->zastavka)) + 1;
+        $this->zastavka[$newKey] = '';
+        $this->dlzka[$newKey] = '';
+        $this->cas[$newKey] = '';
+
+        // re-index the arrays if needed
+        $this->zastavka = array_values($this->zastavka);
+        $this->dlzka = array_values($this->dlzka);
+        $this->cas = array_values($this->cas);
     }
 
-    public function remove($key)
+
+    public function remove($id)
     {
-        $this->button_add = true;
-        unset($this->inputs[$key]);
+        unset($this->zastavka[$id]);
+        unset($this->dlzka[$id]);
+        unset($this->cas[$id]);
+
+        // re-index the arrays if needed
+        $this->zastavka = array_values($this->zastavka);
+        $this->dlzka = array_values($this->dlzka);
+        $this->cas = array_values($this->cas);
     }
+
 
     /** end dynamic button */
-
-
     public function mount()
     {
         $this->lines = Linka::all();
         $this->routes = $this->routesGetAll();
 
         /** for dynamic list */
-        $this->inputs = [];
         $this->zastavka = [];
         $this->dlzka = [];
         $this->cas = [];
