@@ -97,12 +97,24 @@ class ScheduleRoutesAdd extends Component
 
         // Build start of the planned route from selected date and time
         $zaciatok_trasy = $this->scheduledDate . ' ' . $this->scheduledTime . ':00';
+        $zaciatok_trasy = new DateTime($zaciatok_trasy);
 
         // Build valid until date and time, and format it
         $platny_do = new DateTime($this->scheduledValidUntil);
+        //$platny_do = $platny_do->format('Y-m-d H:i:s');
+
+        // Check start and valid until dates
+        if ($zaciatok_trasy > $platny_do) {
+            $this->dispatch('alert-error', message: 'Dátum začiatku trasy musí byť menší ako dátum platný do');
+            return;
+        }
+
+        $zaciatok_trasy = $zaciatok_trasy->format('Y-m-d H:i:s');
         $platny_do = $platny_do->format('Y-m-d H:i:s');
 
+        //dd($zaciatok_trasy, $platny_do);
         //dd($this->scheduledRoute, $zaciatok_trasy, $this->scheduledRepeat, $platny_do);
+
         //Create new planned route in the database 
         PlanovanySpoj::create(['id_trasa' => $this->scheduledRoute, 'zaciatok_trasy' => $zaciatok_trasy, 'opakovanie' => $this->scheduledRepeat, 'platny_do' => $platny_do]);
 
