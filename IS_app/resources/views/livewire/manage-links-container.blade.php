@@ -38,10 +38,9 @@
                     @break
                 @default
                     <br> <br>
-                    <label class="label"> • Vytvoriť novú trasy</label>
+                    <label class="label"> • Vytvoriť novú trasu</label>
                     <br> <br>
                     @livewire('manage-links-add-routes')
-                    <hr style="width:100%;text-align:left;margin-left:0"> 
                     <br> <br>
                     <label class="label"> • Zoznam trás</label>
                     @livewire('manage-links-list-routes')
