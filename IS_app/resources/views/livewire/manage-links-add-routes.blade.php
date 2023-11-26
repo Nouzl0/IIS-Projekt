@@ -35,33 +35,53 @@
         </thead>
         <tbody class="list-low-body"> 
             @foreach ($zastavka as $key => $value)
-                <tr class="list-low-row">
-                    <td class="list-low-box">{{$key + 1}}</td> 
-                    <td class="list-low-box">
-                        {{-- <input type="text" wire:model="zastavka.{{ $value }}" placeholder="Zastavka"> --}}
-                        <select wire:model="zastavka.{{ $key }}" class="list-low-select"  id="zastavka" name="zastavka" required>
-                            <option value=""></option>
-                            @foreach ($stops as $stop)
-                                <option value="{{ $stop->meno_zastavky }}">{{ $stop->meno_zastavky }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td class="list-low-box">
-                        <input wire:model="dlzka.{{ $key }}" class="list-low-input" type="text" placeholder="Dĺžka úseku (km)" required>
-                    </td>
-                    <td class="list-low-box">
-                        <input wire:model="cas.{{ $key }}" class="list-low-input" type="text" placeholder="Čas úseku (min)" required>
-                    </td>
-                    <td class="list-low-box-buttons">
-                        <button wire:click="remove({{ $key }})" class="list-low-button" type="button">Vymazať zastávku</button>
-                    </td>
-                </tr>
-                @endforeach
-                <tr class="list-low-row">
-                    <td class="list-low-box-buttons" colspan="5">
-                        <button wire:click="add" class="list-low-button" type="button">Pridať novú zastávku</button>
-                    </td>
-                </tr>
+                @if($key == 0) 
+                    <tr class="list-low-row">
+                        <td class="list-low-box">{{$key + 1}}</td> 
+                        <td class="list-low-box">
+                            {{-- <input type="text" wire:model="zastavka.{{ $value }}" placeholder="Zastavka"> --}}
+                            <select wire:model="zastavka.{{ $key }}" class="list-low-select"  id="zastavka" name="zastavka" required>
+                                <option value=""></option>
+                                @foreach ($stops as $stop)
+                                    <option value="{{ $stop->meno_zastavky }}">{{ $stop->meno_zastavky }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td class="list-low-box"> {{ $dlzka[0] }}</td>
+                        <td class="list-low-box">{{ $cas[0] }}</td>
+                        <td class="list-low-box-buttons">
+                            <button wire:click="remove({{ $key }})" class="list-low-button" type="button">Vymazať zastávku</button>
+                        </td>
+                    </tr>
+                @else
+                    <tr class="list-low-row">
+                        <td class="list-low-box">{{$key + 1}}</td> 
+                        <td class="list-low-box">
+                            {{-- <input type="text" wire:model="zastavka.{{ $value }}" placeholder="Zastavka"> --}}
+                            <select wire:model="zastavka.{{ $key }}" class="list-low-select"  id="zastavka" name="zastavka" required>
+                                <option value=""></option>
+                                @foreach ($stops as $stop)
+                                    <option value="{{ $stop->meno_zastavky }}">{{ $stop->meno_zastavky }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td class="list-low-box">
+                            <input wire:model="dlzka.{{ $key }}" class="list-low-input" type="text" placeholder="Dĺžka úseku (km)" required>
+                        </td>
+                        <td class="list-low-box">
+                            <input wire:model="cas.{{ $key }}" class="list-low-input" type="text" placeholder="Čas úseku (min)" required>
+                        </td>
+                        <td class="list-low-box-buttons">
+                            <button wire:click="remove({{ $key }})" class="list-low-button" type="button">Vymazať zastávku</button>
+                        </td>
+                    </tr>
+                @endif
+            @endforeach
+            <tr class="list-low-row">
+                <td class="list-low-box-buttons" colspan="5">
+                    <button wire:click="add" class="list-low-button" type="button">Pridať novú zastávku</button>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

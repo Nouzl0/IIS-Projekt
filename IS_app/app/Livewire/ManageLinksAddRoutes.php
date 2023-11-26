@@ -63,7 +63,8 @@ class ManageLinksAddRoutes extends Component
                     
     */
     public function routeAdd()
-    {
+    {   
+
         /** prevent create route without stops */
         if ($this->button_add) {
             $this->button_add = false;
@@ -240,8 +241,8 @@ class ManageLinksAddRoutes extends Component
         // no stops in route
         if (count($this->zastavka) == 0) {
             $this->zastavka[0] = '';
-            $this->dlzka[0] = '';
-            $this->cas[0] = '';
+            $this->dlzka[0] = '0';
+            $this->cas[0] = '0';
             return;
         }
 
@@ -260,9 +261,16 @@ class ManageLinksAddRoutes extends Component
 
     public function remove($id)
     {
+        // remove stop from route
         unset($this->zastavka[$id]);
         unset($this->dlzka[$id]);
         unset($this->cas[$id]);
+
+        // if the first stop is removed, remove the next stop and length to 0
+        if ($id == 0) {
+            $this->dlzka[1] = '0';
+            $this->cas[1] = '0';
+        }
 
         // re-index the arrays if needed
         $this->zastavka = array_values($this->zastavka);
