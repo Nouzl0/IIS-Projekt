@@ -21,15 +21,29 @@
         <div class="component-content">
             @switch($showValue)
                 @case('stop')
+                    <br> <br>
+                    <label class="label"> • Vytvoriť novú zástavku</label>
                     @livewire('manage-links-add-stop')
+                    <br> <br>
+                    <label class="label">• Zoznam zástavok</label>
                     @livewire('manage-links-list-of-stops')
                     @break
                 @case('link')
+                    <br> <br>
+                    <label class="label"> • Vytvoriť novú linku</label>
                     @livewire('manage-links-add-line')
+                    <br> <br>
+                    <label class="label"> • Zoznam liniek</label>
                     @livewire('manage-links-lines-list')
                     @break
                 @default
-                    @livewire('manage-links-add-routes') 
+                    <br> <br>
+                    <label class="label"> • Vytvoriť novú trasy</label>
+                    <br> <br>
+                    @livewire('manage-links-add-routes')
+                    <hr style="width:100%;text-align:left;margin-left:0"> 
+                    <br> <br>
+                    <label class="label"> • Zoznam trás</label>
                     @livewire('manage-links-list-routes')
             @endswitch
         </div>
