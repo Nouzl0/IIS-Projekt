@@ -118,33 +118,33 @@ class ManageLinksAddRoutes extends Component
 
                     // dd($dlzkaU);
                     if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        $this->routeDelete(($this->meno_trasy));
                         throw ValidationException::withMessages(['field_name' => 'dlza useku je nespravna']);
                     }
                     if (!is_numeric($casU) || $casU <= 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        $this->routeDelete(($this->meno_trasy));
                         throw ValidationException::withMessages(['field_name' => 'cas useku je nespravna']);
                     }
                 }
                 elseif ($i == 0) {
                     if (!is_numeric($dlzkaU) || $dlzkaU != 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        $this->routeDelete(($this->meno_trasy));
                         throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať dĺžku 0']);
                     }
                     if (!is_numeric($casU) || $casU != 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        $this->routeDelete(($this->meno_trasy));
                         throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať čas 0']);
-
+                        
                         return;
                     }
                 } else {
                     // dd($dlzkaU);
                     if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        $this->routeDelete(($this->meno_trasy));
                         throw ValidationException::withMessages(['field_name' => 'dlza useku je nespravna']);
                     }
                     if (!is_numeric($casU) || $casU <= 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        $this->routeDelete(($this->meno_trasy));
                         throw ValidationException::withMessages(['field_name' => 'cas useku je nespravna']);
                     }
                 }
@@ -198,6 +198,33 @@ class ManageLinksAddRoutes extends Component
         $this->dispatch('alert-success', message: "Trasa bola pridana do databázy");
     }
 
+
+      /* routeDelete()
+    DESCRIPTION:    - Deletes route from database
+
+    TODO            - remove all useky from db
+     */
+    private function routeDelete($id)
+    {
+        try {
+            // Removes all (úseky) from DB
+            $id_trasy = Trasa::where('meno_trasy', $id)->first();
+            $id_trasy = $id_trasy->id_trasa;
+            DB::table('usek')->where('id_trasa', '=', $id_trasy)->delete();
+
+            // Removes route from DB
+            DB::table('trasa')->where('meno_trasy', '=', $id)->delete();
+
+            // Displays success message and refreshes the users list
+            $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
+            $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
+
+            // Internal error => display error message
+        } catch (\Exception $e) {
+            $this->dispatch('alert-error', message: "Chyba v databáze, kontaktujte administrátora o chybe");
+            return;
+        }
+    }
 
     /** add dynamic button fot stops */
     public $i;
