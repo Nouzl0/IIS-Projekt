@@ -112,10 +112,12 @@ class ManageLinksAddRoutes extends Component
                 // dd( $dbZastavka_zaciatok->id_zastavka ,$dbZastavka_koniec->id_zastavka);
                 $dlzkaU = $this->dlzka[$i];
                 $casU = $this->cas[$i];
-
-
+                
+                
                 if (($zastavka_length - $i - 1) == 1) {
-
+                    
+                    $dlzkaU = $this->dlzka[$i+1];
+                    $casU = $this->cas[$i+1];
                     // dd($dlzkaU);
                     if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
                         $this->routeDelete(($this->meno_trasy));
