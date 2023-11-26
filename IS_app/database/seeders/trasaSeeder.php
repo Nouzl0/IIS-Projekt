@@ -8,16 +8,16 @@ use Illuminate\Database\Seeder;
 class trasaSeeder extends Seeder
 {
     private $rows = [
-        ['meno_trasy' => 'Ečerova', 'info_trasy' => '', 'id_linka' => 1],
-        ['meno_trasy' => 'Řečkovice', 'info_trasy' => '', 'id_linka' => 1],
-        ['meno_trasy' => 'Modřice', 'info_trasy' => '', 'id_linka' => 2],
-        ['meno_trasy' => 'Stará osada', 'info_trasy' => '', 'id_linka' => 2],
-        ['meno_trasy' => 'Staré Černovice', 'info_trasy' => '', 'id_linka' => 3],
-        ['meno_trasy' => 'Hlavní nádraží', 'info_trasy' => '', 'id_linka' => 3],
-        ['meno_trasy' => 'Červený kopec', 'info_trasy' => '', 'id_linka' => 4],
-        ['meno_trasy' => 'Mendlovo náměstí', 'info_trasy' => '', 'id_linka' => 4],
-        ['meno_trasy' => 'Srbská', 'info_trasy' => '', 'id_linka' => 5],
-        ['meno_trasy' => 'Česká', 'info_trasy' => '', 'id_linka' => 5],
+        ['meno_trasy' => 'Ečerova', 'id_linka' => 1],
+        ['meno_trasy' => 'Řečkovice', 'id_linka' => 1],
+        ['meno_trasy' => 'Modřice', 'id_linka' => 2],
+        ['meno_trasy' => 'Stará osada', 'id_linka' => 2],
+        ['meno_trasy' => 'Staré Černovice', 'id_linka' => 3],
+        ['meno_trasy' => 'Hlavní nádraží', 'id_linka' => 3],
+        ['meno_trasy' => 'Červený kopec', 'id_linka' => 4],
+        ['meno_trasy' => 'Mendlovo náměstí', 'id_linka' => 4],
+        ['meno_trasy' => 'Srbská', 'id_linka' => 5],
+        ['meno_trasy' => 'Česká', 'id_linka' => 5],
     ];
     
     /**

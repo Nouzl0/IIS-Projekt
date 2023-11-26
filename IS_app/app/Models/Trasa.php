@@ -13,14 +13,12 @@ class Trasa extends Model
     // Define the fillable columns
     protected $fillable = [
         'meno_trasy',
-        'info_trasy',
         'id_linka',
     ];
 
     // Define validation rules
     public static $rules = [
         'meno_trasy' => 'nullable|string',
-        'info_trasy' => 'nullable|string',
         'id_linka' => 'required|integer'
     ];
 

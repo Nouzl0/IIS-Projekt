@@ -16,11 +16,11 @@ class uzivatelSeeder extends Seeder
         //$root_password = Hash::make('root');
 
         $rows = [
-            ['meno_uzivatela' => 'Root', 'priezvisko_uzivatela' => 'Account', 'tel_cislo_uzivatela' => '', 'email_uzivatela' =>'root@dpmb.cz', 'uzivatelske_meno' =>'root', 'heslo_uzivatela' => Hash::make('root'), 'rola_uzivatela' => 'administrátor'],
-            ['meno_uzivatela' => 'Ján', 'priezvisko_uzivatela' => 'Novák', 'tel_cislo_uzivatela' => '', 'email_uzivatela' =>'jan.novak@gmail.com', 'uzivatelske_meno' =>'xnovak00', 'heslo_uzivatela' => Hash::make('novak'), 'rola_uzivatela' => 'správca'],
-            ['meno_uzivatela' => 'Jozef', 'priezvisko_uzivatela' => 'Dobrý', 'tel_cislo_uzivatela' => '', 'email_uzivatela' =>'jozef.dobry@gmail.com', 'uzivatelske_meno' =>'xdobry00', 'heslo_uzivatela' => Hash::make('dobry'), 'rola_uzivatela' => 'technik'],
-            ['meno_uzivatela' => 'Anna', 'priezvisko_uzivatela' => 'Neumannová', 'tel_cislo_uzivatela' => '', 'email_uzivatela' =>'anna.neumannova@gmail.com', 'uzivatelske_meno' =>'xneuma00', 'heslo_uzivatela' => Hash::make('neumannova'), 'rola_uzivatela' => 'dispečer'],
-            ['meno_uzivatela' => 'František', 'priezvisko_uzivatela' => 'Novotný', 'tel_cislo_uzivatela' => '', 'email_uzivatela' =>'frantisek.novotny@gmail.com', 'uzivatelske_meno' =>'xnovot00', 'heslo_uzivatela' => Hash::make('novotny'), 'rola_uzivatela' => 'vodič'],
+            ['meno_uzivatela' => 'Root', 'priezvisko_uzivatela' => 'Account', 'email_uzivatela' =>'root@dpmb.cz', 'heslo_uzivatela' => Hash::make('root'), 'rola_uzivatela' => 'administrátor'],
+            ['meno_uzivatela' => 'Ján', 'priezvisko_uzivatela' => 'Novák', 'email_uzivatela' =>'jan.novak@gmail.com', 'heslo_uzivatela' => Hash::make('novak'), 'rola_uzivatela' => 'správca'],
+            ['meno_uzivatela' => 'Jozef', 'priezvisko_uzivatela' => 'Dobrý', 'email_uzivatela' =>'jozef.dobry@gmail.com', 'heslo_uzivatela' => Hash::make('dobry'), 'rola_uzivatela' => 'technik'],
+            ['meno_uzivatela' => 'Anna', 'priezvisko_uzivatela' => 'Neumannová', 'email_uzivatela' =>'anna.neumannova@gmail.com', 'heslo_uzivatela' => Hash::make('neumannova'), 'rola_uzivatela' => 'dispečer'],
+            ['meno_uzivatela' => 'František', 'priezvisko_uzivatela' => 'Novotný', 'email_uzivatela' =>'frantisek.novotny@gmail.com', 'heslo_uzivatela' => Hash::make('novotny'), 'rola_uzivatela' => 'vodič'],
         ];
 
         foreach ($rows as $row) {

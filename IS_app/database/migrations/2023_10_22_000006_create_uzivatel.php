@@ -17,9 +17,7 @@ return new class extends Migration
             $table->id('id_uzivatel');
             $table->string('meno_uzivatela', 45)->nullable();
             $table->string('priezvisko_uzivatela', 45)->nullable();
-            $table->string('tel_cislo_uzivatela', 45)->nullable();
             $table->string('email_uzivatela', 45)->nullable();
-            $table->string('uzivatelske_meno', 45)->nullable();
             $table->string('heslo_uzivatela')->nullable();
             $table->string('rola_uzivatela', 45)->nullable();
             $table->timestamps();

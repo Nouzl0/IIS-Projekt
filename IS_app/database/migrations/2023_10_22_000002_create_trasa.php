@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('trasa', function (Blueprint $table) {
             $table->id('id_trasa');
             $table->string('meno_trasy', 45)->nullable();
-            $table->string('info_trasy', 240)->nullable();
             $table->unsignedBigInteger('id_linka');
             $table->timestamps();
 
