@@ -114,7 +114,17 @@ class ManageLinksAddRoutes extends Component
                 $casU = $this->cas[$i];
 
 
-                if (($zastavka_length - $i - 1) == 1) {
+                if ($i == 0) {
+                    if (!is_numeric($dlzkaU) || $dlzkaU != 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať dĺžku 0']);
+                    }
+                    if (!is_numeric($casU) || $casU != 0) {
+                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
+                        throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať čas 0']);
+                    }
+                } 
+                elseif (($zastavka_length - $i - 1) == 1) {
 
                     // dd($dlzkaU);
                     if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
@@ -124,18 +134,6 @@ class ManageLinksAddRoutes extends Component
                     if (!is_numeric($casU) || $casU <= 0) {
                         Trasa::where('meno_trasy', $this->meno_trasy)->delete();
                         throw ValidationException::withMessages(['field_name' => 'cas useku je nespravna']);
-                    }
-                }
-                elseif ($i == 0) {
-                    if (!is_numeric($dlzkaU) || $dlzkaU != 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
-                        throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať dĺžku 0']);
-                    }
-                    if (!is_numeric($casU) || $casU != 0) {
-                        Trasa::where('meno_trasy', $this->meno_trasy)->delete();
-                        throw ValidationException::withMessages(['field_name' => 'prvý úsek musí mať čas 0']);
-
-                        return;
                     }
                 } else {
                     // dd($dlzkaU);
