@@ -125,13 +125,9 @@ class ManageLinksListRoutes extends Component
                     - Uses 'Input field' for getting input data
                     - Is dispatching an event to component '' to refresh the user's list
     
-    TODO            - save given data do db
     */
     public function routeSave($id)
     {
-        // TODO - FINISH DATABESE UPDATE, DEBUG HERE
-        // dd("Finish routeSave()", $this->sectionStop, $this->sectionLength, $this->sectionTime);
-
 
         try {
             // Validate input fields with custom error messages
@@ -209,7 +205,7 @@ class ManageLinksListRoutes extends Component
             $this->editButton = false;
             $this->showButton = false;
             $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
-            $this->dispatch('alert-success', message: "Užívateľ bol úspešne aktualizovaný");
+            $this->dispatch('alert-success', message: "Trasa bola úspešne aktualizovaný");
 
             // If validation fails, exception is caught and then is displayed error messages
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -342,7 +338,7 @@ class ManageLinksListRoutes extends Component
             DB::table('trasa')->where('meno_trasy', '=', $id)->delete();
 
             // Displays success message and refreshes the users list
-            $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
+            $this->dispatch('alert-success', message: "Trasa bola odstránený z databázy");
             $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
 
             // Internal error => display error message

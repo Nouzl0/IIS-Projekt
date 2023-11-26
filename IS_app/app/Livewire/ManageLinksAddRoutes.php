@@ -140,6 +140,8 @@ class ManageLinksAddRoutes extends Component
                         
                         return;
                     }
+                    $dlzkaU = $this->dlzka[$i+1];
+                    $casU = $this->cas[$i+1];
                 } else {
                     // dd($dlzkaU);
                     if (!is_numeric($dlzkaU) || $dlzkaU <= 0) {
@@ -150,6 +152,8 @@ class ManageLinksAddRoutes extends Component
                         $this->routeDelete(($this->meno_trasy));
                         throw ValidationException::withMessages(['field_name' => 'cas useku je nespravna']);
                     }
+                    $dlzkaU = $this->dlzka[$i+1];
+                    $casU = $this->cas[$i+1];
                 }
 
                 if (($zastavka_length - $i - 1) == 1) {
@@ -162,7 +166,9 @@ class ManageLinksAddRoutes extends Component
                         'id_trasa' => $nova_trasa->id_trasa,
                         'poradie_useku' => $i,
                     ]);
-                } else {
+                    
+                }
+                 else {
 
                     Usek::create([
                         'id_zastavka_zaciatok' => $dbZastavka_zaciatok->id_zastavka,
@@ -219,7 +225,7 @@ class ManageLinksAddRoutes extends Component
             DB::table('trasa')->where('meno_trasy', '=', $id)->delete();
 
             // Displays success message and refreshes the users list
-            $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");
+            $this->dispatch('alert-success', message: "Trasa bola odstránený z databázy");
             $this->dispatch('refresh-routes-list')->to(ManageLinksListRoutes::class);
 
             // Internal error => display error message
