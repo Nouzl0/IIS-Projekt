@@ -13,22 +13,24 @@ class RecordMaintenanceList extends Component
 {
     public $user;                           // information from DB about the currently logged user
     public $assigned_maintenances;          // all assigned maintenances from the DB
+
     public $show_description = false;       // show or don't show the description for the selected maintenance in the view
+    public $show_description_value = '';    // description for the selected maintenance in the view
 
     /**
      * This method updates the $show_description property for the view
      */
-    public function showDescription() 
+    public function showDescription($id) 
     {
-        $this->show_description = true;
-    }
-
-    /**
-     * This method updates the $show_description property for the view
-     */
-    public function hideDescription()
-    {
-        $this->show_description = false;
+        if ($this->show_description && $this->show_description_value === $id) {
+            // If the button is already in show mode, turn it off
+            $this->show_description = false;
+            $this->show_description_value = '';
+        } else {
+            // If the button is not in edit mode or is in show mode
+            $this->show_description = true;
+            $this->show_description_value = $id;
+        }
     }
 
     /**

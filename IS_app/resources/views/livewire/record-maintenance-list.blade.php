@@ -12,13 +12,13 @@
         </thead>
         <tbody class="list-low-body"> <!-- Table Body -->
             @forelse ($assigned_maintenances as $assigned_maintenance)
-                @if($show_description === true)
+                @if($show_description && ($show_description_value == $assigned_maintenance['id_udrzba']))
                     <tr class="list-low-row">   <!-- Show User -->
                         <td class="list-low-box">{{ $assigned_maintenance['spz'] }}</td> <!-- Text [spz] -->
                         <td class="list-low-box">{{ $assigned_maintenance['nazov_spravy'] }}</td> <!-- Text [nazov_spravy] -->
                         <td class="list-low-box">{{ $assigned_maintenance['stav'] }}</td>  <!-- Text [stav] -->
                         <td class="list-low-box"> <!-- Button [Edit] & Button [Delete] -->
-                            <button wire:click="hideDescription()" class="list-low-button">Zobraziť popis</button>
+                            <button wire:click="showDescription('{{ $assigned_maintenance['id_udrzba'] }}')" class="list-low-button">Minimalizovať</button>
                         </td>
                         <td class="list-low-box">
                             <button wire:click="updateMaintenance('{{ $assigned_maintenance['id_udrzba'] }}')" class="list-low-button">Údržba bola vykonaná</button>
@@ -35,7 +35,7 @@
                         <td class="list-low-box">{{ $assigned_maintenance['nazov_spravy'] }}</td> <!-- Text [nazov_spravy] -->
                         <td class="list-low-box">{{ $assigned_maintenance['stav'] }}</td>  <!-- Text [stav] -->
                         <td class="list-low-box"> <!-- Button [Edit] & Button [Delete] -->
-                            <button wire:click="showDescription()" class="list-low-button">Zobraziť popis</button>
+                            <button wire:click="showDescription('{{ $assigned_maintenance['id_udrzba'] }}')" class="list-low-button">Zobraziť popis</button>
                         </td>
                         <td class="list-low-box">
                             <button wire:click="updateMaintenance('{{ $assigned_maintenance['id_udrzba'] }}')" class="list-low-button">Údržba bola vykonaná</button>
