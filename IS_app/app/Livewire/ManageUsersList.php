@@ -92,7 +92,7 @@ class ManageUsersList extends Component
             // toggleoff edit, dispatch event amd display success message
             $this->editButton = false;
             $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
-            $this->dispatch('alert-success', message: "Užívateľ bol úspešne aktualizovaný");
+            $this->dispatch('alert-success', message: "Užívateľ \"$userEmail\" bol úspešne aktualizovaný");
             return;
         
         // Displaying error messages
@@ -102,7 +102,7 @@ class ManageUsersList extends Component
                 $this->dispatch('alert-error', message: $message);
             }
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - Validation error");
+            $this->dispatch('alert-error', message: "ERROR - Interná chyba, kontaktujte administrátora o chybe");
         }
     }
 
@@ -136,23 +136,32 @@ class ManageUsersList extends Component
                     - Dispatches an event to component 'ManageUsersList' to refresh the user's list
     */
     public function userDelete($userEmail) {
+
+        // get necessary data for deleting the user and admin deletion check
         $adminCount = Uzivatel::where('rola_uzivatela', '=', 'administrátor')->count();             // count the number of admins in Uzivatel table
         $userRole = Uzivatel::where('email_uzivatela', '=', $userEmail)->value('rola_uzivatela');   // get the role of the user we want to delete 
         
+        // admin should not be able to delete himself if he is in the session
+        if (session()->get('userEmail') == $userEmail) {
+            $this->dispatch('alert-error', message: "Užívateľ \"$userEmail\" nemôže byť odstránený, pretože je prihlásený");
+            return;
+        }
+
         // if the number of admin users is 1, do not delete the admin user
         if ($adminCount == 1 && $userRole == 'administrátor') {
-            $this->dispatch('alert-error', message: "Užívateľ nemôže byť odstránený, v databáze musí byť aspoň jeden administrátor");
+            $this->dispatch('alert-error', message: "Užívateľ \"$userEmail\" nemôže byť odstránený, v databáze musí byť aspoň jeden administrátor");
             return;
         } else {  // otherwise try to delete the user
             try {
                 Uzivatel::where('email_uzivatela', '=', $userEmail)->delete();                      // delete the user
                 $this->dispatch('refresh-users-list')->to(ManageUsersList::class);                  // refresh user list
-                $this->dispatch('alert-success', message: "Užívateľ bol odstránený z databázy");    // send successful message
+                $this->dispatch('alert-success', message: "Užívateľ \"$userEmail\" bol odstránený z databázy");    // send successful message
 
             } catch (QueryException $e) {
                 $this->dispatch('alert-error', message: "Užívateľ \"$userEmail\" nemôže byť odstránený pretože má ešte pridelené úlohy");  // send error message
             }
         }
+
     }
 
 

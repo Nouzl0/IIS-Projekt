@@ -50,7 +50,7 @@ class ManageVehiclesAdd extends Component
 
         // If there is any other exception, display basic error message
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - Validation failed");
+            $this->dispatch('alert-error', message: "ERROR - Interná chyba, kontaktujte administrátora o chybe");
             return;
         }
             
@@ -64,9 +64,10 @@ class ManageVehiclesAdd extends Component
 
 
         // Reset input field properties, display success message and dispatch an event to refresh the users list
+        $spz = $validatedData['spz'];
         $this->reset(['spz', 'vehicleName', 'vehicleType', 'vehicleBrand']);
         $this->dispatch('refresh-vehicles-list')->to(ManageVehiclesList::class);
-        $this->dispatch('alert-success', message: "Vozidlo bolo pridané do databázy");
+        $this->dispatch('alert-success', message: "Vozidlo \"$spz\", bolo pridané do databázy");
     }
 
 

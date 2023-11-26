@@ -28,7 +28,8 @@
                             <input wire:model="password" type="text" name="password" value="{{ $user['password'] }}" class="list-low-input" required>
                         </td>
                         <td class="list-low-box"> <!-- Input [Role] -->
-                            <select wire:model="role" class="add-select" id="role" name="role" required>
+                            <select wire:model="role" class="list-select" id="role" name="role" required>
+                                <option value=""></option>
                                 <option value="administrátor">administrátor</option>
                                 <option value="správca">správca</option>
                                 <option value="dispečer">dispečer</option>

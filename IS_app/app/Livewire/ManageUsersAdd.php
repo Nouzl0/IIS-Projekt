@@ -30,9 +30,6 @@ class ManageUsersAdd extends Component
     public function userAdd()
     {
         try { 
-            // pre-populate select statemants
-            $this->role = "administrátor";
-
             // Validate input fields with custom error messages
             $validatedData = $this->validate([
                 'firstName' => 'required|string',
@@ -62,7 +59,7 @@ class ManageUsersAdd extends Component
 
         // If there is any other exception, display basic error message
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - Validation failed");
+            $this->dispatch('alert-error', message: "ERROR - Interná chyba, kontaktujte administrátora o chybe");
             return;
         }
             
@@ -78,7 +75,8 @@ class ManageUsersAdd extends Component
         // Reset input field properties, display success message and dispatch an event to refresh the users list
         $this->reset(['firstName', 'lastName', 'email', 'password', 'role']);
         $this->dispatch('refresh-users-list')->to(ManageUsersList::class);
-        $this->dispatch('alert-success', message: "Užívateľ bol pridaný do databázy");
+        $email = $validatedData['email'];
+        $this->dispatch('alert-success', message: "Užívateľ \"$email\" bol pridaný do databázy");
     }
 
     /* LIVEWIRE */

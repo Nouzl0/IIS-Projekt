@@ -19,11 +19,11 @@
             </div>
             <div class="add-container">
                 <div class="add-item">      <!-- Vehicle SPZ -->
-                    <label class="add-label" for="maintenanceTime">Čas údržby*</label>
+                    <label class="add-label" for="maintenanceTime">Čas dokončenia údržby*</label>
                     <input wire:model="maintenanceTime" class="add-input" type="time" id="maintenanceTime" name="maintenanceTime" required>                    
                 </div>
                 <div class="add-item">
-                    <label class="add-label" for="maintenanceState">Dátum údržby*</label>
+                    <label class="add-label" for="maintenanceState">Dátum dokončenia údržby*</label>
                     <input wire:model="maintenanceDate" class="add-input" type="date" id="maintenanceDate" name="maintenanceDate" required>      
                 </div>
             </div>

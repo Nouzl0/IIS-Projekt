@@ -86,7 +86,7 @@ class ManageVehiclesList extends Component
             // toggleoff edit, dispatch event and display success message
             $this->editButton = false;
             $this->dispatch('refresh-vehicles-list')->to(ManageVehiclesList::class);
-            $this->dispatch('alert-success', message: "Vozidlo bolo úspešne aktualizované");
+            $this->dispatch('alert-success', message: "Vozidlo \"$spz\", bolo úspešne aktualizované");
             return;
         
         // Displaying error messages
@@ -98,7 +98,7 @@ class ManageVehiclesList extends Component
             return;
 
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - Validation error");
+            $this->dispatch('alert-error', message: "ERROR - Interná chyba, kontaktujte administrátora o chybe");
             return;
         }
     }
@@ -139,7 +139,7 @@ class ManageVehiclesList extends Component
 
         // send a message & refresh list
         $this->dispatch('refresh-vehicles-list')->to(ManageVehiclesList::class);
-        $this->dispatch('alert-success', message: "Vozidlo bolo odstránen0 z databázy");
+        $this->dispatch('alert-success', message: "Vozidlo \"$spz\", bolo odstránené z databázy");
     }
 
 

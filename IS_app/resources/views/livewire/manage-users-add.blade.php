@@ -25,6 +25,7 @@
             <div class="add-item">
                 <label class="add-label" for="role">Rola:</label>               <!-- Input [Role] -->
                 <select wire:model="role" class="add-select" id="role" name="role" required>
+                    <option value=""></option>
                     <option value="administrátor">administrátor</option>
                     <option value="správca">správca</option>
                     <option value="dispečer">dispečer</option>

@@ -12,11 +12,11 @@
                 </select>
             </div>
             <div class="add-item"> <!-- Input [scheduledDate] -->
-                <label class="add-label" for="scheduledDate">Dátum začiatku*</label>
+                <label class="add-label" for="scheduledDate">Dátum začiatku spoja*</label>
                 <input wire:model="scheduledDate"  type="date" name="scheduledDate" class="list-low-input" required>
             </div>
             <div class="add-item"> <!-- Input [scheduledTime] -->
-                <label class="add-label" for="scheduledTime">Čas*</label>
+                <label class="add-label" for="scheduledTime">Čas začiatku spoja*</label>
                 <input wire:model="scheduledTime"  type="time" name="scheduledTime" class="list-low-input" required>
             </div>
         </div>
