@@ -1,0 +1,142 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>Dopravní podnik</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+	<dt>Autori</dt>
+	<dd>Filip Roman <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xroman16@stud.fit.vutbr.cz">xroman16@stud.fit.vutbr.cz</a> -
+		vedúci, backend, výpomoc s frontendom, dokumentácia
+	</dd>
+	<dd>Nikolas Nosál <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xnosal01@stud.fit.vutbr.cz">xnosal01@stud.fit.vutbr.cz</a> - 
+		frontend, dizajn aplikácie, výpomoc s backendom, testovanie
+	</dd>
+  <dd>Samuel Zima <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xzimas01@stud.fit.vutbr.cz">xzimas01@stud.fit.vutbr.cz</a> - 
+		backend, výpomoc s frontendom, video dokumentácia, nasadenie aplikácie
+	</dd>
+	<dt>URL aplikácie</dt>
+	<dd><a href="http://dopravny-podnik.infinityfreeapp.com">http://dopravny-podnik.infinityfreeapp.com</a></dd>
+</dl>
+
+<h2>Uživatelia systému pre testovanie</h2>
+<p>Existující zástupcovia všetkých rolí uživateľov.</p>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>root@dpmb.cz</td><td>root</td><td>Administrátor</td></tr>
+<tr><td>jan.novak@gmail.com</td><td>novak</td><td>Správca</td></tr>
+<tr><td>jozef.dobry@gmail.com</td><td>dobry</td><td>Technik</td></tr>
+<tr><td>anna.neumannova@gmail.com</td><td>neumannova</td><td>Dispečer</td></tr>
+<tr><td>frantisek.novotny@gmail.com</td><td>novotny</td><td>Vodič</td></tr>
+</table>
+
+<h3>Video</h3>
+
+<p>Přiložte odkaz na komentované video demostrující použití informačního systému. Zaměřte se na případy užití definované zadáním (např. registrace uživatele, správa uživatelů a činnosti jednotlivých rolí). Video nahrajte například na VUT Google Drive, kde ho bude možné přímo spustit z odkazu.</p> 
+
+<h2>Implementácia</h2>
+	Informačný systém sme implementovali pomocou frameworku Laravel 10 a použili sme databázový systém MySQL 8. 
+Jednotlivé stránky sa skladajú z rôznych komponentov ktoré pomocou controllerov komunikujú s databázou, príjmajú uživateľský vstup, spracovávajú ho a akualizujú modely.
+
+	<h3>Správa uživateľov</h3>
+		Na pridávanie uživateľou používame komponentu <b>ManageUsersAdd</b> kde môžeme vytvoriť uživateľa a priradiť mu príslušnú rolu.
+		Zoznam všetkých uživateľoch zobrazíme pomocou <b>ManagaeUsersList</b> kde následne administrátor môžeme upravovať profily a taktiež ich vymazať. Vymazať môžeme všetkých registrovaných uživateľov
+		okrem administrátora a to len vtedy keď vymazaný uživateľ už nemá pridelené žiadne povinnosti, napr. údržbu vozidla, naplánovaný spoj a pod..
+		Heslá v zozname zašifrujeme kvôli bezpečnosti pomocou funkcie bcrypt().
+
+	<h3>Správa liniek a spojov</h3>
+		Informačný systém umožnuje správcovi spravovať spoje, to znamená že náš systém hormadnej dopravy sa skladá z liniek, zástávok a trás.
+		Pomocou <b>ManageLinksAddStop</b> dokáže správca vytvárať zástavky, a následen prechádzať a upravovať existujúce zastávky pomocou <b>ManageLinksListOfStops</b>.
+		Taktiež dokáže vytvárať <b>ManageLinksAddLine</b> nové linky a upravovať existujúce v <b>ManageLinksLinesList</b>. Pri odstránení určtej linky musí správca najpr vymazať alebo presmerovať trasy ktoré pôsobia na danej linke
+		Následne vytvorí trasu v <b>ManageLinksAddRoute</b> do kotrej priradí list zastávok cez ktoré prechádza a trasa sa priradí
+		linke na ktorej bude premávať a tiež dokáže pomocou <b>ManageLinksListRoutes</b> upravať existujúcu trasu a upravovať a pridávať nové zástavky.
+
+	<h3>Správa vozidiel</h3>
+		O správau vozidiel sa stará <b>ManageVehiclesAdd</b> kde môže správca pridávať nové vozidlá do systému, prezerať ich v <b>ManageVehiclesList</b> a taktiež ich spravovať. 
+
+	<h3>Plán údržby vozidiel a vytváranie záznamov o ich údržbe</h3>
+		Vozidlám správca plánuje ich údržbu v <b>OrganizeMaintenanceAdd</b> a priradí údržbu technikovi, ktorý následne vytvorí 
+		záznam o údržbre pomocou <b>RecordMaintenanceList</b>. Ďalej vieme prezerať a upraviť list aktívnych údrž <b>OrganizeMaintenanceListActive</b>, jej históriu <b>OrganizeMaintenanceListActiveHistory</b>
+		a taktiež spravovať náhlásené závady v <b>OrganizeMaintenanceListRequest</b>.
+
+	<h3>Hlásenie závad</h3>
+		O hlásenie závad sa stara vodič, ktorý hlási všetky závadi <b>ReportIssueAdd</b>, ktoré si vie následen správca pozrieť v <b>OrganizeMaintenanceListRequest</b> a priradiť novu údržbu pre 
+		poškodené vozidlo. 
+
+	<h3>Plánovanie spojov</h3>
+		Spoje sa v našom systéme vytvára správca. Spoj sa vytvára v <b>ScheduleRouteAdd</b> kde zadáme informácie o spoji ako trasa na ktorej bude
+		premávať, čas, dátum od kedy do kedy bude tento spoj aktívny a taktiež či tento spoj bude premávať každý deň alebo iba výnimočno.
+		Po vytvorení plánovaného spojo si môžeme pozrieť históriu naplánovaných spojov <b>ScheduleRouteListHistory</b> a tiež spravovať už naplánované spoje,
+		to je upraviť a vymazať ich.
+
+	<h3>Plán pre vodičov</h3>
+		Vodiči si dokážu pozrieť svoj plán služby v <b>AssignedPlan</b> ktorý mu vytvoril dispečer, vie si tam vyhľadať kedy mu je priradený spoj a taktiež aké vozidlo je mu pre daný spoj priradené. 
+	<h3>Vyhľadávanie spojov</h3>
+		Všetci uživatelia majú možnosť vyhľadávať spoje. Zoznam všetkých liniek a zastávok cez ktoré spoje prechádzajú si vieme zobraziť pomocou <b>HomeAddSearch</b>
+		na následne pomocou komponentu <b>HomeAddSearch</b> vyhľadať spoj ktorý prechádza cez uživateľom zvolenu zastávku v daný dátum a čas. <br>
+
+		Po úspešnom vyhľadaní zastávky v plánovaných spojoch, sa nám zobrazí pomocou <b>SearchListDepartures</b> všetky aktívne spoje ktoré prechádzajú 
+		danou zastávkou v daný čas, taktiež si môžeme pozrieť zoznam nasledujúcih zastávok a čas odchodu zo zastávky. Taktiež môžeme znovu vyhľadať nový spoj pomocou <b>SearchAddSearch</b>
+
+
+	<h3>Databáza</h3>
+	<p>Grafická schéma relační databáze:</p>
+
+<!-- <input type="image" src="ERD.png" alt="erdiagram"  height="1300"> -->
+
+<h2>Inštalácia</h2>
+
+<h3>Postup inštalácia na server</h3>
+Ako server sme použili hosting portal InfinityrFree. Tu je postup inštalácie:
+<ol>
+	<li>Skopíruj priečinok <b>IS_app/public</b> do priečinku <b>htdocs/</b> na server infinityfree</li>
+	<li>Skopíruj všetky súbory a priečinky z lokálneho priečinku <b>IS_app</b> okrem priečinku public do priečinku <b>htdocs/IS_app</b> na server infinityfree</li>
+	<li>Na infinityfree zmenň v súbore <b>htdocs/index.php</b>  '..' cestu k pričinku IS_ap' vo funkciách skriptu</li>
+	<li>Ak existuje tak odstráň súbor <b>config.php</b> v priečinku htdocs/IS_app/bootsrap/cache/</li>
+	<li>Zmeň nastavenia databázi v súbore <b>.env</b> podľa databázi infinityfree</li>
+</ol>
+<h3>Softwarové požiadavky</h3>
+Systém je testovaný pre PHP 8.1, Laravel Framework 10 a MySQL 8 
+
+<h3>Konfigurácia a inicializácia databázi</h3>
+<p>
+	
+	Vytvorenie tabuliek databázy + naplnenie tabuliek prvotnými dátami <br>
+	<code>php artisan migrate </code>
+</p>
+
+<p>
+	Zaplnenie databázy základnými dátami <br>
+	<code>php artisan db:seed</code>
+</p>
+
+<p>
+	Vytvorenie celého SQL súboru z migrácii <br>
+	<code>mysqldump -u <b>username</b> -p <b>database_name</b>  <b>output_file_name</b>.sql </code> <br>
+	tento vygenerovaný súbor sa premiestni do databázy na infinityfree serveri
+</p>
+
+
+<h2>Známé problémy</h2>
+<p>Zde popište, které body zadání nejsou implementovány a z jakého důvodu. Např. &bdquo;Z časových důvodů nebyla implementována správa uživatelů.&rdquo; Pomůžete tím zrychlit hodnocení, když neimplementované funkce nebudeme muset dlouze hledat.</p>
+
+</body>
+</html>
