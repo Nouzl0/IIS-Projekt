@@ -9,6 +9,7 @@ use App\Models\Vozidlo;
 use App\Models\Uzivatel;
 use App\Models\Udrzba;
 use App\Models\ZaznamUdrzby;
+use App\Models\PlanovanySpoj;
 
 class OrganizeMaintenanceAdd extends Component
 {
@@ -110,7 +111,7 @@ class OrganizeMaintenanceAdd extends Component
 
             // Find the vehicle with the given spz
             $vozidlo = Vozidlo::where('spz', $validatedData['spz'])->first();
-            
+
             // Create new mainenance model:Udrzba amd get created udrzba id
             $udrzba = Udrzba::create([
                 'zaciatok_udrzby' => $validatedData['maintenanceDate'] . " " . $validatedData['maintenanceTime'],
@@ -131,9 +132,30 @@ class OrganizeMaintenanceAdd extends Component
             $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceListActive::class);
         }
 
+        // check if the vehicle is in any scheduled routes & get all scheduled-routes with the given vehicle from the database
+        $vozidlo = Vozidlo::where('spz', $validatedData['spz'])->first();
+        $scheduledRoutes = PlanovanySpoj::where('id_vozidlo', $vozidlo->id_vozidlo)
+            ->whereNotNull('id_vozidlo')
+            ->get();  // Use get() to retrieve the results
+
+        // if there are scheduled routes with the given vehicle, update them
+        if ($scheduledRoutes->isNotEmpty()) {
+            foreach ($scheduledRoutes as $scheduledRoute) {
+                PlanovanySpoj::where('id_plan_trasy', $scheduledRoute->id_plan_trasy)->update([
+                    'id_vozidlo' => null,
+                    'id_uzivatel_sofer' => null,
+                ]);
+            }
+            // display success message with additional information
+            $this->dispatch('alert-success', message: "Plán údržby bol úspešne vytvorený a vozidlo bolo odstránené zo všetkých plánovaných spojov, ktoré mu boli priradené.");
+        
+        // display default success message
+        } else {
+            $this->dispatch('alert-success', message: "Plán údržby bol úspešne vytvorený");
+        }
+
         // show success message and reset fields
         $this->reset(['maintenanceName', 'spz', 'maintenanceDescription', 'maintenanceTime', 'maintenanceDate', 'maintenanceTechnician']);
-        $this->dispatch('alert-success', message: "Plán údržby bol úspešne vytvorený.");
     }
 
 

@@ -94,7 +94,9 @@ class AssignVehiclesListEdit extends Component
     private function assignGetDrivers()
     {
         // Retrieve all drivers from the database
-        $dbDrivers = Uzivatel::where('rola_uzivatela', '=', 'vodič')->get()->toArray();
+        $dbDrivers = Uzivatel::whereIn('rola_uzivatela', ['vodič', 'administrátor'])
+            ->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela'])
+            ->toArray();
         
         // Initialize an empty array to store the data of all drivers
         $drivers = [];
@@ -161,8 +163,21 @@ class AssignVehiclesListEdit extends Component
 
         // If there is any other exception, display basic error message
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - Input validation failed");
+            $this->dispatch('alert-error', message: "ERROR - Interná chyba, kontaktujte administrátora o chybe");
             return;
+        }
+
+        // if the vehicle is in maintenance, display error message
+        // get planovanyspoj from the database and all meintenances for the vehicle
+        $scheduledRoute = PlanovanySpoj::where('id_plan_trasy', '=', $scheduleId)->first();
+        $maintenances = DB::table('udrzba')->where('id_vozidlo', '=', $this->scheduledVehicle)->where('stav', '=', 'Priradená')->get();
+
+        // Check if the planovanySpoj->zaciatok_trasy is before the maintenance->zaciatok_udrzby print error
+        foreach ($maintenances as $maintenance) {
+            if ($scheduledRoute->platny_do > $maintenance->zaciatok_udrzby) {
+                $this->dispatch('alert-error', message: "Zadané vozidlo je v údržbe do " . $maintenance->zaciatok_udrzby . ", nie je možné ho priradiť");
+                return;
+            }
         }
 
         // Update the schedule with the selected driver and vehicle

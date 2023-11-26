@@ -9,6 +9,7 @@
                 <th class="list-up-box">Opakovanie</th>
                 <th class="list-up-box">Platné do</th>
                 <th class="list-up-box">Priradený vodič</th>
+                <th class="list-up-box">Vozidlo</th>
                 <th class="list-up-box"></th>
             </tr>
         </thead>
@@ -21,6 +22,7 @@
                     <td class="list-low-box"> {{ $scheduledRoute['repeat'] }} </td>
                     <td class="list-low-box"> {{ $scheduledRoute['validUntil'] }} </td>
                     <td class="list-low-box"> {{ $scheduledRoute['driver'] }} </td>
+                    <th class="list-low-box"> {{ $scheduledRoute['vehicle'] }} </th>
 
                     <td class="list-low-box-buttons"> <!-- Button [Delete] -->
                         <button wire:click="scheduledRoutesDeleteExpired('{{ $scheduledRoute['id'] }}')" class="list-low-button">Vymazať</button>
@@ -29,12 +31,7 @@
             @empty
             <tr class="list-low-row">   <!-- No Vehicle -->
                 <td class="list-low-box">V databáze nie je žiaden dokončený plánovaný spoj</td>
-                <td class="list-low-box"></td>
-                <td class="list-low-box"></td>
-                <td class="list-low-box"></td>
-                <td class="list-low-box"></td>
-                <td class="list-low-box"></td>
-                <td class="list-low-box"></td>
+                <td class="list-low-box" colspan="7"></td>
             </tr>
             @endforelse
         </tbody>

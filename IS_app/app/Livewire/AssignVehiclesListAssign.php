@@ -76,13 +76,16 @@ class AssignVehiclesListAssign extends Component
     private function assignGetDrivers()
     {
         // Retrieve all drivers from the database
-        $dbDrivers = Uzivatel::where('rola_uzivatela', '=', 'vodič')->get()->toArray();
-        
+        $dbDrivers = Uzivatel::whereIn('rola_uzivatela', ['vodič', 'administrátor'])
+            ->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela'])
+            ->toArray();
+
         // Initialize an empty array to store the data of all drivers
         $drivers = [];
         
         // Loop through each driver and format their data for the view
         foreach ($dbDrivers as $dbDriver) {
+
             $drivers[] = [
                 'id' => $dbDriver['id_uzivatel'],
                 'firstName' => $dbDriver['meno_uzivatela'],
@@ -90,6 +93,7 @@ class AssignVehiclesListAssign extends Component
                 'email' => $dbDriver['email_uzivatela'],
             ];
         }
+
         return $drivers;
     }
 
@@ -142,13 +146,26 @@ class AssignVehiclesListAssign extends Component
 
         // If there is any other exception, display basic error message
         } catch (\Exception $e) {
-            $this->dispatch('alert-error', message: "ERROR - Input validation failed");
+            $this->dispatch('alert-error', message: "ERROR - Interná chyba, kontaktujte administrátora o chybe");
             return;
         }
 
         // Get the driverId and vehicleId from the validated data
         $driverId = $validatedData['scheduledDriver'][$scheduleId];
         $vehicleId = $validatedData['scheduledVehicle'][$scheduleId];
+
+        // if the vehicle is in maintenance, display error message
+        // get planovanyspoj from the database and all meintenances for the vehicle
+        $scheduledRoute = PlanovanySpoj::where('id_plan_trasy', '=', $scheduleId)->first();
+        $maintenances = DB::table('udrzba')->where('id_vozidlo', '=', $vehicleId)->where('stav', '=', 'Priradená')->get();
+
+        // Check if the planovanySpoj->zaciatok_trasy is before the maintenance->zaciatok_udrzby print error
+        foreach ($maintenances as $maintenance) {
+            if ($scheduledRoute->platny_do > $maintenance->zaciatok_udrzby) {
+                $this->dispatch('alert-error', message: "Zadané vozidlo je v údržbe do " . $maintenance->zaciatok_udrzby . ", nie je možné ho priradiť");
+                return;
+            }
+        }
 
         // Update the schedule with the selected driver and vehicle
         PlanovanySpoj::where('id_plan_trasy', '=', $scheduleId)
@@ -158,7 +175,7 @@ class AssignVehiclesListAssign extends Component
         // toggleoff edit, dispatch event and display success message
         $this->editButton = false;
         $this->dispatch('assign-vehicles-list-assign')->to(AssignVehiclesListAssign::class);
-        $this->dispatch('alert-success', message: "Vodič a vozidlo boli úspešne aktualizované");
+        $this->dispatch('alert-success', message: "Vodič a vozidlo boli úspešne aktualizovaný");
     }
 
 

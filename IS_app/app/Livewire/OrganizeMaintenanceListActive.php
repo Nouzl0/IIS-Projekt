@@ -10,6 +10,7 @@ use App\Models\Vozidlo;
 use App\Models\Udrzba;
 use App\Models\ZaznamUdrzby;
 use App\Models\Uzivatel;
+use App\Models\PlanovanySpoj;
 
 class OrganizeMaintenanceListActive extends Component
 {
@@ -135,10 +136,32 @@ class OrganizeMaintenanceListActive extends Component
             'id_uzivatel_technik' => $validatedData['maintenanceTechnician'],
         ]);
 
+
+        // check if the vehicle is in any scheduled routes & get all scheduled-routes with the given vehicle from the database
+        $vozidlo = Vozidlo::where('spz', $validatedData['spz'])->first();
+        $scheduledRoutes = PlanovanySpoj::where('id_vozidlo', $vozidlo->id_vozidlo)
+            ->whereNotNull('id_vozidlo')
+            ->get();  // Use get() to retrieve the results
+
+        // if there are scheduled routes with the given vehicle, update them
+        if ($scheduledRoutes->isNotEmpty()) {
+            foreach ($scheduledRoutes as $scheduledRoute) {
+                PlanovanySpoj::where('id_plan_trasy', $scheduledRoute->id_plan_trasy)->update([
+                    'id_vozidlo' => null,
+                    'id_uzivatel_sofer' => null,
+                ]);
+            }
+            // display success message with additional information
+            $this->dispatch('alert-success', message: "Plán údržby bol úspešne aktualizovaný a vozidlo bolo odstránené zo všetkých plánovaných spojov, ktoré mu boli priradené.");
+        
+        // display default success message
+        } else {
+            $this->dispatch('alert-success', message: "Údržba bola úspešne aktualizované");
+        }
+
         // toggleoff edit, dispatch event and display success message
         $this->editButton = false;
         $this->dispatch('refresh-maintenances-list-active')->to(OrganizeMaintenanceListActive::class);
-        $this->dispatch('alert-success', message: "Vozidlo bolo úspešne aktualizované");
     }
 
     /* maintenanceEdit()
@@ -221,13 +244,9 @@ class OrganizeMaintenanceListActive extends Component
         // (select) get all the vehicles
         $this->vehicles = Vozidlo::all();
 
-        // (select) - get only technicians (final select will be chosen in the final version)
-        // $this->technicians = Uzivatel::where('rola_uzivatela', "technik")->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
-        // (select) - get technicians and admins
         $this->technicians = Uzivatel::where('rola_uzivatela', 'technik')
             ->orWhere('rola_uzivatela', 'administrátor')
             ->get(['id_uzivatel', 'meno_uzivatela', 'priezvisko_uzivatela', 'email_uzivatela']);
-
     }
 
     /* - Used for rendering the component in the browser */

@@ -9,6 +9,7 @@
                 <th class="list-up-box">Opakovanie</th>
                 <th class="list-up-box">Platné do</th>
                 <th class="list-up-box">Priradený vodič</th>
+                <th class="list-up-box">Vozidlo</th>
                 <th class="list-up-box"></th>
             </tr>
         </thead>
@@ -42,7 +43,9 @@
                             <input wire:model="scheduledValidUntil" type="date" name="scheduledValidUntil" class="list-low-input" required>
                         </td>
                         <!-- Display [technician] -->
-                        <td class="list-low-box"> {{ $scheduledRoute['driver'] }} </td>         
+                        <td class="list-low-box"> {{ $scheduledRoute['driver'] }} </td>
+                        <!-- Display [vehicle] -->
+                        <td class="list-low-box"> {{ $scheduledRoute['vehicle'] }} </td>         
                         <td class="list-low-box-buttons"> <!-- Button [Save] -->
                             <button wire:click="scheduleSave('{{ $scheduledRoute['id'] }}')" class="list-low-button">Uložiť</button>
                         </td>
@@ -55,6 +58,7 @@
                         <td class="list-low-box"> {{ $scheduledRoute['repeat'] }} </td>
                         <td class="list-low-box"> {{ $scheduledRoute['validUntil'] }} </td>
                         <td class="list-low-box"> {{ $scheduledRoute['driver'] }} </td>
+                        <td class="list-low-box"> {{ $scheduledRoute['vehicle'] }} </td>
 
                         <td class="list-low-box-buttons"> <!-- Button [Edit] & [Delete] -->
                             <button wire:click="scheduleEdit('{{ $scheduledRoute['id'] }}')" class="list-low-button">Upraviť</button>

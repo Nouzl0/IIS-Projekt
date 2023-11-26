@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Models\PlanovanySpoj;
 use App\Models\Uzivatel;
 use App\Models\Trasa;
+use App\Models\Vozidlo;
+
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\DB;
@@ -65,6 +67,14 @@ class ScheduleRoutesListEdit extends Component
                 $dbDriver = $dbDriver['meno_uzivatela'] . ' ' . $dbDriver['priezvisko_uzivatela'] . ' - ' . $dbDriver['email_uzivatela'];
             }
 
+            // Format Vehicle ID for the view
+            $dbVehicleInfo = Vozidlo::where('id_vozidlo', $dbScheduledRoute['id_vozidlo'])->first(['spz']);
+            if (is_null($dbVehicleInfo)) {
+                $dbVehicleInfo = 'Nie je priradené';
+            } else {
+                $dbVehicleInfo = $dbVehicleInfo->spz;
+            }
+
             // Format the scheduled routes data for the view
             $scheduledRoutes[] = [
                 'id' => $dbScheduledRoute['id_plan_trasy'],
@@ -74,6 +84,7 @@ class ScheduleRoutesListEdit extends Component
                 'repeat' => $dbScheduledRoute['opakovanie'],
                 'validUntil' => $dbScheduledRoute['platny_do'],
                 'driver' => $dbDriver,
+                'vehicle' => $dbVehicleInfo
             ];
         }
         return $scheduledRoutes;
