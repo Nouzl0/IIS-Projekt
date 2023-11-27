@@ -52,8 +52,9 @@
 <a href="https://drive.google.com/file/d/1QpFNIHIRuQUv4IgssZmtiFwIjM8EJtXu/view">Odkaz na komentované video</a>
 
 <h2>Implementácia</h2>
-	Informačný systém sme implementovali pomocou frameworku Laravel 10 a použili sme databázový systém MySQL 8. 
-Jednotlivé stránky sa skladajú z rôznych komponentov ktoré pomocou controllerov komunikujú s databázou, príjmajú uživateľský vstup, spracovávajú ho a akualizujú modely.
+	Informačný systém sme implementovali pomocou frameworku Laravel 10 s knižnicou Livewire ktorá nám pomohla s tvorbou interaktívnej pomocou komponentov.
+	Ako databázový systém sme použili MySQL 8. 
+	Jednotlivé stránky sa skladajú z rôznych komponentov ktoré pomocou controllerov komunikujú s databázou, príjmajú uživateľský vstup, spracúvavajú ho a akualizujú modely.
 
 	<h3>Správa uživateľov</h3>
 		Na pridávanie uživateľou používame komponentu <b>ManageUsersAdd</b> kde môžeme vytvoriť uživateľa a priradiť mu príslušnú rolu.
@@ -116,22 +117,28 @@ Ako server sme použili hosting portal InfinityrFree. Tu je postup inštalácie:
 Systém je testovaný pre PHP 8.1, Laravel Framework 10 a MySQL 8 
 
 <h3>Konfigurácia a inicializácia databázi</h3>
-<p>
-	
-	Vytvorenie tabuliek databázy + naplnenie tabuliek prvotnými dátami <br>
-	<code>php artisan migrate </code>
-</p>
+<ol>
+	<li>Vytvorenie tabuliek databázy + naplnenie tabuliek prvotnými dátami <br>
+		<code>php artisan migrate </code></li>
+	<li>Zaplnenie databázy základnými dátami <br>
+		<code>php artisan db:seed</code></li>
+	<li>Vytvorenie celého SQL súboru z migrácii <br>
+		<code>mysqldump -u <b>username</b> -p <b>database_name</b>  <b>output_file_name</b>.sql </code> <br>
+		tento vygenerovaný súbor sa premiestni do databázy na infinityfree</li>
+</ol>
 
-<p>
-	Zaplnenie databázy základnými dátami <br>
-	<code>php artisan db:seed</code>
-</p>
-
-<p>
-	Vytvorenie celého SQL súboru z migrácii <br>
-	<code>mysqldump -u <b>username</b> -p <b>database_name</b>  <b>output_file_name</b>.sql </code> <br>
-	tento vygenerovaný súbor sa premiestni do databázy na infinityfree serveri
-</p>
+<h3>Spustenie aplikácie lokálne</h3>
+<ol>
+	<li>Inštálácia Laravelu <br>
+		<code>composer global require "laravel/installer"</code></li>
+	<li>Pridaj Laravel medzi premenné prostredia aby sme k nemu malí prístup globálne</li>
+	<li>Inštalácia chýbajúcih balíčkov <br>
+		<code>composer install && composer update</code></li>
+	<li>Inštálácia knižnice Livewire<br>
+	<code>composer require livewire/livewire</code></li>
+	<li>Spustenie aplikácie <br> 
+		<code>php artisan serve</code></li>
+</ol>
 
 </body>
 </html>
