@@ -68,7 +68,7 @@ CREATE TABLE `linka` (
 
 LOCK TABLES `linka` WRITE;
 /*!40000 ALTER TABLE `linka` DISABLE KEYS */;
-INSERT INTO `linka` VALUES (1,1,'Električka','2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,2,'Električka','2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,47,'Autobus','2023-10-24 12:03:01','2023-10-24 12:03:01'),(4,62,'Autobus','2023-10-24 12:03:01','2023-10-24 12:03:01'),(5,32,'Trolejbus','2023-10-24 12:03:01','2023-10-24 12:03:01');
+INSERT INTO `linka` VALUES (1,1,'Električka','2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,2,'Električka','2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,47,'Autobus','2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,62,'Autobus','2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,32,'Trolejbus','2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `linka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +84,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2023_10_22_000001_create_linka',1),(7,'2023_10_22_000002_create_trasa',1),(8,'2023_10_22_000003_create_zastavka',1),(9,'2023_10_22_000004_create_usek',1),(10,'2023_10_22_000005_create_vozidlo',1),(11,'2023_10_22_000006_create_uzivatel',1),(12,'2023_10_22_000007_create_planovany_spoj',1),(13,'2023_10_22_000008_create_udrzba',1),(14,'2023_10_22_000009_create_zaznam_udrzby',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_100000_create_password_reset_tokens_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2023_10_22_000001_create_linka',1),(6,'2023_10_22_000002_create_trasa',1),(7,'2023_10_22_000003_create_zastavka',1),(8,'2023_10_22_000004_create_usek',1),(9,'2023_10_22_000005_create_vozidlo',1),(10,'2023_10_22_000006_create_uzivatel',1),(11,'2023_10_22_000007_create_planovany_spoj',1),(12,'2023_10_22_000008_create_udrzba',1),(13,'2023_10_22_000009_create_zaznam_udrzby',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,9 +189,11 @@ CREATE TABLE `planovany_spoj` (
   `id_plan_trasy` bigint unsigned NOT NULL AUTO_INCREMENT,
   `zaciatok_trasy` datetime DEFAULT NULL,
   `id_trasa` bigint unsigned NOT NULL,
-  `id_vozidlo` bigint unsigned NOT NULL,
-  `id_uzivatel_dispecer` bigint unsigned NOT NULL,
-  `id_uzivatel_sofer` bigint unsigned NOT NULL,
+  `id_vozidlo` bigint unsigned DEFAULT NULL,
+  `id_uzivatel_dispecer` bigint unsigned DEFAULT NULL,
+  `id_uzivatel_sofer` bigint unsigned DEFAULT NULL,
+  `opakovanie` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `platny_do` datetime NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_plan_trasy`),
@@ -199,11 +201,11 @@ CREATE TABLE `planovany_spoj` (
   KEY `planovany_spoj_id_vozidlo_foreign` (`id_vozidlo`),
   KEY `planovany_spoj_id_uzivatel_dispecer_foreign` (`id_uzivatel_dispecer`),
   KEY `planovany_spoj_id_uzivatel_sofer_foreign` (`id_uzivatel_sofer`),
-  CONSTRAINT `planovany_spoj_id_trasa_foreign` FOREIGN KEY (`id_trasa`) REFERENCES `trasa` (`id_linka`),
+  CONSTRAINT `planovany_spoj_id_trasa_foreign` FOREIGN KEY (`id_trasa`) REFERENCES `trasa` (`id_trasa`),
   CONSTRAINT `planovany_spoj_id_uzivatel_dispecer_foreign` FOREIGN KEY (`id_uzivatel_dispecer`) REFERENCES `uzivatel` (`id_uzivatel`),
   CONSTRAINT `planovany_spoj_id_uzivatel_sofer_foreign` FOREIGN KEY (`id_uzivatel_sofer`) REFERENCES `uzivatel` (`id_uzivatel`),
   CONSTRAINT `planovany_spoj_id_vozidlo_foreign` FOREIGN KEY (`id_vozidlo`) REFERENCES `vozidlo` (`id_vozidlo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,6 +214,7 @@ CREATE TABLE `planovany_spoj` (
 
 LOCK TABLES `planovany_spoj` WRITE;
 /*!40000 ALTER TABLE `planovany_spoj` DISABLE KEYS */;
+INSERT INTO `planovany_spoj` VALUES (1,'2023-11-20 15:00:00',1,1,4,5,'Denne','2023-12-31 23:00:00','2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,'2023-11-10 16:00:00',2,2,4,5,'Denne','2023-12-31 23:00:00','2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `planovany_spoj` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,7 +228,6 @@ DROP TABLE IF EXISTS `trasa`;
 CREATE TABLE `trasa` (
   `id_trasa` bigint unsigned NOT NULL AUTO_INCREMENT,
   `meno_trasy` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `info_trasy` varchar(240) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `id_linka` bigint unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -242,7 +244,7 @@ CREATE TABLE `trasa` (
 
 LOCK TABLES `trasa` WRITE;
 /*!40000 ALTER TABLE `trasa` DISABLE KEYS */;
-INSERT INTO `trasa` VALUES (1,'Ečerova','',1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,'Řečkovice','',1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,'Modřice','',2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(4,'Stará osada','',2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(5,'Staré Černovice','',3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(6,'Hlavní nádraží','',3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(7,'Červený kopec','',4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(8,'Mendlovo náměstí','',4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(9,'Srbská','',5,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(10,'Česká','',5,'2023-10-24 12:03:01','2023-10-24 12:03:01');
+INSERT INTO `trasa` VALUES (1,'Ečerova',1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,'Řečkovice',1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,'Modřice',2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,'Stará osada',2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,'Staré Černovice',3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(6,'Hlavní nádraží',3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(7,'Červený kopec',4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(8,'Mendlovo náměstí',4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(9,'Srbská',5,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(10,'Česká',5,'2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `trasa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,15 +259,16 @@ CREATE TABLE `udrzba` (
   `id_udrzba` bigint unsigned NOT NULL AUTO_INCREMENT,
   `zaciatok_udrzby` datetime DEFAULT NULL,
   `id_vozidlo` bigint unsigned NOT NULL,
-  `id_uzivatel_spravca` bigint unsigned NOT NULL,
+  `nazov_spravy` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `spz` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stav` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `popis` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_udrzba`),
   KEY `udrzba_id_vozidlo_foreign` (`id_vozidlo`),
-  KEY `udrzba_id_uzivatel_spravca_foreign` (`id_uzivatel_spravca`),
-  CONSTRAINT `udrzba_id_uzivatel_spravca_foreign` FOREIGN KEY (`id_uzivatel_spravca`) REFERENCES `uzivatel` (`id_uzivatel`),
   CONSTRAINT `udrzba_id_vozidlo_foreign` FOREIGN KEY (`id_vozidlo`) REFERENCES `vozidlo` (`id_vozidlo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,6 +277,7 @@ CREATE TABLE `udrzba` (
 
 LOCK TABLES `udrzba` WRITE;
 /*!40000 ALTER TABLE `udrzba` DISABLE KEYS */;
+INSERT INTO `udrzba` VALUES (1,'2023-11-25 16:00:00',1,'Rozbité čelné sklo','7C25025','Priradená','Rozbité čelné sklo.','2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `udrzba` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,38 +313,8 @@ CREATE TABLE `usek` (
 
 LOCK TABLES `usek` WRITE;
 /*!40000 ALTER TABLE `usek` DISABLE KEYS */;
-INSERT INTO `usek` VALUES (1,1,2,2,6,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,5,17,2,6,5,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,6,20,2,5,7,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,10,9,3,6,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,11,12,2,4,3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,16,15,5,10,4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,19,18,1,3,6,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,20,6,2,5,8,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,21,22,2,6,9,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(1,24,23,1,4,10,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,2,3,2,8,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,9,8,3,6,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,12,5,2,8,3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,15,14,1,3,4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,17,18,2,4,5,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,18,17,2,4,6,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,22,23,1,4,9,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,23,22,1,4,10,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,3,4,1,3,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,5,13,2,6,3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,8,7,3,5,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,14,13,1,3,4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,17,5,2,6,6,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,18,19,1,3,5,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,22,21,2,6,10,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,23,24,1,4,9,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(4,4,5,1,6,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(4,7,6,2,6,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(4,13,5,2,6,4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(4,13,14,1,3,3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(5,5,6,2,7,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(5,5,12,2,8,4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(5,6,5,2,7,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(5,14,15,1,3,3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(6,5,4,1,6,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(6,6,7,2,6,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(6,12,11,2,4,4,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(6,15,16,5,10,3,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(7,4,3,1,3,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(7,7,8,3,5,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(8,3,2,2,8,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(8,8,9,3,6,1,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(9,2,1,2,6,2,'2023-10-24 12:03:01','2023-10-24 12:03:01'),(9,9,10,3,6,1,'2023-10-24 12:03:01','2023-10-24 12:03:01');
+INSERT INTO `usek` VALUES (1,1,2,2,6,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,5,17,2,6,5,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,6,20,2,5,7,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,10,9,3,6,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,11,12,2,4,3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,16,15,5,10,4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,19,18,1,3,6,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,20,6,2,5,8,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,21,22,2,6,9,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(1,24,23,1,4,10,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,2,3,2,8,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,9,8,3,6,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,12,5,2,8,3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,15,14,1,3,4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,17,18,2,4,5,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,18,17,2,4,6,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,22,23,1,4,9,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,23,22,1,4,10,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,3,4,1,3,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,5,13,2,6,3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,8,7,3,5,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,14,13,1,3,4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,17,5,2,6,6,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,18,19,1,3,5,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,22,21,2,6,10,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,23,24,1,4,9,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,4,5,1,6,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,7,6,2,6,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,13,5,2,6,4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,13,14,1,3,3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,5,6,2,7,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,5,12,2,8,4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,6,5,2,7,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,14,15,1,3,3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(6,5,4,1,6,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(6,6,7,2,6,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(6,12,11,2,4,4,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(6,15,16,5,10,3,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(7,4,3,1,3,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(7,7,8,3,5,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(8,3,2,2,8,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(8,8,9,3,6,1,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(9,2,1,2,6,2,'2023-11-27 06:36:49','2023-11-27 06:36:49'),(9,9,10,3,6,1,'2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `usek` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -354,15 +328,13 @@ CREATE TABLE `uzivatel` (
   `id_uzivatel` bigint unsigned NOT NULL AUTO_INCREMENT,
   `meno_uzivatela` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `priezvisko_uzivatela` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tel_cislo_uzivatela` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_uzivatela` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uzivatelske_meno` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `heslo_uzivatela` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rola_uzivatela` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_uzivatel`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +343,7 @@ CREATE TABLE `uzivatel` (
 
 LOCK TABLES `uzivatel` WRITE;
 /*!40000 ALTER TABLE `uzivatel` DISABLE KEYS */;
-INSERT INTO `uzivatel` VALUES (1,'','','','','root','$2y$10$PXDNnreZEo8HpDel9rSWWOh4ekTy3jwwy4DbzizKqoMOUrsjm.QPO','administrátor','2023-10-24 12:03:02','2023-10-24 12:03:02');
+INSERT INTO `uzivatel` VALUES (1,'Root','Account','root@dpmb.cz','$2y$10$gaD4oZnckmP4DbM31XLbRuZXF0erIT/KH3xomec6ulgVIFqHJd9fO','administrátor','2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,'Ján','Novák','jan.novak@gmail.com','$2y$10$5DP8idj7Bkvn7OlyJOds4.Uyi1CvZu3Y1Y5izOLuxSprmMZxxlNgC','správca','2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,'Jozef','Dobrý','jozef.dobry@gmail.com','$2y$10$HxJ6G/JGRGeElHMQLhgFJ.aro3H4lOKMBKfjxMkRFg0ZC7xcOehf2','technik','2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,'Anna','Neumannová','anna.neumannova@gmail.com','$2y$10$dlwT0zJdhFvHIbQhpFixeOPcERDFEY4U1LhrQLe8SDkbErHG0jocS','dispečer','2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,'František','Novotný','frantisek.novotny@gmail.com','$2y$10$mAdYCp5W5I1eoUTclXhn2.SfhH78ULyJZjg5iOlihLoUj6LKzhh3u','vodič','2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `uzivatel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,12 +356,14 @@ DROP TABLE IF EXISTS `vozidlo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vozidlo` (
   `id_vozidlo` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `spz` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nazov` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `druh_vozidla` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `znacka_vozidla` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id_vozidlo`)
+  PRIMARY KEY (`id_vozidlo`),
+  UNIQUE KEY `vozidlo_spz_unique` (`spz`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -399,7 +373,7 @@ CREATE TABLE `vozidlo` (
 
 LOCK TABLES `vozidlo` WRITE;
 /*!40000 ALTER TABLE `vozidlo` DISABLE KEYS */;
-INSERT INTO `vozidlo` VALUES (1,'Škoda 13T','Električka','Škoda','2023-10-24 12:03:02','2023-10-24 12:03:02'),(2,'Škoda 13T','Električka','Škoda','2023-10-24 12:03:02','2023-10-24 12:03:02'),(3,'Iveco Urbanway 12M','Autobus','Iveco','2023-10-24 12:03:02','2023-10-24 12:03:02'),(4,'Iveco Urbanway 12M','Autobus','Iveco','2023-10-24 12:03:02','2023-10-24 12:03:02'),(5,'SOR TNS 12','Trolejbus','SOR','2023-10-24 12:03:02','2023-10-24 12:03:02'),(6,'SOR TNS 12','Trolejbus','SOR','2023-10-24 12:03:02','2023-10-24 12:03:02');
+INSERT INTO `vozidlo` VALUES (1,'7C25025','Škoda 13T','Električka','Škoda','2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,'7C25026','Škoda 13T','Električka','Škoda','2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,'7C25027','Iveco Urbanway 12M','Autobus','Iveco','2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,'7C25028','Iveco Urbanway 12M','Autobus','Iveco','2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,'7C25029','SOR TNS 12','Trolejbus','SOR','2023-11-27 06:36:49','2023-11-27 06:36:49'),(6,'7C25030','SOR TNS 12','Trolejbus','SOR','2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `vozidlo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -427,7 +401,7 @@ CREATE TABLE `zastavka` (
 
 LOCK TABLES `zastavka` WRITE;
 /*!40000 ALTER TABLE `zastavka` DISABLE KEYS */;
-INSERT INTO `zastavka` VALUES (1,'Řečkovice','621 00 Brno-Řečkovice a Mokrá Hora','2023-10-24 12:03:01','2023-10-24 12:03:01'),(2,'Semilasso','612 00 Brno-Královo Pole','2023-10-24 12:03:01','2023-10-24 12:03:01'),(3,'Pionýrska','602 00 Brno-Královo Pole','2023-10-24 12:03:01','2023-10-24 12:03:01'),(4,'Moravské náměstí','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(5,'Hlavní nádraží','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(6,'Mendlovo náměstí','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(7,'Pisárky','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(8,'Vozovna Komín','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(9,'Zoologická zahrada','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(10,'Ečerova','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(11,'Stará Osada','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(12,'Tkalcovská','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(13,'Poříčí','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(14,'Celní','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(15,'Ústřední hřbitov','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(16,'Modřice','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(17,'Tržní','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(18,'Faměrovo náměstí','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(19,'Staré Černovice','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(20,'Červený kopec','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(21,'Česká','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(22,'Botanická','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(23,'Slovanské náměstí','','2023-10-24 12:03:01','2023-10-24 12:03:01'),(24,'Srbská','','2023-10-24 12:03:01','2023-10-24 12:03:01');
+INSERT INTO `zastavka` VALUES (1,'Řečkovice','621 00 Brno-Řečkovice a Mokrá Hora','2023-11-27 06:36:49','2023-11-27 06:36:49'),(2,'Semilasso','612 00 Brno-Královo Pole','2023-11-27 06:36:49','2023-11-27 06:36:49'),(3,'Pionýrska','602 00 Brno-Královo Pole','2023-11-27 06:36:49','2023-11-27 06:36:49'),(4,'Moravské náměstí','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(5,'Hlavní nádraží','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(6,'Mendlovo náměstí','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(7,'Pisárky','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(8,'Vozovna Komín','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(9,'Zoologická zahrada','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(10,'Ečerova','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(11,'Stará Osada','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(12,'Tkalcovská','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(13,'Poříčí','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(14,'Celní','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(15,'Ústřední hřbitov','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(16,'Modřice','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(17,'Tržní','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(18,'Faměrovo náměstí','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(19,'Staré Černovice','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(20,'Červený kopec','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(21,'Česká','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(22,'Botanická','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(23,'Slovanské náměstí','','2023-11-27 06:36:49','2023-11-27 06:36:49'),(24,'Srbská','','2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `zastavka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -457,6 +431,7 @@ CREATE TABLE `zaznam_udrzby` (
 
 LOCK TABLES `zaznam_udrzby` WRITE;
 /*!40000 ALTER TABLE `zaznam_udrzby` DISABLE KEYS */;
+INSERT INTO `zaznam_udrzby` VALUES (1,3,'2023-11-27 06:36:49','2023-11-27 06:36:49');
 /*!40000 ALTER TABLE `zaznam_udrzby` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -469,4 +444,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-24 16:04:22
+-- Dump completed on 2023-11-27  8:38:16
