@@ -1,5 +1,5 @@
 # Projekt-IIS - Dopravní podnik
-Jednoduchá webová aplikácia informačného systému pre mestskú dopravu pre manažment a vyhladávanie spojov.
+Jednoduchá webová aplikácia informačného systému pre mestskú dopravu (manažment a vyhladávanie spojov).
 
 ## Autori
 **Filip Roman** - <xroman16@stud.fit.vutbr.cz> - vedúci, backend, výpomoc s frontendom, dokumentácia
@@ -7,7 +7,6 @@ Jednoduchá webová aplikácia informačného systému pre mestskú dopravu pre 
 **Nikolas Nosál** - <xnosal01@stud.fit.vutbr.cz> - frontend, dizajn aplikácie, výpomoc s backendom, testovanie
 
 **Samuel Zima** - <xzimas01@stud.fit.vutbr.cz> - backend, výpomoc s frontendom, video dokumentácia, nasadenie aplikácie
-
 
 ## Inštalácia
 
